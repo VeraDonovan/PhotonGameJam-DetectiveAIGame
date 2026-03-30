@@ -41,3 +41,30 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1775031393
+    locked: 0
+  - name: GroundBase
+    uniqueID: 2736771233
+    locked: 0
+  - name: GroundDetail
+    uniqueID: 1606093129
+    locked: 0
+  - name: ObstaclesLow
+    uniqueID: 314239819
+    locked: 0
+  - name: Interactables
+    uniqueID: 4075440815
+    locked: 0
+  - name: Characters
+    uniqueID: 450478127
+    locked: 0
+  - name: EffectsMid
+    uniqueID: 2337338021
+    locked: 0
+  - name: Foreground
+    uniqueID: 2973056735
+    locked: 0
+  - name: Collisions
+    uniqueID: 279903309
+    locked: 0

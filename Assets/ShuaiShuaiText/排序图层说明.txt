@@ -1,0 +1,11 @@
+Scene_Farm
+└─ Tilemap Grid
+   ├─ Background       (远景)
+   ├─ GroundBase       (基础地面)
+   ├─ GroundDetail     (地面细节/装饰)
+   ├─ ObstaclesLow     (低矮障碍物)
+   ├─ Interactables    (✅ 核心：线索/道具/NPC)
+   ├─ Characters       (玩家/NPC)
+   ├─ EffectsMid       (特效/氛围)
+   ├─ Foreground       (前景遮挡)
+   └─ Collisions       (物理碰撞/触发)
