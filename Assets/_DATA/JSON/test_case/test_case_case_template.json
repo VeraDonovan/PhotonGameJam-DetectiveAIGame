@@ -1,0 +1,150 @@
+{
+  "templateVersion": "1.1",
+  "schemaType": "case",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "test_case",
+  "title": "测试极简案",
+  "linkedDataFiles": {
+    "npc": "test_case_npc_template.json",
+    "evidence": "test_case_evidence_template.json",
+    "facts": "test_case_facts_template.json",
+    "scene": "test_case_scene_template.json"
+  },
+  "setting": {
+    "year": 1994,
+    "cityDisplayName": "测试城市",
+    "toneTags": [
+      "测试",
+      "极简"
+    ]
+  },
+  "victim": {
+    "victimId": "victim",
+    "displayName": "赵平",
+    "age": 50,
+    "identity": "厂区管理员",
+    "publicImage": "喜欢压人",
+    "coreSecret": "他常拿旧事威胁别人。",
+    "causeOfDeath": "头部钝器伤",
+    "estimatedTimeOfDeath": "21:00-22:00"
+  },
+  "caseTruth": {
+    "realKillerId": "npc_1",
+    "surfaceTruth": "李梅和王强都与死者有冲突。",
+    "fullTruth": "李梅在再次遭受暴力时反击杀死赵平，并简单清理了现场。"
+  },
+  "suspects": [
+    {
+      "npcId": "npc_1",
+      "displayName": "李梅",
+      "age": 42,
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "archetype": "被逼反击的人",
+      "summary": "长期受害，案发当晚反击。",
+      "motiveSummary": "长期受暴后的反击。",
+      "hiddenTruthSummary": "她是真凶。"
+    },
+    {
+      "npcId": "npc_2",
+      "displayName": "王强",
+      "age": 36,
+      "locationId": "living_room",
+      "relationshipToVictim": "被旧账拿捏的人",
+      "archetype": "想脱身的人",
+      "summary": "案发前夜来找赵平讨要旧账。",
+      "motiveSummary": "想摆脱控制。",
+      "hiddenTruthSummary": "他来过，但没杀人。"
+    }
+  ],
+  "locations": [
+    {
+      "locationId": "living_room",
+      "displayName": "客厅",
+      "npcId": "npc_2",
+      "scenePresence": "坐着，试图装冷静"
+    },
+    {
+      "locationId": "kitchen",
+      "displayName": "厨房",
+      "npcId": "npc_1",
+      "scenePresence": "站着，不敢看人"
+    }
+  ],
+  "relationshipMap": [
+    {
+      "fromId": "victim",
+      "toId": "npc_1",
+      "type": "abuse_control",
+      "displayText": "长期压迫与暴力",
+      "knownBy": ["victim", "npc_1"]
+    },
+    {
+      "fromId": "victim",
+      "toId": "npc_2",
+      "type": "blackmail",
+      "displayText": "旧账把柄",
+      "knownBy": ["victim", "npc_2"]
+    }
+  ],
+  "clues": [
+    {
+      "clueId": "A-1",
+      "tier": "A",
+      "locationId": "kitchen",
+      "targetNpcId": "npc_1",
+      "requirements": [],
+      "trigger": "检查水槽",
+      "content": "水槽边有淡淡血色残留"
+    },
+    {
+      "clueId": "A-2",
+      "tier": "A",
+      "locationId": "kitchen",
+      "targetNpcId": "npc_1",
+      "requirements": [],
+      "trigger": "观察李梅手腕",
+      "content": "李梅手腕上有明显旧伤"
+    },
+    {
+      "clueId": "B-1",
+      "tier": "B",
+      "locationId": "kitchen",
+      "targetNpcId": "npc_1",
+      "requirements": ["A-1"],
+      "trigger": "法医检验",
+      "content": "水槽残留与死者血迹一致"
+    }
+  ],
+  "evidenceCards": [
+    {
+      "cardId": "card_1",
+      "displayName": "厨房清理痕迹",
+      "includes": ["A-1", "B-1"],
+      "correctConclusion": "有人在厨房清理过与案件有关的血迹。",
+      "falseConclusions": ["只是做饭时留下的污渍。"],
+      "pointsTo": "npc_1"
+    }
+  ],
+  "triggerDialogs": [
+    {
+      "dialogId": "dialog_1",
+      "triggerRequirements": ["A-2"],
+      "participants": ["npc_1"],
+      "type": "情感型",
+      "content": ["李梅低头把袖子往下拉。"],
+      "purpose": "暗示长期受害"
+    }
+  ],
+  "endingBranches": [
+    {
+      "endingId": "ending_1",
+      "displayName": "主线结局",
+      "unlockCondition": "确认李梅清理过现场并完成审讯第三层",
+      "result": "李梅认罪，测试案结束。"
+    }
+  ]
+}

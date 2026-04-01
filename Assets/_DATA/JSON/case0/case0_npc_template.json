@@ -1,0 +1,309 @@
+{
+  "templateVersion": "1.1",
+  "schemaType": "npc_set",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case0",
+  "npcs": [
+    {
+      "npcId": "npc_1",
+      "roleType": "suspect",
+      "displayName": "林秀华",
+      "age": 44,
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "archetype": "不得已的凶手",
+      "isKiller": true,
+      "backstory": "二十年前她爱着另一个男人，意外怀孕，对方跑路。她父亲欠了赵建民钱，赵以此为条件娶了她，随后以“孩子不是我的”为由将孩子送走，用这件事拿捏她二十年，长期家暴。",
+      "motive": "案发当晚赵建民喝酒回来再次动手，林秀华抄起炉钩子反击，一击打中太阳穴。",
+      "hiddenTruth": "她清理了现场并伪装正常死亡，第二天再报警发现尸体。",
+      "knowledge": [
+        "知道赵建民长期家暴自己。",
+        "知道被送走的孩子是自己人生最大的伤口。",
+        "不知道卫国强就是自己的亲生儿子。"
+      ],
+      "stats": {
+        "composure": 35,
+        "lie": 80,
+        "aggression": 15,
+        "cooperation": 50,
+        "guilt": 95,
+        "trauma": 100
+      },
+      "initialState": "悲伤顺从的妻子",
+      "initialStatement": "早上七点发现他没起床，叫不醒，就报警了。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "她当晚在场，见过其他人",
+          "pressureGoal": 30,
+          "unlockLine": "昨晚有人来过。七点多，一个男的，谈完走得很急。后来又来了个年轻的，赵建民把他骂走了。",
+          "breakpoints": [
+            {
+              "prompt": "你说早上七点才发现，但死亡时间在前一晚21点到23点。",
+              "excuse": "我以为他喝多了睡着了。",
+              "pressure": 10
+            },
+            {
+              "prompt": "如果你以为他只是睡着，为什么早上还会特地去看？",
+              "excuse": "他平时早起，那天没动静。",
+              "pressure": 10
+            },
+            {
+              "prompt": "客厅里的烟蒂是谁留下的？",
+              "excuse": "……",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "她清洗了凶器和现场",
+          "pressureGoal": 60,
+          "unlockLine": "我清理过。那里有血。我不知道该怎么办，只是想让它看起来正常一点。",
+          "breakpoints": [
+            {
+              "prompt": "炉钩被移动过，末端还有痕迹。",
+              "excuse": "做饭可能动过。",
+              "pressure": 10
+            },
+            {
+              "prompt": "抹布上的血是谁的？你不是说是切菜切到手吗？",
+              "excuse": "……",
+              "pressure": 10
+            },
+            {
+              "prompt": "地板上的血迹为什么被擦过？",
+              "excuse": "……",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "她如何动手，以及为什么",
+          "pressureGoal": 100,
+          "collapseLine": "他回来又喝了酒。他说那孩子从来不是他的……他动手了。我拿起炉钩子，只是想让他别打了。我不知道会……我真的不知道……",
+          "breakpoints": [
+            {
+              "prompt": "你说是早上才发现，但深夜就开始清理，这两件事根本对不上。",
+              "excuse": "我不知道该怎么办……",
+              "pressure": 15
+            },
+            {
+              "prompt": "你手腕上的伤，是赵建民打的吗？",
+              "excuse": "……是。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你说发现时灯是亮的，但灯泡根本是后来特意换上的。",
+              "excuse": "……",
+              "pressure": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "npcId": "npc_2",
+      "roleType": "suspect",
+      "displayName": "卫国强",
+      "age": 35,
+      "locationId": "living_room",
+      "relationshipToVictim": "被把柄控制的人",
+      "archetype": "搞浑水的坏人",
+      "isKiller": false,
+      "backstory": "厂外倒卖生意人，曾请赵建民替他做过一笔违规账目。赵一直以此威胁他。案发当晚主动上门要回账簿销毁，被拒绝后离开。第二天得知赵死，主动过来“协助调查”，实则想把怀疑引向张铁柱。",
+      "motive": "拿回账簿，切断赵建民对自己的控制。",
+      "hiddenTruth": "他是林秀华被送走的亲生儿子，两人均不知道，赵建民知道并长期把这件事当终极筹码。",
+      "knowledge": [
+        "知道赵建民掌握自己违规账目的把柄。",
+        "知道自己案发当晚来过赵家。",
+        "不知道林秀华是自己的亲生母亲。"
+      ],
+      "stats": {
+        "composure": 85,
+        "lie": 75,
+        "aggression": 40,
+        "cooperation": 70,
+        "guilt": 35,
+        "trauma": 60
+      },
+      "initialState": "镇定积极，像在帮忙",
+      "initialStatement": "我和赵会计认识，听说出了事，过来看看。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "他当晚来过，不是路过",
+          "pressureGoal": 30,
+          "unlockLine": "我昨晚来过。七点左右，和赵建民有点私事要谈，谈完就走了。",
+          "breakpoints": [
+            {
+              "prompt": "张铁柱说是你把他叫来的，你刚才却说不认识他。",
+              "excuse": "可能说错了，认识，不熟。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你说是路过听说，可案发在深夜，消息是谁传给你的？",
+              "excuse": "朋友说的。",
+              "pressure": 10
+            },
+            {
+              "prompt": "茶几上有大前门烟蒂，你昨晚其实在这里抽过烟吧？",
+              "excuse": "偶尔抽。",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "他来的真实目的是账簿",
+          "pressureGoal": 60,
+          "unlockLine": "那本账簿记着我的事。我做过一笔生意，赵建民替我做了账，他一直拿这个威胁我。我来是要把那本账要回来，他不给，我走了。",
+          "breakpoints": [
+            {
+              "prompt": "为什么你一看到账簿上的“卫”字就脸色变了？",
+              "excuse": "我不认识这个。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你口中的私事，到底是谁欠谁？",
+              "excuse": "欠了点钱。",
+              "pressure": 10
+            },
+            {
+              "prompt": "林秀华说昨晚有个体面男人和赵建民谈崩了，那个人就是你。",
+              "excuse": "……",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "他的身世真相",
+          "pressureGoal": 100,
+          "collapseLine": "你在说什么？……不可能……他不可能……",
+          "breakpoints": [
+            {
+              "prompt": "账簿上写着“卫张林”，这里的“林”到底是谁？",
+              "excuse": "不知道，可能是妻子。",
+              "pressure": 10
+            },
+            {
+              "prompt": "一个被收养的孤儿，赵建民为什么会那么早主动去找你？",
+              "excuse": "我不知道。",
+              "pressure": 10
+            },
+            {
+              "prompt": "林秀华二十年前被送走的孩子，年龄正好和你对得上。",
+              "excuse": "不可能。",
+              "pressure": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "npcId": "npc_3",
+      "roleType": "suspect",
+      "displayName": "张铁柱",
+      "age": 27,
+      "locationId": "bedroom",
+      "relationshipToVictim": "通过母亲来讨债的人",
+      "archetype": "被诬陷但不完全无辜",
+      "isKiller": false,
+      "backstory": "外地待业青年，母亲刚去世。知道赵建民欠他母亲钱，特地来讨债。赵当面嘲笑：“你连自己是谁生的都不知道。”张没听懂，被骂走后气头上偷走窗台手表。",
+      "motive": "替母亲讨债，对赵建民怀恨在心，也想拿走和母亲有关的手表。",
+      "hiddenTruth": "他不是凶手，但他是赵建民与那个女人的私生子，赵知道，他不知道。",
+      "knowledge": [
+        "知道赵建民欠自己母亲钱。",
+        "知道自己拿走了手表。",
+        "不知道赵建民其实知道自己的身世。"
+      ],
+      "stats": {
+        "composure": 30,
+        "lie": 65,
+        "aggression": 55,
+        "cooperation": 25,
+        "guilt": 45,
+        "trauma": 85
+      },
+      "initialState": "紧张防御，死咬“不认识那家人”",
+      "initialStatement": "我不认识这家人，是他（指卫）叫我来的。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "他当晚来过",
+          "pressureGoal": 30,
+          "unlockLine": "我昨晚去过。和他有点事，谈不拢，就走了。",
+          "breakpoints": [
+            {
+              "prompt": "卫国强说不认识你，你却说是他把你叫来的。",
+              "excuse": "见过几次，不熟。",
+              "pressure": 10
+            },
+            {
+              "prompt": "如果不熟，卫国强为什么偏偏叫你来？",
+              "excuse": "他说我认识死者。",
+              "pressure": 10
+            },
+            {
+              "prompt": "窗台上少了一块手表，你知道吧？",
+              "excuse": "不知道。",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "他偷走了手表",
+          "pressureGoal": 60,
+          "unlockLine": "是我拿的。那块表本来就是我妈的，他凭什么留着……",
+          "forcedTwist": "张铁柱偷走手表，对赵建民有恨，但死亡时间在他离开之后——他不在场。这不是凶手线，而是一把钥匙。",
+          "breakpoints": [
+            {
+              "prompt": "你说谈不拢就走，你们谈的到底是什么？",
+              "excuse": "他欠我妈的钱，我来讨。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你走的时候，手表还在不在窗台上？",
+              "excuse": "我不知道。",
+              "pressure": 10
+            },
+            {
+              "prompt": "表背刻的女人名字，是你母亲吗？",
+              "excuse": "……",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "他的身世真相",
+          "pressureGoal": 100,
+          "collapseLine": "他是我什么人？他为什么要说那句话？……你告诉我，他是不是认识我妈？他是不是……",
+          "breakpoints": [
+            {
+              "prompt": "为什么你的名字会出现在赵建民的账簿里？",
+              "excuse": "……",
+              "pressure": 15
+            },
+            {
+              "prompt": "赵建民骂你“你连谁生的都不知道”，你觉得这句话是什么意思？",
+              "excuse": "我一直没想明白。",
+              "pressure": 15
+            },
+            {
+              "prompt": "你母亲和赵建民之间，不只是欠钱那么简单。",
+              "excuse": "……",
+              "pressure": 20
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

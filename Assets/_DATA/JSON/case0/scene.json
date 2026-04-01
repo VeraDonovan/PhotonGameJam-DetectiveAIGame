@@ -1,0 +1,235 @@
+﻿{
+  "templateVersion": "1.0",
+  "schemaType": "scene_layout",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case0",
+  "sceneSummary": {
+    "roomCount": 4,
+    "notes": "定义房间列表、场景物件、可藏证据槽位，以及后续地图摆放用的预留字段。"
+  },
+  "rooms": [
+    {
+      "roomId": "living_room",
+      "displayName": "客厅",
+      "objectCount": 7,
+      "objects": [
+        {
+          "objectId": "living_room_sofa",
+          "displayName": "沙发",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": false,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "魏国强审讯时坐在这里。"
+        },
+        {
+          "objectId": "living_room_coffee_table",
+          "displayName": "茶几",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-1", "A-2"],
+          "notes": ""
+        },
+        {
+          "objectId": "living_room_ashtray",
+          "displayName": "烟灰缸",
+          "objectType": "prop",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-1"],
+          "notes": ""
+        },
+        {
+          "objectId": "living_room_teacups",
+          "displayName": "茶杯组",
+          "objectType": "prop",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-2"],
+          "notes": ""
+        },
+        {
+          "objectId": "living_room_tool_rack",
+          "displayName": "工具架",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-3"],
+          "notes": "壁炉拨火钩原本收在这里。"
+        },
+        {
+          "objectId": "living_room_floor_near_stove",
+          "displayName": "炉边地板",
+          "objectType": "surface",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-4"],
+          "notes": ""
+        },
+        {
+          "objectId": "living_room_window_sill",
+          "displayName": "窗台",
+          "objectType": "surface",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-5"],
+          "notes": "失踪的手表原本放在这里。"
+        }
+      ]
+    },
+    {
+      "roomId": "kitchen",
+      "displayName": "厨房",
+      "objectCount": 4,
+      "objects": [
+        {
+          "objectId": "kitchen_stove",
+          "displayName": "灶台",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": false,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "林秀花位于这片区域附近。"
+        },
+        {
+          "objectId": "kitchen_sink",
+          "displayName": "水槽",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-7"],
+          "notes": ""
+        },
+        {
+          "objectId": "kitchen_trash_bin",
+          "displayName": "垃圾桶",
+          "objectType": "container",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-8"],
+          "notes": ""
+        },
+        {
+          "objectId": "kitchen_npc_lin_xiuhua",
+          "displayName": "林秀花",
+          "objectType": "npc_anchor",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-9", "A-10"],
+          "notes": "与林秀花相关的观察与对话线索锚点。"
+        }
+      ]
+    },
+    {
+      "roomId": "bedroom",
+      "displayName": "卧室",
+      "objectCount": 4,
+      "objects": [
+        {
+          "objectId": "bedroom_body",
+          "displayName": "尸体",
+          "objectType": "body",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-11", "B-15"],
+          "notes": ""
+        },
+        {
+          "objectId": "bedroom_bedside_table",
+          "displayName": "床头柜",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-12"],
+          "notes": ""
+        },
+        {
+          "objectId": "bedroom_bedside_lamp",
+          "displayName": "床头灯",
+          "objectType": "prop",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-13", "B-14"],
+          "notes": ""
+        },
+        {
+          "objectId": "bedroom_npc_zhang_tiezhu",
+          "displayName": "张铁柱",
+          "objectType": "npc_anchor",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-14", "A-15", "B-13", "B-16"],
+          "notes": "与张铁柱相关的观察与对话线索锚点。"
+        }
+      ]
+    },
+    {
+      "roomId": "bathroom",
+      "displayName": "浴室",
+      "objectCount": 1,
+      "objects": [
+        {
+          "objectId": "bathroom_mirror_cabinet",
+          "displayName": "镜柜",
+          "objectType": "container",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-16", "B-17"],
+          "notes": ""
+        }
+      ]
+    }
+  ]
+}

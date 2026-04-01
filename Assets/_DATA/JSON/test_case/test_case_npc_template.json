@@ -1,0 +1,122 @@
+{
+  "templateVersion": "1.1",
+  "schemaType": "npc_set",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "test_case",
+  "npcs": [
+    {
+      "npcId": "npc_1",
+      "roleType": "suspect",
+      "displayName": "李梅",
+      "age": 42,
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "archetype": "被逼反击的人",
+      "isKiller": true,
+      "backstory": "长期被赵平压迫，案发当晚再次被打。",
+      "motive": "在再次遭受暴力时反击致死。",
+      "hiddenTruth": "她清理过现场，也是真凶。",
+      "knowledge": [
+        "知道自己动了手。",
+        "知道自己清理过水槽。",
+        "知道赵平长期打她。"
+      ],
+      "stats": {
+        "composure": 30,
+        "lie": 70,
+        "aggression": 20,
+        "cooperation": 45,
+        "guilt": 90,
+        "trauma": 95
+      },
+      "initialState": "沉默、压抑",
+      "initialStatement": "我早上才发现他不对劲。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "她在时间上撒谎",
+          "pressureGoal": 30,
+          "unlockLine": "我昨晚其实看到他倒下了。",
+          "breakpoints": [
+            {
+              "prompt": "你不是早上才发现他出事。",
+              "excuse": "我那时候很乱。",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "她清理过现场",
+          "pressureGoal": 60,
+          "unlockLine": "我洗了水槽。",
+          "breakpoints": [
+            {
+              "prompt": "水槽里的血为什么和死者一致？",
+              "excuse": "我不知道该怎么办。",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "她为何动手",
+          "pressureGoal": 100,
+          "collapseLine": "他又打我，我只想让他停下。",
+          "breakpoints": [
+            {
+              "prompt": "你手上的旧伤说明这不是第一次。",
+              "excuse": "……是。",
+              "pressure": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "npcId": "npc_2",
+      "roleType": "suspect",
+      "displayName": "王强",
+      "age": 36,
+      "locationId": "living_room",
+      "relationshipToVictim": "被把柄控制的人",
+      "archetype": "想脱身的人",
+      "isKiller": false,
+      "backstory": "案发前夜来找赵平要旧账。",
+      "motive": "想摆脱赵平的控制。",
+      "hiddenTruth": "他来过，但和杀人无关。",
+      "knowledge": [
+        "知道自己来过。",
+        "知道赵平手里有自己的旧账。"
+      ],
+      "stats": {
+        "composure": 75,
+        "lie": 60,
+        "aggression": 35,
+        "cooperation": 65,
+        "guilt": 20,
+        "trauma": 40
+      },
+      "initialState": "装冷静",
+      "initialStatement": "我只是来过一下。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "他来过，但不是核心凶手线",
+          "pressureGoal": 30,
+          "unlockLine": "我昨晚确实来过。",
+          "breakpoints": [
+            {
+              "prompt": "你来过这里，但这条线和李梅那边不是一回事。",
+              "excuse": "我只是不想被牵连。",
+              "pressure": 10
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
