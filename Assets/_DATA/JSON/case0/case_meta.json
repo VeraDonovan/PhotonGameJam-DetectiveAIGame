@@ -1,4 +1,4 @@
-﻿{
+{
   "templateVersion": "2.0",
   "schemaType": "case_meta",
   "language": {
@@ -6,7 +6,7 @@
     "content": "zh-CN"
   },
   "caseId": "case0",
-  "title": "昨夜列车",
+  "title": "最后一班夜车",
   "linkedDataFiles": {
     "npc": "npc.json",
     "evidence": "evidence.json",
@@ -16,7 +16,7 @@
   },
   "setting": {
     "year": 1994,
-    "cityDisplayName": "北方工业城",
+    "cityDisplayName": "某北方工业城市",
     "toneTags": [
       "家庭悲剧",
       "审讯推理",
@@ -45,31 +45,31 @@
   "caseTruth": {
     "realKillerId": "npc_1",
     "surfaceTruth": "三名嫌疑人都在隐瞒案发当晚的行动，以及自己与死者之间的关系。",
-    "fullTruth": "林秀花在又一次遭受家暴后杀死了赵建民，随后清理并伪装了现场，第二天才报案。",
+    "fullTruth": "林秀华在又一次遭受家暴后杀死了赵建民，随后清理并伪装了现场，第二天才报案。",
     "metaTruth": "这起命案之下，还压着一段被赵建民以勒索与控制扭曲了多年的家庭历史。"
   },
   "suspectSummaries": [
     {
       "npcId": "npc_1",
-      "displayName": "林秀花",
+      "displayName": "林秀华",
       "age": 44,
       "locationId": "kitchen",
       "relationshipToVictim": "妻子",
       "archetype": "被逼到绝境的凶手",
       "summary": "她长期遭受家暴，多年前被迫结婚，也被迫失去了自己的孩子。",
-      "motiveSummary": "长期家暴、失子之痛，以及案发当晚再次遭受侵犯。",
+      "motiveSummary": "长期家暴、失子之痛，以及案发当晚再次遭受施暴。",
       "hiddenTruthSummary": "她就是凶手。"
     },
     {
       "npcId": "npc_2",
-      "displayName": "魏国强",
+      "displayName": "卫国强",
       "age": 35,
       "locationId": "living_room",
       "relationshipToVictim": "被勒索者",
       "archetype": "圆滑的说谎者",
       "summary": "他是灰色生意人，被赵建民用违法账簿长期拿捏。",
       "motiveSummary": "夺回账簿，摆脱赵建民的控制。",
-      "hiddenTruthSummary": "他是林秀花失散多年的亲生儿子。"
+      "hiddenTruthSummary": "他是林秀华失散多年的亲生儿子。"
     },
     {
       "npcId": "npc_3",

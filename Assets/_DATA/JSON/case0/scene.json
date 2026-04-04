@@ -26,7 +26,7 @@
           "interactive": false,
           "canHideEvidence": false,
           "hiddenEvidenceIds": [],
-          "notes": "魏国强审讯时坐在这里。"
+          "notes": "卫国强审讯时坐在这里。"
         },
         {
           "objectId": "living_room_coffee_table",
@@ -74,7 +74,7 @@
           "interactive": true,
           "canHideEvidence": true,
           "hiddenEvidenceIds": ["A-3"],
-          "notes": "壁炉拨火钩原本收在这里。"
+          "notes": "炉钩子原本收在这里。"
         },
         {
           "objectId": "living_room_floor_near_stove",
@@ -117,7 +117,7 @@
           "interactive": false,
           "canHideEvidence": false,
           "hiddenEvidenceIds": [],
-          "notes": "林秀花位于这片区域附近。"
+          "notes": "林秀华位于这片区域附近。"
         },
         {
           "objectId": "kitchen_sink",
@@ -145,7 +145,7 @@
         },
         {
           "objectId": "kitchen_npc_lin_xiuhua",
-          "displayName": "林秀花",
+          "displayName": "林秀华",
           "objectType": "npc_anchor",
           "placementSlotId": "",
           "placementPosition": "",
@@ -153,7 +153,7 @@
           "interactive": true,
           "canHideEvidence": true,
           "hiddenEvidenceIds": ["A-9", "A-10"],
-          "notes": "与林秀花相关的观察与对话线索锚点。"
+          "notes": "与林秀华相关的观察与对话线索锚点。"
         }
       ]
     },
@@ -214,7 +214,7 @@
     },
     {
       "roomId": "bathroom",
-      "displayName": "浴室",
+      "displayName": "厕所",
       "objectCount": 1,
       "objects": [
         {

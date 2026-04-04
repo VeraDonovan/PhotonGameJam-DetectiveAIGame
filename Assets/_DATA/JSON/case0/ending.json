@@ -1,4 +1,4 @@
-﻿{
+{
   "templateVersion": "2.0",
   "schemaType": "ending_set",
   "language": {
@@ -17,8 +17,8 @@
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "只突破张铁柱前两层审讯，以及林秀花第一层审讯。",
-      "result": "张铁柱因偷窃与撒谎被错认成主要嫌疑人，魏国强洗脱怀疑，林秀花也暂时逃过追责。"
+      "unlockConditionText": "只突破张铁柱前两层审讯，以及林秀华第一层审讯。",
+      "result": "张铁柱因偷窃与撒谎被错认成主要嫌疑人，卫国强洗脱怀疑，林秀华也暂时逃过追责。"
     },
     {
       "endingId": "ending_2",
@@ -30,8 +30,8 @@
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "完整突破林秀花第三层审讯。",
-      "result": "林秀花认罪。案件在杀人层面上被解开，但更深的家庭真相仍埋在水面之下。"
+      "unlockConditionText": "完整突破林秀华第三层审讯。",
+      "result": "林秀华认罪。案件在杀人层面上被解开，但更深的家庭真相仍埋在水面之下。"
     },
     {
       "endingId": "ending_3",
@@ -43,8 +43,8 @@
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "突破魏国强第三层审讯。",
-      "result": "母子关系被揭开，魏国强在审讯室崩溃，只问了一句能不能见林秀花。"
+      "unlockConditionText": "突破卫国强第三层审讯。",
+      "result": "母子关系被揭开，卫国强在审讯室崩溃，只问了一句能不能见林秀华。"
     },
     {
       "endingId": "ending_4",
@@ -57,7 +57,7 @@
         "requiredAnyFactIds": []
       },
       "unlockConditionText": "将三名嫌疑人都推进到第三层，并揭开全部隐藏真相。",
-      "result": "那本账簿揭开了赵建民二十年来的控制与勒索，也揭开了这起命案背后扭曲的家庭史。林秀花得知魏国强的身份后，最终选择沉默。"
+      "result": "那本账簿揭开了赵建民二十年来的控制与勒索，也揭开了这起命案背后扭曲的家庭史。林秀华得知卫国强的身份后，最终选择沉默。"
     }
   ]
 }

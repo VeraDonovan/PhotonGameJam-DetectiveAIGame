@@ -1,4 +1,4 @@
-﻿{
+{
   "templateVersion": "2.0",
   "schemaType": "fact_graph",
   "language": {
@@ -32,8 +32,8 @@
   "facts": [
     {
       "factId": "fact_1",
-      "displayName": "魏国强在案发当晚来过",
-      "summary": "魏国强当晚出现在赵建民家里，不是事后才赶来围观的人。",
+      "displayName": "卫国强在案发当晚来过",
+      "summary": "卫国强当晚出现在赵建民家里，不是事后才赶来围观的人。",
       "category": "timeline",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -59,8 +59,8 @@
     },
     {
       "factId": "fact_2",
-      "displayName": "魏国强是冲着账簿来的",
-      "summary": "魏国强真正的来意，是夺回那本被赵建民拿来勒索他的账簿。",
+      "displayName": "卫国强是冲着账簿来的",
+      "summary": "卫国强真正的来意，是夺回那本被赵建民拿来勒索他的账簿。",
       "category": "motive",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -87,7 +87,7 @@
     {
       "factId": "fact_3",
       "displayName": "客厅是关键案发地点",
-      "summary": "拨火钩与被擦拭的地面污迹表明，关键的暴力行为或清理行为发生在客厅。",
+      "summary": "炉钩子与被擦拭的地面污迹表明，关键的暴力行为或清理行为发生在客厅。",
       "category": "crime_scene",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -114,7 +114,7 @@
     {
       "factId": "fact_4",
       "displayName": "有人清理过凶器与现场",
-      "summary": "拨火钩、地面、水槽和抹布共同构成了案发后的完整清理链条。",
+      "summary": "炉钩子、地面、水槽和抹布共同构成了案发后的完整清理链条。",
       "category": "crime_scene",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -140,7 +140,7 @@
     },
     {
       "factId": "fact_5",
-      "displayName": "魏国强与张铁柱都在隐瞒彼此关系",
+      "displayName": "卫国强与张铁柱都在隐瞒彼此关系",
       "summary": "两人的说法互相冲突，证明他们谁都没有说出完整真相。",
       "category": "relationship",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
@@ -194,8 +194,8 @@
     },
     {
       "factId": "fact_7",
-      "displayName": "林秀花在发现尸体时间上说了谎",
-      "summary": "法医时间线和她自己的说法证明，林秀花并不是早上才第一次发现赵建民。",
+      "displayName": "林秀华在发现尸体时间上说了谎",
+      "summary": "法医时间线和她自己的说法证明，林秀华并不是早上才第一次发现赵建民。",
       "category": "lie",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -222,7 +222,7 @@
     {
       "factId": "fact_8",
       "displayName": "张铁柱偷走了手表",
-      "summary": "关于失踪手表的整条线索最终指向的是张铁柱，而不是魏国强。",
+      "summary": "关于失踪手表的整条线索最终指向的是张铁柱，而不是卫国强。",
       "category": "theft",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -248,7 +248,7 @@
     },
     {
       "factId": "fact_9",
-      "displayName": "林秀花伪装了现场",
+      "displayName": "林秀华伪装了现场",
       "summary": "被更换过的床头灯、被擦拭的血迹和完整清理路径证明，现场存在主动伪装，而不只是慌乱善后。",
       "category": "crime_scene",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
@@ -275,8 +275,8 @@
     },
     {
       "factId": "fact_10",
-      "displayName": "林秀花长期遭受家暴",
-      "summary": "淤青、药物和法医复核共同证明赵建民长期对林秀花实施家暴。",
+      "displayName": "林秀华长期遭受家暴",
+      "summary": "淤青、药物和法医复核共同证明赵建民长期对林秀华实施家暴。",
       "category": "motive",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
@@ -329,8 +329,8 @@
     },
     {
       "factId": "fact_12",
-      "displayName": "林秀花就是凶手",
-      "summary": "凶器路径、现场伪装和动机链条共同将林秀花锁定为直接杀人者。",
+      "displayName": "林秀华就是凶手",
+      "summary": "凶器路径、现场伪装和动机链条共同将林秀华锁定为直接杀人者。",
       "category": "culprit",
       "truth": { "truthClass": "culprit_truth", "isHiddenTruth": false },
       "unlock": {
@@ -356,8 +356,8 @@
     },
     {
       "factId": "fact_13",
-      "displayName": "魏国强是林秀花失散多年的儿子",
-      "summary": "账簿、赵建民的控制逻辑与审讯真相共同揭开了魏国强和林秀花之间隐藏的母子关系。",
+      "displayName": "卫国强是林秀华失散多年的儿子",
+      "summary": "账簿、赵建民的控制逻辑与审讯真相共同揭开了卫国强和林秀华之间隐藏的母子关系。",
       "category": "hidden_identity",
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
@@ -464,17 +464,17 @@
     }
   ],
   "factRelationships": [
-    { "fromFactId": "fact_1", "toFactId": "fact_2", "relationshipType": "supports", "displayText": "先证明魏国强当晚来过，再证明他为什么而来。" },
+    { "fromFactId": "fact_1", "toFactId": "fact_2", "relationshipType": "supports", "displayText": "先证明卫国强当晚来过，再证明他为什么而来。" },
     { "fromFactId": "fact_3", "toFactId": "fact_4", "relationshipType": "supports", "displayText": "客厅痕迹支撑了完整的清理链条。" },
-    { "fromFactId": "fact_7", "toFactId": "fact_9", "relationshipType": "supports", "displayText": "林秀花关于时间线的谎言支持了现场伪装这一结论。" },
-    { "fromFactId": "fact_10", "toFactId": "fact_12", "relationshipType": "supports_motive", "displayText": "长期家暴构成了林秀花的杀人动机。" },
-    { "fromFactId": "fact_4", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "案后清理直接把林秀花与命案善后联系在一起。" },
-    { "fromFactId": "fact_9", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "现场伪装进一步锁定了林秀花是凶手。" },
+    { "fromFactId": "fact_7", "toFactId": "fact_9", "relationshipType": "supports", "displayText": "林秀华关于时间线的谎言支持了现场伪装这一结论。" },
+    { "fromFactId": "fact_10", "toFactId": "fact_12", "relationshipType": "supports_motive", "displayText": "长期家暴构成了林秀华的杀人动机。" },
+    { "fromFactId": "fact_4", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "案后清理直接把林秀华与命案善后联系在一起。" },
+    { "fromFactId": "fact_9", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "现场伪装进一步锁定了林秀华是凶手。" },
     { "fromFactId": "fact_11", "toFactId": "fact_13", "relationshipType": "supports", "displayText": "账簿控制模式支持了母子关系的揭示。" },
     { "fromFactId": "fact_11", "toFactId": "fact_14", "relationshipType": "supports", "displayText": "账簿控制模式支持了父子关系的揭示。" },
     { "fromFactId": "fact_8", "toFactId": "fact_15", "relationshipType": "supports", "displayText": "先确认偷表，再排除张铁柱是凶手。" },
     { "fromFactId": "fact_12", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "谋杀真相只是更深家庭真相的一部分。" },
-    { "fromFactId": "fact_13", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "魏国强的身世揭示支撑了完整真相。" },
+    { "fromFactId": "fact_13", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "卫国强的身世揭示支撑了完整真相。" },
     { "fromFactId": "fact_14", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "张铁柱的身世揭示支撑了完整真相。" }
   ]
 }
