@@ -1,0 +1,10 @@
+{
+  "npc_id": "npc_001",
+  "name": "村民A",
+  "appearance": {
+    "head": "female_human_head_14",
+    "body": "LPC/lpc-2024-10-15-expanded-ulpc-set/body/bodies/female",
+    "outfit": "adult_hair_bangs_bun_14"
+  }
+}
+
