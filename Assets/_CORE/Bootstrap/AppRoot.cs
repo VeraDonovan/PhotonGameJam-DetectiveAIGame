@@ -7,16 +7,18 @@ namespace DetectiveGame.Core
     {
         [SerializeField] private bool persistAcrossScenes = true;
         [SerializeField] private EventManager eventManager;
+        [SerializeField] private DatabaseManager databaseManager;
         [SerializeField] private GameStateManager gameStateManager;
-        [SerializeField] private CaseRuntimeManager caseRuntimeManager;
+        [SerializeField] private ProgressManager progressManager;
         [SerializeField] private NpcRuntimeManager npcRuntimeManager;
         [SerializeField] private UIManager uiManager;
 
         public static AppRoot Instance { get; private set; }
 
         public EventManager EventManager => eventManager;
+        public DatabaseManager DatabaseManager => databaseManager;
         public GameStateManager GameStateManager => gameStateManager;
-        public CaseRuntimeManager CaseRuntimeManager => caseRuntimeManager;
+        public ProgressManager ProgressManager => progressManager;
         public NpcRuntimeManager NpcRuntimeManager => npcRuntimeManager;
         public UIManager UIManager => uiManager;
 
@@ -41,8 +43,9 @@ namespace DetectiveGame.Core
         private void EnsureCoreServices()
         {
             eventManager = ResolveOrCreate(eventManager);
+            databaseManager = ResolveOrCreate(databaseManager);
             gameStateManager = ResolveOrCreate(gameStateManager);
-            caseRuntimeManager = ResolveOrCreate(caseRuntimeManager);
+            progressManager = ResolveOrCreate(progressManager);
             npcRuntimeManager = ResolveOrCreate(npcRuntimeManager);
             uiManager = ResolveOrCreate(uiManager);
         }
@@ -50,8 +53,9 @@ namespace DetectiveGame.Core
         private void InitializeCoreServices()
         {
             eventManager.Initialize();
+            databaseManager.Initialize();
             gameStateManager.Initialize(eventManager);
-            caseRuntimeManager.Initialize(eventManager);
+            progressManager.Initialize(eventManager, databaseManager);
             npcRuntimeManager.Initialize(eventManager);
             uiManager.Initialize();
         }
