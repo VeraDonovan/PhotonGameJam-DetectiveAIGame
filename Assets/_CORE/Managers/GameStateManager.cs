@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace DetectiveGame.Core
 {
@@ -13,6 +14,7 @@ namespace DetectiveGame.Core
         public void Initialize(EventManager sharedEventManager)
         {
             eventManager = sharedEventManager;
+            ValidateDependencies();
             CurrentPhase = startingPhase;
         }
 
@@ -24,8 +26,16 @@ namespace DetectiveGame.Core
             }
 
             CurrentPhase = nextPhase;
-            eventManager?.Publish(new GamePhaseChangedEvent(CurrentPhase));
+            eventManager.Publish(new GamePhaseChangedEvent(CurrentPhase));
             return true;
+        }
+
+        private void ValidateDependencies()
+        {
+            if (eventManager == null)
+            {
+                throw new InvalidOperationException("GameStateManager requires EventManager during initialization.");
+            }
         }
     }
 }

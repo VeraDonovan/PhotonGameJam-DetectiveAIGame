@@ -1,4 +1,5 @@
 using DetectiveGame.UI;
+using System;
 using UnityEngine;
 
 namespace DetectiveGame.Core
@@ -10,26 +11,23 @@ namespace DetectiveGame.Core
         [SerializeField] private InventoryPanelManager inventoryPanelManager;
         [SerializeField] private bool inventoryOpenOnStart;
 
-        public bool IsInventoryOpen => inventoryRoot != null && inventoryRoot.activeSelf;
+        public bool IsInventoryOpen => inventoryRoot.activeSelf;
 
         public void Initialize()
         {
-            if (inventoryRoot == null || inventoryPanelManager == null)
-            {
-                return;
-            }
+            ValidateConfiguration();
 
             inventoryRoot.SetActive(inventoryOpenOnStart);
 
             if (inventoryOpenOnStart)
             {
-                inventoryPanelManager?.RefreshActiveTab();
+                inventoryPanelManager.RefreshActiveTab();
             }
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(inventoryToggleKey) && inventoryRoot != null)
+            if (Input.GetKeyDown(inventoryToggleKey))
             {
                 SetInventoryOpen(!IsInventoryOpen);
             }
@@ -37,16 +35,24 @@ namespace DetectiveGame.Core
 
         public void SetInventoryOpen(bool isOpen)
         {
-            if (inventoryRoot == null || inventoryPanelManager == null)
-            {
-                return;
-            }
-
             inventoryRoot.SetActive(isOpen);
 
             if (isOpen)
             {
-                inventoryPanelManager?.RefreshActiveTab();
+                inventoryPanelManager.RefreshActiveTab();
+            }
+        }
+
+        private void ValidateConfiguration()
+        {
+            if (inventoryRoot == null)
+            {
+                throw new InvalidOperationException("UIManager requires inventoryRoot to be assigned.");
+            }
+
+            if (inventoryPanelManager == null)
+            {
+                throw new InvalidOperationException("UIManager requires inventoryPanelManager to be assigned.");
             }
         }
     }

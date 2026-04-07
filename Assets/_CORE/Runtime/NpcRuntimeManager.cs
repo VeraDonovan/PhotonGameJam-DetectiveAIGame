@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace DetectiveGame.Core
@@ -18,6 +19,7 @@ namespace DetectiveGame.Core
         public void Initialize(EventManager sharedEventManager)
         {
             eventManager = sharedEventManager;
+            ValidateDependencies();
             ResetRuntime();
         }
 
@@ -66,6 +68,14 @@ namespace DetectiveGame.Core
             discoveredNpcIds.Clear();
             availableNpcIds.Clear();
             interrogationReadyNpcIds.Clear();
+        }
+
+        private void ValidateDependencies()
+        {
+            if (eventManager == null)
+            {
+                throw new InvalidOperationException("NpcRuntimeManager requires EventManager during initialization.");
+            }
         }
     }
 }

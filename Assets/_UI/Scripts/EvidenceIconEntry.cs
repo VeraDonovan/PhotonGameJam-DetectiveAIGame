@@ -70,6 +70,7 @@ namespace DetectiveGame.UI
 
         private void HandleClicked()
         {
+            Debug.Log($"[EvidenceIconEntry] Clicked evidence entry '{evidenceId}'.");
             onSelected?.Invoke(this);
         }
     }

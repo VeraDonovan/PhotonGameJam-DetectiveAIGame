@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using DetectiveGame.Core;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace DetectiveGame.UI
     public sealed class EvidencePanelManager : MonoBehaviour
     {
         [Header("Icon View")]
+        [SerializeField] private Sprite defaultEvidenceIcon;
         [SerializeField] private Transform iconContentRoot;
         [SerializeField] private EvidenceIconEntry iconEntryPrefab;
 
@@ -17,8 +19,7 @@ namespace DetectiveGame.UI
         [SerializeField] private string defaultDetailText = string.Empty;
 
         [Header("Progress View")]
-        [SerializeField] private TMP_Text[] progressTexts;
-        [SerializeField] private string progressFormat = "{0}/{1}";
+        [SerializeField] private TMP_Text progressText;
         [SerializeField] private Image progressFill;
 
         private readonly Dictionary<string, EvidenceIconEntry> entriesById = new Dictionary<string, EvidenceIconEntry>();
@@ -31,7 +32,9 @@ namespace DetectiveGame.UI
         private void Awake()
         {
             ResolveCoreReferences();
+            ValidateConfiguration();
             SetDetailText(defaultDetailText);
+            RefreshProgressView();
         }
 
         private void OnEnable()
@@ -48,13 +51,40 @@ namespace DetectiveGame.UI
         private void ResolveCoreReferences()
         {
             var appRoot = AppRoot.Instance;
-            if (appRoot == null)
-            {
-                return;
-            }
-
             eventManager = appRoot.EventManager;
             progressManager = appRoot.ProgressManager;
+            evidenceDatabase = appRoot.DatabaseManager.EvidenceDatabase;
+
+            Debug.Log(
+                $"[EvidencePanelManager] Core references resolved. EventManagerReady={eventManager != null}, ProgressManagerReady={progressManager != null}, EvidenceDatabaseReady={evidenceDatabase != null}.");
+        }
+
+        private void ValidateConfiguration()
+        {
+            if (eventManager == null)
+            {
+                throw new InvalidOperationException("EvidencePanelManager requires AppRoot.EventManager.");
+            }
+
+            if (progressManager == null)
+            {
+                throw new InvalidOperationException("EvidencePanelManager requires AppRoot.ProgressManager.");
+            }
+
+            if (evidenceDatabase == null)
+            {
+                throw new InvalidOperationException("EvidencePanelManager requires AppRoot.DatabaseManager.EvidenceDatabase.");
+            }
+
+            if (iconContentRoot == null)
+            {
+                throw new InvalidOperationException("EvidencePanelManager requires iconContentRoot to be assigned.");
+            }
+
+            if (iconEntryPrefab == null)
+            {
+                throw new InvalidOperationException("EvidencePanelManager requires iconEntryPrefab to be assigned.");
+            }
         }
 
         private void SubscribeToEvents()
@@ -69,18 +99,16 @@ namespace DetectiveGame.UI
 
         private void HandleEvidenceAdded(EvidenceAddedEvent eventData)
         {
+            Debug.Log(
+                $"[EvidencePanelManager] Received EvidenceAddedEvent for '{eventData.EvidenceId}'. Updating evidence UI.");
             AddEvidenceEntry(eventData.EvidenceId);
             RefreshProgressView();
         }
 
         private void RefreshFromRuntimeState()
         {
-            if (progressManager == null)
-            {
-                RefreshProgressView();
-                return;
-            }
-
+            Debug.Log(
+                $"[EvidencePanelManager] Refreshing from runtime state. CollectedEvidenceCount={progressManager.CollectedEvidenceIds.Count}.");
             foreach (var evidenceId in progressManager.CollectedEvidenceIds)
             {
                 AddEvidenceEntry(evidenceId);
@@ -93,16 +121,19 @@ namespace DetectiveGame.UI
         {
             if (string.IsNullOrWhiteSpace(evidenceId) || entriesById.ContainsKey(evidenceId))
             {
-                return;
-            }
+                if (entriesById.ContainsKey(evidenceId))
+                {
+                    Debug.Log(
+                        $"[EvidencePanelManager] Skipped adding entry for '{evidenceId}' because it already exists.");
+                }
 
-            if (iconContentRoot == null || iconEntryPrefab == null || evidenceDatabase == null)
-            {
                 return;
             }
 
             if (!evidenceDatabase.TryGetEvidence(evidenceId, out var evidenceData))
             {
+                Debug.LogWarning(
+                    $"[EvidencePanelManager] EvidenceDatabase lookup failed for '{evidenceId}'.");
                 return;
             }
 
@@ -111,10 +142,12 @@ namespace DetectiveGame.UI
                 evidenceId,
                 evidenceData.displayName,
                 evidenceData.summary,
-                null,
+                defaultEvidenceIcon,
                 HandleEntrySelected);
 
             entriesById.Add(evidenceId, entry);
+            Debug.Log(
+                $"[EvidencePanelManager] Added evidence entry for '{evidenceId}' ({evidenceData.displayName}). EntryCount={entriesById.Count}.");
 
             if (selectedEntry == null)
             {
@@ -124,11 +157,6 @@ namespace DetectiveGame.UI
 
         private void HandleEntrySelected(EvidenceIconEntry entry)
         {
-            if (entry == null)
-            {
-                return;
-            }
-
             if (selectedEntry != null)
             {
                 selectedEntry.SetSelected(false);
@@ -141,40 +169,30 @@ namespace DetectiveGame.UI
 
         private void SetDetailText(string value)
         {
-            if (detailText != null)
-            {
-                detailText.text = value ?? string.Empty;
-            }
+            detailText.text = value ?? string.Empty;
         }
 
         public void SetEvidenceDatabase(EvidenceDatabase database)
         {
             evidenceDatabase = database;
+            Debug.Log(
+                $"[EvidencePanelManager] Evidence database assigned through SetEvidenceDatabase. EvidenceCount={evidenceDatabase.EvidenceById.Count}.");
             RefreshFromRuntimeState();
         }
 
         private void RefreshProgressView()
         {
-            var collectedCount = progressManager != null ? progressManager.CollectedEvidenceIds.Count : 0;
-            var totalCount = evidenceDatabase != null ? evidenceDatabase.EvidenceById.Count : 0;
+            var collectedCount = progressManager.CollectedEvidenceIds.Count;
+            var totalCount = evidenceDatabase.EvidenceById.Count;
             var progressValue = totalCount > 0 ? (float)collectedCount / totalCount : 0f;
-            var progressLabel = string.Format(progressFormat, collectedCount, totalCount);
+            var progressPercent = Mathf.RoundToInt(progressValue * 100f);
+            var progressLabel = $"{progressPercent} %";
 
-            if (progressTexts != null)
-            {
-                for (var i = 0; i < progressTexts.Length; i++)
-                {
-                    if (progressTexts[i] != null)
-                    {
-                        progressTexts[i].text = progressLabel;
-                    }
-                }
-            }
+            Debug.Log(
+                $"[EvidencePanelManager] RefreshProgressView collected={collectedCount}, total={totalCount}, percent={progressPercent}, fill={progressValue:0.00}.");
 
-            if (progressFill != null)
-            {
-                progressFill.fillAmount = progressValue;
-            }
+            progressText.text = progressLabel;
+            progressFill.fillAmount = progressValue;
         }
     }
 }

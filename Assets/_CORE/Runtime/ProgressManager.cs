@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace DetectiveGame.Core
@@ -21,17 +22,28 @@ namespace DetectiveGame.Core
         {
             eventManager = sharedEventManager;
             databaseManager = sharedDatabaseManager;
+            ValidateDependencies();
             ResetRuntime();
         }
 
         public bool AddEvidence(string evidenceId)
         {
-            if (string.IsNullOrWhiteSpace(evidenceId) || !RuntimeState.CollectedEvidenceIds.Add(evidenceId))
+            if (string.IsNullOrWhiteSpace(evidenceId))
             {
+                Debug.LogWarning("[ProgressManager] AddEvidence rejected because evidenceId is null or whitespace.");
+                return false;
+            }
+
+            if (!RuntimeState.CollectedEvidenceIds.Add(evidenceId))
+            {
+                Debug.Log(
+                    $"[ProgressManager] AddEvidence ignored because '{evidenceId}' was already collected.");
                 return false;
             }
 
             RuntimeState.EvidenceCollectedById[evidenceId] = true;
+            Debug.Log(
+                $"[ProgressManager] Added evidence '{evidenceId}'. Publishing EvidenceAddedEvent. CollectedCount={RuntimeState.CollectedEvidenceIds.Count}.");
             eventManager?.Publish(new EvidenceAddedEvent(evidenceId));
             return true;
         }
@@ -91,11 +103,6 @@ namespace DetectiveGame.Core
 
         private void BuildEvidenceProgressMap()
         {
-            if (databaseManager?.EvidenceDatabase == null)
-            {
-                return;
-            }
-
             foreach (var evidenceId in databaseManager.EvidenceDatabase.EvidenceById.Keys)
             {
                 RuntimeState.EvidenceCollectedById[evidenceId] = false;
@@ -104,14 +111,32 @@ namespace DetectiveGame.Core
 
         private void BuildFactProgressMap()
         {
-            if (databaseManager?.FactDatabase == null)
-            {
-                return;
-            }
-
             foreach (var factId in databaseManager.FactDatabase.FactById.Keys)
             {
                 RuntimeState.FactUnlockedById[factId] = false;
+            }
+        }
+
+        private void ValidateDependencies()
+        {
+            if (eventManager == null)
+            {
+                throw new InvalidOperationException("ProgressManager requires EventManager during initialization.");
+            }
+
+            if (databaseManager == null)
+            {
+                throw new InvalidOperationException("ProgressManager requires DatabaseManager during initialization.");
+            }
+
+            if (databaseManager.EvidenceDatabase == null)
+            {
+                throw new InvalidOperationException("ProgressManager requires DatabaseManager.EvidenceDatabase during initialization.");
+            }
+
+            if (databaseManager.FactDatabase == null)
+            {
+                throw new InvalidOperationException("ProgressManager requires DatabaseManager.FactDatabase during initialization.");
             }
         }
     }
