@@ -10,18 +10,15 @@ namespace DetectiveGame.UI
             Case = 0,
             Evidence = 1,
             Suspect = 2,
-            Investigation = 3
         }
 
         [SerializeField] private InventoryTab defaultTab = InventoryTab.Case;
         [SerializeField] private Button caseButton;
         [SerializeField] private Button evidenceButton;
         [SerializeField] private Button suspectButton;
-        [SerializeField] private Button investigationButton;
         [SerializeField] private GameObject casePanel;
         [SerializeField] private GameObject evidencePanel;
         [SerializeField] private GameObject suspectPanel;
-        [SerializeField] private GameObject investigationPanel;
 
         public InventoryTab ActiveTab { get; private set; }
 
@@ -52,11 +49,6 @@ namespace DetectiveGame.UI
             SetActiveTab(InventoryTab.Suspect);
         }
 
-        public void ShowInvestigationTab()
-        {
-            SetActiveTab(InventoryTab.Investigation);
-        }
-
         public void SetActiveTab(InventoryTab tab)
         {
             ActiveTab = tab;
@@ -68,7 +60,6 @@ namespace DetectiveGame.UI
             SetPanelState(casePanel, ActiveTab == InventoryTab.Case);
             SetPanelState(evidencePanel, ActiveTab == InventoryTab.Evidence);
             SetPanelState(suspectPanel, ActiveTab == InventoryTab.Suspect);
-            SetPanelState(investigationPanel, ActiveTab == InventoryTab.Investigation);
         }
 
         private static void SetPanelState(GameObject targetPanel, bool isActive)
@@ -86,7 +77,6 @@ namespace DetectiveGame.UI
             RegisterButton(caseButton, ShowCaseTab);
             RegisterButton(evidenceButton, ShowEvidenceTab);
             RegisterButton(suspectButton, ShowSuspectTab);
-            RegisterButton(investigationButton, ShowInvestigationTab);
         }
 
         private void UnbindButtonEvents()
@@ -94,7 +84,6 @@ namespace DetectiveGame.UI
             UnregisterButton(caseButton, ShowCaseTab);
             UnregisterButton(evidenceButton, ShowEvidenceTab);
             UnregisterButton(suspectButton, ShowSuspectTab);
-            UnregisterButton(investigationButton, ShowInvestigationTab);
         }
 
         private static void RegisterButton(Button button, UnityEngine.Events.UnityAction action)
