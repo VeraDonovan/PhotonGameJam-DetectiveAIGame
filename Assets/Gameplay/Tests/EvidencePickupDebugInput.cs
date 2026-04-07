@@ -7,10 +7,16 @@ namespace DetectiveGame.Gameplay.Tests
     public sealed class EvidencePickupDebugInput : MonoBehaviour
     {
         [SerializeField] private KeyCode triggerKey = KeyCode.E;
-        [SerializeField] private string[] evidenceIds = { "A-1", "A-2", "A-3", "A-4", "A-5", "A-6" };
+        [SerializeField] private string[] evidenceIds =
+        {
+            "A-3", "A-4", "B-3",
+            "A-7", "A-8", "B-7", "B-8", "B-11", "C-1",
+            "A-9", "A-11", "A-13", "B-14", "C-2",
+            "A-10", "B-9", "B-10", "A-16", "B-17", "C-3"
+        };
+        [SerializeField] private bool enforceEvidenceRequirements = true;
 
         private AppRoot appRoot;
-        private int nextEvidenceIndex;
 
         private void Awake()
         {
@@ -34,28 +40,56 @@ namespace DetectiveGame.Gameplay.Tests
                 return;
             }
 
-            if (nextEvidenceIndex >= evidenceIds.Length)
-            {
-                Debug.Log(
-                    $"[EvidencePickupDebugInput] Key '{triggerKey}' pressed but all configured evidence ids have already been sent.");
-                return;
-            }
+            TryAddNextAvailableEvidence();
+        }
 
-            var evidenceId = evidenceIds[nextEvidenceIndex];
-            if (!appRoot.DatabaseManager.EvidenceDatabase.TryGetEvidence(evidenceId, out var evidenceData))
+        private void TryAddNextAvailableEvidence()
+        {
+            foreach (var evidenceId in evidenceIds)
             {
-                Debug.LogWarning(
-                    $"[EvidencePickupDebugInput] Key '{triggerKey}' pressed but EvidenceId '{evidenceId}' was not found in EvidenceDatabase.");
+                if (appRoot.ProgressManager.IsEvidenceCollected(evidenceId))
+                {
+                    continue;
+                }
+
+                if (!appRoot.DatabaseManager.EvidenceDatabase.TryGetEvidence(evidenceId, out var evidenceData))
+                {
+                    Debug.LogWarning(
+                        $"[EvidencePickupDebugInput] Configured EvidenceId '{evidenceId}' was not found in EvidenceDatabase.");
+                    continue;
+                }
+
+                if (enforceEvidenceRequirements && !AreEvidenceRequirementsMet(evidenceId, out _))
+                {
+                    continue;
+                }
+
+                Debug.Log(
+                    $"[EvidencePickupDebugInput] Key '{triggerKey}' pressed. Sending next available evidence '{evidenceId}' ({evidenceData.displayName}).");
+
+                appRoot.ProgressManager.AddEvidence(evidenceId);
                 return;
             }
 
             Debug.Log(
-                $"[EvidencePickupDebugInput] Key '{triggerKey}' pressed. Sending evidence {nextEvidenceIndex + 1}/{evidenceIds.Length}: '{evidenceId}' ({evidenceData.displayName}).");
+                $"[EvidencePickupDebugInput] Key '{triggerKey}' pressed but no more configured evidence ids are currently available.");
+        }
 
-            if (appRoot.ProgressManager.AddEvidence(evidenceId))
+        private bool AreEvidenceRequirementsMet(string evidenceId, out string missingRequirement)
+        {
+            foreach (var requirementId in appRoot.DatabaseManager.EvidenceDatabase.GetRequirements(evidenceId))
             {
-                nextEvidenceIndex++;
+                if (appRoot.ProgressManager.IsEvidenceCollected(requirementId))
+                {
+                    continue;
+                }
+
+                missingRequirement = requirementId;
+                return false;
             }
+
+            missingRequirement = string.Empty;
+            return true;
         }
     }
 }

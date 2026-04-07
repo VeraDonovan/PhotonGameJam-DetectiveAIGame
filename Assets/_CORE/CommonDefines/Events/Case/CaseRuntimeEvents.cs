@@ -19,4 +19,14 @@ namespace DetectiveGame.Core
 
         public string FactId { get; }
     }
+
+    public readonly struct NpcDiscoveredEvent
+    {
+        public NpcDiscoveredEvent(string npcId)
+        {
+            NpcId = npcId;
+        }
+
+        public string NpcId { get; }
+    }
 }

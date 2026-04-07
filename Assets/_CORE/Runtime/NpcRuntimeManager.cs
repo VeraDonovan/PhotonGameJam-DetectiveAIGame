@@ -30,7 +30,13 @@ namespace DetectiveGame.Core
                 return false;
             }
 
-            return discoveredNpcIds.Add(npcId);
+            if (!discoveredNpcIds.Add(npcId))
+            {
+                return false;
+            }
+
+            eventManager?.Publish(new NpcDiscoveredEvent(npcId));
+            return true;
         }
 
         public bool SetNpcAvailability(string npcId, bool isAvailable)
