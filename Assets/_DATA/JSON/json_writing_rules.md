@@ -37,8 +37,47 @@ It should contain:
 - hidden family relations
 - cover-up actions
 - ending logic or solution logic
+- AI dialogue reference material such as what an NPC may reveal, what topics they resist, and optional example phrasings
 
 Write this file directly and explicitly. This file is allowed to contain conclusions.
+
+For dialogue-related truth data:
+
+- organize dialogue reference information under each NPC, not as a global event list
+- write per-NPC dialogue trigger points that match how the player questions that NPC
+- do not store hard-required exact dialogue lines unless there is a specific authored line that must always appear
+- prefer storing:
+  - the trigger topic
+  - what unlocks that topic
+  - what the NPC can reveal
+  - what the NPC avoids saying
+  - optional example phrasing for AI reference
+
+Good dialogue-reference content:
+
+- `玩家追问案发当晚情况时，她可以承认看到过两名来访者，但不会主动解释更多关系背景`
+- `如果玩家持续追问手表去向，他可以承认自己拿走了表，并强调那只表和母亲有关`
+- `示例说法：见过几次，不算熟`
+
+Bad dialogue-reference content:
+
+- a global list of staged trigger scenes
+- required exact dialogue exchanges for normal questioning
+- dialogue data that is not attached to a specific NPC trigger point
+
+Recommended structure inside each NPC truth block:
+
+- `dialogueTriggers`
+
+Each trigger should describe:
+
+- `triggerId`
+- `topic`
+- `unlockRequirements`
+- `revealGoal`
+- `aiGuidance`
+- `withhold`
+- `examplePhrasings`
 
 Good content:
 
