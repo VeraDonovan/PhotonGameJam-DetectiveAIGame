@@ -1,0 +1,354 @@
+﻿{
+  "templateVersion": "2.0",
+  "schemaType": "npc_set",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case0",
+  "npcs": [
+    {
+      "npcId": "npc_1",
+      "roleType": "suspect",
+      "displayName": "林秀花",
+      "age": 44,
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "archetype": "被逼到绝境的凶手",
+      "isKiller": true,
+      "backstory": "二十年前，她因意外怀孕被迫结婚。赵建民又利用她娘家的债务和失去孩子的创伤，多年来持续对她施加控制与家暴。",
+      "motive": "案发当晚，赵建民醉酒回家后再次对她施暴。她拿起壁炉拨火钩反击。",
+      "hiddenTruth": "她在杀人后清理了现场，并把死亡伪装成第二天才被发现。",
+      "knowledge": [
+        "她知道自己杀了赵建民。",
+        "她知道自己清理过客厅和厨房的痕迹。",
+        "她知道赵建民多年来一直在虐待她。"
+      ],
+      "stats": {
+        "composure": 35,
+        "lie": 80,
+        "aggression": 15,
+        "cooperation": 50,
+        "guilt": 95,
+        "trauma": 100
+      },
+      "initialState": "沉默、疲惫、带着防备",
+      "initialStatement": "我早上看他一直没醒，才发现出事了。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "她当晚在场，并看见过来访者。",
+          "pressureGoal": 30,
+          "unlockLine": "那晚来了两个男人。一个先来谈事，另一个更年轻，被赵建民赶了出去。",
+          "breakpoints": [
+            {
+              "prompt": "你说早上才发现尸体，但死亡时间明明是在前一晚。",
+              "excuse": "我以为他只是喝醉睡过去了。",
+              "pressure": 10
+            },
+            {
+              "prompt": "如果你以为他只是睡着，为什么一大早特地去确认？",
+              "excuse": "他平时起得早，那天早上我觉得不对劲。",
+              "pressure": 10
+            },
+            {
+              "prompt": "客厅里的烟头是谁留下的？",
+              "excuse": "...",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "她清理过凶器和现场。",
+          "pressureGoal": 60,
+          "unlockLine": "是我清理的。那里有血，我只是不想让屋子看起来那么可怕。",
+          "breakpoints": [
+            {
+              "prompt": "壁炉拨火钩被人挪动过，上面还残留着痕迹。",
+              "excuse": "也许做饭或者打扫时碰过。",
+              "pressure": 10
+            },
+            {
+              "prompt": "抹布上有死者的血，你说自己割伤手的说法根本对不上。",
+              "excuse": "...",
+              "pressure": 10
+            },
+            {
+              "prompt": "地上的血为什么会被擦掉？",
+              "excuse": "...",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "她是怎么杀死赵建民的，又为什么会下手。",
+          "pressureGoal": 100,
+          "collapseLine": "他喝得烂醉回来，又开始了。他提起那个孩子，还动手打我。我抓起拨火钩，只是想让他停下来。我没想过会变成这样。",
+          "breakpoints": [
+            {
+              "prompt": "你说自己早上才发现尸体，可你的清理从案发当晚就开始了。",
+              "excuse": "我当时根本不知道还能怎么办。",
+              "pressure": 15
+            },
+            {
+              "prompt": "你手臂上的伤，是赵建民造成的，对吗？",
+              "excuse": "对。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你说发现他时灯是亮的，但床头灯后来明显被动过手脚。",
+              "excuse": "...",
+              "pressure": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "npcId": "npc_2",
+      "roleType": "suspect",
+      "displayName": "魏国强",
+      "age": 35,
+      "locationId": "living_room",
+      "relationshipToVictim": "被勒索者",
+      "archetype": "圆滑的说谎者",
+      "isKiller": false,
+      "backstory": "他是做灰色生意的商人，早年曾让赵建民替自己做过假账。赵建民一直拿着那份记录勒索他。",
+      "motive": "他来是为了把账簿拿回来，摆脱赵建民的控制。",
+      "hiddenTruth": "他是林秀花的亲生儿子，但案件开始时两人都不知道。",
+      "knowledge": [
+        "他知道赵建民掌握着自己旧账目的把柄。",
+        "他知道自己案发当晚来过赵家。",
+        "他不知道林秀花是自己的母亲。"
+      ],
+      "stats": {
+        "composure": 85,
+        "lie": 75,
+        "aggression": 40,
+        "cooperation": 70,
+        "guilt": 35,
+        "trauma": 60
+      },
+      "initialState": "冷静、克制，努力表现得像是在帮忙",
+      "initialStatement": "我认识赵建民，听说出事了，就过来看看。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "他案发当晚来过这里，不是事后路过。",
+          "pressureGoal": 30,
+          "unlockLine": "我那天晚上七点左右来过，和赵建民谈点私事，后来就走了。",
+          "breakpoints": [
+            {
+              "prompt": "张铁柱说是你带他来的，可你一开始却说不认识他。",
+              "excuse": "可能我说得不够准确。我认识他，但不算熟。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你说是偶然听说这起案子，可命案发生在深夜。是谁告诉你的？",
+              "excuse": "一个朋友提过一句。",
+              "pressure": 10
+            },
+            {
+              "prompt": "烟灰缸和茶杯都说明你那晚来过，而且坐了不短时间。",
+              "excuse": "好吧，我确实待了一会儿。",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "他来不是出于关心，而是为了账簿。",
+          "pressureGoal": 60,
+          "unlockLine": "那本账簿里有我早年的生意。我让赵建民替我做过假账，他后来就一直拿这个威胁我。我来是想把它拿回来。",
+          "breakpoints": [
+            {
+              "prompt": "你看到那本账簿时的反应，说明你认出了上面的名字。",
+              "excuse": "我只是不想谈这个。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你和赵建民之间的私事，不是什么朋友借钱，而是勒索。",
+              "excuse": "那只是以前的旧账，仅此而已。",
+              "pressure": 10
+            },
+            {
+              "prompt": "林秀花说那晚有个穿得很体面的男人来和赵建民争执，那个人就是你。",
+              "excuse": "...",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "他隐藏的家庭身份。",
+          "pressureGoal": 100,
+          "collapseLine": "你在说什么？不，不可能……他不可能知道……不该是这样。",
+          "breakpoints": [
+            {
+              "prompt": "账簿把你的名字和林秀花写在一起，赵建民为什么要把你们并列记录？",
+              "excuse": "我不知道。也许她只是他老婆。",
+              "pressure": 10
+            },
+            {
+              "prompt": "如果没有更深的原因，赵建民为什么会那么早就盯上一个被收养的孤儿并长期控制他？",
+              "excuse": "我从来不知道。",
+              "pressure": 10
+            },
+            {
+              "prompt": "林秀花二十年前失去过一个孩子，而你的年龄正好完全对得上。",
+              "excuse": "不……这不可能。",
+              "pressure": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "npcId": "npc_3",
+      "roleType": "suspect",
+      "displayName": "张铁柱",
+      "age": 27,
+      "locationId": "bedroom",
+      "relationshipToVictim": "被赵建民亏欠并害过的女人之子",
+      "archetype": "被怀疑却并非无辜",
+      "isKiller": false,
+      "backstory": "他是个四处漂泊的人，母亲不久前去世。他来找赵建民讨一笔欠债，离开时顺手偷走了一块手表。",
+      "motive": "他是来讨债的，对赵建民也怀着强烈怨恨。",
+      "hiddenTruth": "他是赵建民的亲生儿子，但一开始并不知道。",
+      "knowledge": [
+        "他知道赵建民欠自己母亲的钱。",
+        "他知道是自己偷了手表。",
+        "他不知道赵建民其实知道他的真实身份。"
+      ],
+      "stats": {
+        "composure": 30,
+        "lie": 65,
+        "aggression": 55,
+        "cooperation": 25,
+        "guilt": 45,
+        "trauma": 85
+      },
+      "initialState": "紧绷、愤怒，坚持说自己和这家人没关系",
+      "initialStatement": "我不认识这家人，是魏国强叫我来的。",
+      "interrogationLayers": [
+        {
+          "layer": 1,
+          "topic": "他案发当晚也来过这里。",
+          "pressureGoal": 30,
+          "unlockLine": "那晚我来过。我和赵建民有事要谈，但后来吵起来，我就走了。",
+          "breakpoints": [
+            {
+              "prompt": "魏国强说他和你根本不熟，可你却说是他把你叫来的。",
+              "excuse": "我们见过几次，仅此而已。",
+              "pressure": 10
+            },
+            {
+              "prompt": "魏国强为什么会让一个几乎不熟的人来帮忙？",
+              "excuse": "他说我认识死者。",
+              "pressure": 10
+            },
+            {
+              "prompt": "你一直刻意避开尸体和这个房间，为什么？",
+              "excuse": "我就是不想看他。",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 2,
+          "topic": "他偷走了手表。",
+          "pressureGoal": 60,
+          "unlockLine": "对，是我拿的。那块表本来就该属于我母亲，不该在他手里。",
+          "forcedTwist": "张铁柱偷了手表，也恨赵建民，但命案发生在他离开之后。这条线服务于故事真相，而不是直接指向凶手。",
+          "breakpoints": [
+            {
+              "prompt": "你说自己只是来争吵，可失踪的手表却直接指向你。",
+              "excuse": "我当时也不知道还能从他那里拿走什么。",
+              "pressure": 10
+            },
+            {
+              "prompt": "那块表值得你一直藏着护着，为什么？",
+              "excuse": "那是和我妈有关的东西。",
+              "pressure": 10
+            },
+            {
+              "prompt": "每次提到手表，你的反应都说明你知道它去了哪里。",
+              "excuse": "...",
+              "pressure": 10
+            }
+          ]
+        },
+        {
+          "layer": 3,
+          "topic": "他隐藏的家庭身份。",
+          "pressureGoal": 100,
+          "collapseLine": "他和我到底是什么关系？他为什么要那样说？告诉我他是不是认识我妈，告诉我他是不是早就知道我是谁。",
+          "breakpoints": [
+            {
+              "prompt": "如果你和赵建民毫无关系，你的名字为什么会出现在他的账簿里？",
+              "excuse": "...",
+              "pressure": 15
+            },
+            {
+              "prompt": "赵建民嘲讽你连自己是谁生的都不知道，他那句话到底是什么意思？",
+              "excuse": "我从来都没明白过。",
+              "pressure": 15
+            },
+            {
+              "prompt": "手表、你母亲和赵建民之间的联系太完整了，这不可能只是巧合。",
+              "excuse": "...",
+              "pressure": 20
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "triggerDialogs": [
+    {
+      "dialogId": "dialog_1",
+      "triggerRequirements": ["A-12"],
+      "participants": ["npc_2", "npc_3"],
+      "type": "exposure",
+      "content": [
+        "魏国强压低声音，警告张铁柱别乱说话。",
+        "张铁柱当场顶回去，说魏国强没有资格命令他。"
+      ],
+      "purpose": "表现两人彼此认识，而且都在隐瞒什么。"
+    },
+    {
+      "dialogId": "dialog_2",
+      "triggerRequirements": ["A-7", "A-8"],
+      "participants": ["npc_1", "npc_2"],
+      "type": "coverup",
+      "content": [
+        "林秀花让魏国强不要再靠近她。",
+        "魏国强回说自己只是想帮忙。"
+      ],
+      "purpose": "暗示两人之间存在私下联系和紧张感。"
+    },
+    {
+      "dialogId": "dialog_3",
+      "triggerRequirements": ["A-5"],
+      "participants": ["npc_2", "npc_3"],
+      "type": "framing",
+      "content": [
+        "魏国强故意问张铁柱，知不知道窗台上原来放着什么。",
+        "张铁柱一下僵住，目光立刻躲开。"
+      ],
+      "purpose": "表现魏国强试图把怀疑往张铁柱身上引。"
+    },
+    {
+      "dialogId": "dialog_4",
+      "triggerRequirements": ["A-10"],
+      "participants": ["npc_1"],
+      "type": "emotional",
+      "content": [
+        "林秀花看了一眼自己手臂上的淤青，默默把袖子往下拉。"
+      ],
+      "purpose": "暗示她长期遭受家暴。"
+    }
+  ]
+}

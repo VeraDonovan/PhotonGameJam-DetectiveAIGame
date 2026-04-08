@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 {
+=======
+﻿{
+>>>>>>> feature/npc_manager
   "templateVersion": "2.0",
   "schemaType": "case_meta",
   "language": {
@@ -6,18 +10,29 @@
     "content": "zh-CN"
   },
   "caseId": "case0",
+<<<<<<< HEAD
   "title": "最后一班夜车",
+=======
+  "title": "昨夜列车",
+>>>>>>> feature/npc_manager
   "linkedDataFiles": {
     "npc": "npc.json",
     "evidence": "evidence.json",
     "facts": "facts.json",
+<<<<<<< HEAD
     "truth": "truth.json",
+=======
+>>>>>>> feature/npc_manager
     "ending": "ending.json",
     "scene": "scene.json"
   },
   "setting": {
     "year": 1994,
+<<<<<<< HEAD
     "cityDisplayName": "某北方工业城市",
+=======
+    "cityDisplayName": "北方工业城",
+>>>>>>> feature/npc_manager
     "toneTags": [
       "家庭悲剧",
       "审讯推理",
@@ -46,12 +61,17 @@
   "caseTruth": {
     "realKillerId": "npc_1",
     "surfaceTruth": "三名嫌疑人都在隐瞒案发当晚的行动，以及自己与死者之间的关系。",
+<<<<<<< HEAD
     "fullTruth": "林秀华在又一次遭受家暴后杀死了赵建民，随后清理并伪装了现场，第二天才报案。",
+=======
+    "fullTruth": "林秀花在又一次遭受家暴后杀死了赵建民，随后清理并伪装了现场，第二天才报案。",
+>>>>>>> feature/npc_manager
     "metaTruth": "这起命案之下，还压着一段被赵建民以勒索与控制扭曲了多年的家庭历史。"
   },
   "suspectSummaries": [
     {
       "npcId": "npc_1",
+<<<<<<< HEAD
       "displayName": "林秀华",
       "age": 44,
       "locationId": "kitchen",
@@ -71,17 +91,46 @@
       "summary": "男，35岁，个体经营者，与死者有生意往来，目前在客厅。",
       "motiveSummary": "",
       "hiddenTruthSummary": ""
+=======
+      "displayName": "林秀花",
+      "age": 44,
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "archetype": "被逼到绝境的凶手",
+      "summary": "她长期遭受家暴，多年前被迫结婚，也被迫失去了自己的孩子。",
+      "motiveSummary": "长期家暴、失子之痛，以及案发当晚再次遭受侵犯。",
+      "hiddenTruthSummary": "她就是凶手。"
+    },
+    {
+      "npcId": "npc_2",
+      "displayName": "魏国强",
+      "age": 35,
+      "locationId": "living_room",
+      "relationshipToVictim": "被勒索者",
+      "archetype": "圆滑的说谎者",
+      "summary": "他是灰色生意人，被赵建民用违法账簿长期拿捏。",
+      "motiveSummary": "夺回账簿，摆脱赵建民的控制。",
+      "hiddenTruthSummary": "他是林秀花失散多年的亲生儿子。"
+>>>>>>> feature/npc_manager
     },
     {
       "npcId": "npc_3",
       "displayName": "张铁柱",
       "age": 27,
       "locationId": "bedroom",
+<<<<<<< HEAD
       "relationshipToVictim": "前来讨债的人",
       "archetype": "外来人",
       "summary": "男，27岁，无固定职业，自称前来向死者讨债，目前在卧室。",
       "motiveSummary": "",
       "hiddenTruthSummary": ""
+=======
+      "relationshipToVictim": "来讨亡母旧债的人",
+      "archetype": "被怀疑却并非无辜",
+      "summary": "他是个四处漂泊的人，这次来找赵建民对质，并偷走了与母亲有关的手表。",
+      "motiveSummary": "旧债、怨恨，以及那块被偷走的手表。",
+      "hiddenTruthSummary": "他是赵建民的亲生儿子。"
+>>>>>>> feature/npc_manager
     }
   ],
   "relationshipMap": [
@@ -133,4 +182,8 @@
       ]
     }
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/npc_manager

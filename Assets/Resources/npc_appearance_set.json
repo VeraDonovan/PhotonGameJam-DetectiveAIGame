@@ -1,0 +1,31 @@
+{
+  "npcs": [
+    {
+      "npc_id": "npc_1",
+      "name": "村民A",
+      "appearance": {
+        "head": "female_human_head_14",
+        "body": "LPC/lpc-2024-10-15-expanded-ulpc-set/body/bodies/female",
+        "outfit": "adult_hair_bangs_bun_14"
+      }
+    },
+    {
+      "npc_id": "npc_2",
+      "name": "村民B",
+      "appearance": {
+        "head": "male_human_head_07",
+        "body": "LPC/lpc-2024-10-15-expanded-ulpc-set/body/bodies/female",
+        "outfit": "adult_hair_short_07"
+      }
+    },
+    {
+      "npc_id": "npc_3",
+      "name": "村民C",
+      "appearance": {
+        "head": "female_human_head_05",
+        "body": "LPC/lpc-2024-10-15-expanded-ulpc-set/body/bodies/female",
+        "outfit": "adult_hair_long_05"
+      }
+    }
+  ]
+}
