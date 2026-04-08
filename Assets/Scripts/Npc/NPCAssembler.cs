@@ -1,11 +1,12 @@
 using UnityEngine;
-
+// 
 public class NPCAssembler : MonoBehaviour {
     public SpriteRenderer headRenderer;
     public SpriteRenderer bodyRenderer;
     public SpriteRenderer outfitRenderer;
+    public  NPCData dialogueConfig;
 
-    public void AssembleNPC(NPCConfig config) {
+    public void AssembleNPC(NPCConfig config, NPCData dialogue) {
         Debug.Log("进入检索阶段");
         // headRenderer.sprite = Resources.Load<Sprite>("Art/NPCs/" + config.appearance.head);
         Debug.Log("正在加载 body sprite，路径: " + config.appearance.body);
@@ -23,5 +24,6 @@ public class NPCAssembler : MonoBehaviour {
         bodyRenderer.sprite = bodySprite;
         }
         // outfitRenderer.sprite = Resources.Load<Sprite>("Art/NPCs/" + config.appearance.outfit);
+         dialogueConfig = dialogue;
     }
 }

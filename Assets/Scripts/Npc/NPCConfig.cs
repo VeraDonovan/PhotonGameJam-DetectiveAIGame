@@ -1,4 +1,9 @@
 [System.Serializable]
+    public class NPC_appearance_Set {
+    public NPCConfig[] npcs;
+}
+
+[System.Serializable]
 public class NPCConfig {
     public string npc_id;
     public string name;
