@@ -1,0 +1,216 @@
+{
+  "templateVersion": "2.1",
+  "schemaType": "case_truth",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case0",
+  "caseTruth": {
+    "realKillerId": "npc_1",
+    "realMotive": "林秀华在长期家暴和案发当晚再次遭受施暴后反击，使用炉钩击中赵建民太阳穴。",
+    "coverUp": "林秀华在案发后清理客厅和厨房中的痕迹，并改动床头灯相关状态，将案件伪装成第二天才被发现。",
+    "coreHiddenStory": "赵建民长期用账簿、债务和身世秘密控制身边三人，命案背后还埋着被扭曲多年的家庭关系。"
+  },
+  "timeline": [
+    {
+      "sequence": 1,
+      "time": "约19:00",
+      "event": "卫国强来到赵建民家，试图拿回记有自己旧账的账簿。",
+      "participants": ["npc_2", "victim"]
+    },
+    {
+      "sequence": 2,
+      "time": "稍后",
+      "event": "张铁柱来到赵建民家，与赵建民发生争执后离开，并拿走窗台上的手表。",
+      "participants": ["npc_3", "victim"]
+    },
+    {
+      "sequence": 3,
+      "time": "21:00-23:00",
+      "event": "赵建民醉酒后再次对林秀华施暴，林秀华抓起炉钩击中其太阳穴，赵建民死亡。",
+      "participants": ["npc_1", "victim"]
+    },
+    {
+      "sequence": 4,
+      "time": "案发后",
+      "event": "林秀华清理客厅与厨房痕迹，并对现场状态进行改动。",
+      "participants": ["npc_1"]
+    },
+    {
+      "sequence": 5,
+      "time": "次日早晨",
+      "event": "林秀华报案，称自己早上才发现尸体。",
+      "participants": ["npc_1"]
+    }
+  ],
+  "npcTruths": [
+    {
+      "npcId": "npc_1",
+      "actualRelationshipToVictim": "妻子",
+      "isKiller": true,
+      "backstory": "二十年前，她因意外怀孕被迫结婚。赵建民利用她娘家的债务和失去孩子的创伤，多年来持续对她施加控制与家暴。",
+      "realMotive": "案发当晚，赵建民醉酒回家后再次对她施暴，她在激烈冲突中反击。",
+      "hiddenTruth": "她在杀人后清理了现场，并把死亡伪装成第二天才被发现。",
+      "knowledge": [
+        "她知道自己击打过赵建民。",
+        "她知道自己清理过客厅和厨房的痕迹。",
+        "她知道赵建民多年来一直在虐待她。"
+      ],
+      "interrogationLayers": [
+        {
+          "layerId": "npc_1.layer_1",
+          "topic": "她当晚在场，并看见过来访者。",
+          "unlockLine": "那晚来了两个男人。一个先来谈事，另一个更年轻，被赵建民赶了出去。"
+        },
+        {
+          "layerId": "npc_1.layer_2",
+          "topic": "她清理过凶器和现场。",
+          "unlockLine": "是我清理的。那里有血，我只是不想让屋子看起来那么可怕。"
+        },
+        {
+          "layerId": "npc_1.layer_3",
+          "topic": "她是怎么杀死赵建民的，又为什么会下手。",
+          "unlockLine": "他喝得烂醉回来，又开始了。他提起那个孩子，还动手打我。我抓起炉钩子，只是想让他停下来。我没想过会变成这样。"
+        }
+      ]
+    },
+    {
+      "npcId": "npc_2",
+      "actualRelationshipToVictim": "被赵建民用旧账把柄控制的人；同时是林秀华的亲生儿子",
+      "isKiller": false,
+      "backstory": "他是做灰色生意的商人，早年曾让赵建民替自己做过假账，之后一直被账簿记录勒索。",
+      "realMotive": "他来是为了把账簿拿回来，摆脱赵建民的控制。",
+      "hiddenTruth": "他是林秀华的亲生儿子，但案件开始时两人都不知道。",
+      "knowledge": [
+        "他知道赵建民掌握着自己旧账目的把柄。",
+        "他知道自己案发当晚来过赵家。",
+        "他不知道林秀华是自己的母亲。"
+      ],
+      "interrogationLayers": [
+        {
+          "layerId": "npc_2.layer_1",
+          "topic": "他案发当晚来过这里，不是事后路过。",
+          "unlockLine": "我那天晚上七点左右来过，和赵建民谈点私事，后来就走了。"
+        },
+        {
+          "layerId": "npc_2.layer_2",
+          "topic": "他来不是出于关心，而是为了账簿。",
+          "unlockLine": "那本账簿里有我早年的生意。我让赵建民替我做过假账，他后来就一直拿这个威胁我。我来是想把它拿回来。"
+        },
+        {
+          "layerId": "npc_2.layer_3",
+          "topic": "他隐藏的家庭身份。",
+          "unlockLine": "你在说什么？不，不可能……他不可能知道……不该是这样。"
+        }
+      ]
+    },
+    {
+      "npcId": "npc_3",
+      "actualRelationshipToVictim": "前来讨债的人；同时是赵建民的亲生儿子",
+      "isKiller": false,
+      "backstory": "他母亲不久前去世。他来找赵建民讨一笔旧债，离开时顺手拿走了一块与母亲有关的手表。",
+      "realMotive": "他是来讨债的，对赵建民怀有强烈怨恨。",
+      "hiddenTruth": "他是赵建民的亲生儿子，但一开始并不知道。",
+      "knowledge": [
+        "他知道赵建民欠自己母亲的钱。",
+        "他知道是自己拿走了手表。",
+        "他不知道赵建民其实知道他的真实身份。"
+      ],
+      "interrogationLayers": [
+        {
+          "layerId": "npc_3.layer_1",
+          "topic": "他案发当晚也来过这里。",
+          "unlockLine": "那晚我来过。我和赵建民有事要谈，但后来吵起来，我就走了。"
+        },
+        {
+          "layerId": "npc_3.layer_2",
+          "topic": "他拿走了手表。",
+          "unlockLine": "对，是我拿的。那块表本来就该属于我母亲，不该在他手里。"
+        },
+        {
+          "layerId": "npc_3.layer_3",
+          "topic": "他隐藏的家庭身份。",
+          "unlockLine": "他和我到底是什么关系？他为什么要那样说？告诉我他是不是认识我妈，告诉我他是不是早就知道我是谁。"
+        }
+      ]
+    }
+  ],
+  "deductionTruths": [
+    {
+      "truthId": "truth_1",
+      "displayName": "卫国强来赵家是为了拿回账簿",
+      "requiresFactIds": ["fact_1", "fact_2"]
+    },
+    {
+      "truthId": "truth_2",
+      "displayName": "张铁柱拿走了窗台上的手表",
+      "requiresFactIds": ["fact_8"]
+    },
+    {
+      "truthId": "truth_3",
+      "displayName": "林秀华在案发后清理并改动过现场状态",
+      "requiresFactIds": ["fact_4", "fact_9", "fact_12"]
+    },
+    {
+      "truthId": "truth_4",
+      "displayName": "林秀华是赵建民命案中的直接杀人者",
+      "requiresFactIds": ["fact_12"]
+    },
+    {
+      "truthId": "truth_5",
+      "displayName": "卫国强是林秀华失散多年的亲生儿子",
+      "requiresFactIds": ["fact_13", "fact_16"]
+    },
+    {
+      "truthId": "truth_6",
+      "displayName": "张铁柱是赵建民的亲生儿子",
+      "requiresFactIds": ["fact_14", "fact_16"]
+    }
+  ],
+  "triggerDialogs": [
+    {
+      "dialogId": "dialog_1",
+      "triggerRequirements": ["A-12"],
+      "participants": ["npc_2", "npc_3"],
+      "type": "exposure",
+      "content": [
+        "卫国强压低声音，警告张铁柱别乱说话。",
+        "张铁柱当场顶回去，说卫国强没有资格命令他。"
+      ],
+      "purpose": "表现两人彼此认识，而且都在隐瞒什么。"
+    },
+    {
+      "dialogId": "dialog_2",
+      "triggerRequirements": ["A-7", "A-8"],
+      "participants": ["npc_1", "npc_2"],
+      "type": "coverup",
+      "content": [
+        "林秀华让卫国强不要再靠近她。",
+        "卫国强回说自己只是想帮忙。"
+      ],
+      "purpose": "暗示两人之间存在私下联系和紧张感。"
+    },
+    {
+      "dialogId": "dialog_3",
+      "triggerRequirements": ["A-5"],
+      "participants": ["npc_2", "npc_3"],
+      "type": "framing",
+      "content": [
+        "卫国强故意问张铁柱，知不知道窗台上原来放着什么。",
+        "张铁柱一下僵住，目光立刻躲开。"
+      ],
+      "purpose": "表现卫国强试图把怀疑往张铁柱身上引。"
+    },
+    {
+      "dialogId": "dialog_4",
+      "triggerRequirements": ["A-10"],
+      "participants": ["npc_1"],
+      "type": "emotional",
+      "content": [
+        "林秀华看了一眼自己手臂上的淤青，默默把袖子往下拉。"
+      ],
+      "purpose": "暗示她长期遭受家暴。"
+    }
+  ]
+}

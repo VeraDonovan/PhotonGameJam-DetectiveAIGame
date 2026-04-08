@@ -1,12 +1,12 @@
 {
-  "templateVersion": "2.0",
+  "templateVersion": "2.1",
   "schemaType": "fact_graph",
   "language": {
     "schema": "en",
     "content": "zh-CN"
   },
   "caseId": "case0",
-  "purpose": "事实是由证据、审讯或两者共同推出的稳定真相，用于流程推进、审讯、指认与结局判定。",
+  "purpose": "事实用于记录调查过程中已知的中性信息，包括陈述、时间信息、矛盾点、报告内容与审讯记录。",
   "factTemplateFields": [
     "factId",
     "displayName",
@@ -18,35 +18,35 @@
     "scope"
   ],
   "truthClassDefinition": {
-    "surface_true": "常规调查流程中可以得到的主线真相。",
-    "hidden_true": "关于身世、历史或埋藏关系的更深层真相。",
-    "culprit_truth": "直接用于确立凶手或最终指认的真相。",
-    "misdirection": "用于排除错误嫌疑或重新解释线索方向的真相。"
+    "surface_true": "调查阶段可记录的中性事实。",
+    "hidden_true": "需要深入审讯后才会浮出的背景事实。",
+    "culprit_truth": "由直接承认或完整证据链形成的定案记录。",
+    "misdirection": "用于排除错误方向的记录。"
   },
   "unlockTypeDefinition": {
-    "evidence_only": "仅凭证据即可成立。",
-    "dialogue_only": "仅凭审讯或对话即可成立。",
-    "evidence_plus_dialogue": "需要证据与对话共同成立。",
-    "derived": "由先前事实与证据组合推导而成。"
+    "evidence_only": "仅凭物证或报告即可记录。",
+    "dialogue_only": "仅凭对话或审讯即可记录。",
+    "evidence_plus_dialogue": "需要物证与对话共同形成记录。",
+    "derived": "由先前事实与物证组合后形成记录。"
   },
   "facts": [
     {
       "factId": "fact_1",
-      "displayName": "卫国强在案发当晚来过",
-      "summary": "卫国强当晚出现在赵建民家里，不是事后才赶来围观的人。",
+      "displayName": "卫国强承认案发当晚来过赵家",
+      "summary": "卫国强在审讯中承认自己案发当晚来过赵建民家。",
       "category": "timeline",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "derived",
-        "requirementsAll": ["C-4"],
+        "unlockType": "evidence_plus_dialogue",
+        "requirementsAll": ["A-1", "A-2", "npc_2.layer_1"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-1", "A-2", "B-1", "C-4"],
-        "sourceDialogueIds": [],
+        "sourceEvidenceIds": ["A-1", "A-2"],
+        "sourceDialogueIds": ["npc_2.layer_1"],
         "sourceFactIds": []
       },
       "progression": {
         "usedFor": ["interrogation", "progression_map"],
-        "unlocksFactIds": ["fact_2"],
+        "unlocksFactIds": ["fact_2", "fact_5"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
         "supportsEndingIds": []
@@ -59,15 +59,15 @@
     },
     {
       "factId": "fact_2",
-      "displayName": "卫国强是冲着账簿来的",
-      "summary": "卫国强真正的来意，是夺回那本被赵建民拿来勒索他的账簿。",
-      "category": "motive",
+      "displayName": "卫国强表示自己此行与账簿有关",
+      "summary": "卫国强表示自己来找赵建民，是想拿回那本记有自己旧账的账簿。",
+      "category": "statement",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["B-6", "npc_2.layer_2"],
+        "requirementsAll": ["A-12", "npc_2.layer_2"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["B-5", "B-6", "C-5"],
+        "sourceEvidenceIds": ["A-12"],
         "sourceDialogueIds": ["npc_2.layer_2"],
         "sourceFactIds": ["fact_1"]
       },
@@ -86,12 +86,12 @@
     },
     {
       "factId": "fact_3",
-      "displayName": "客厅是关键案发地点",
-      "summary": "炉钩子与被擦拭的地面污迹表明，关键的暴力行为或清理行为发生在客厅。",
+      "displayName": "客厅内发现打击与擦拭痕迹",
+      "summary": "客厅炉边发现深色残留、擦拭痕迹和可比对的工具残留。",
       "category": "crime_scene",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "derived",
+        "unlockType": "evidence_only",
         "requirementsAll": ["B-3"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-3", "A-4", "B-3"],
@@ -106,23 +106,23 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_1"],
+        "relatedNpcIds": [],
         "relatedLocationIds": ["living_room"],
-        "phaseTags": ["exploration", "interrogation"]
+        "phaseTags": ["exploration"]
       }
     },
     {
       "factId": "fact_4",
-      "displayName": "有人清理过凶器与现场",
-      "summary": "炉钩子、地面、水槽和抹布共同构成了案发后的完整清理链条。",
+      "displayName": "客厅与厨房之间存在连续清理痕迹",
+      "summary": "客厅地面、水槽边缘和抹布上的残留记录可以前后对应。",
       "category": "crime_scene",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["C-1", "npc_1.layer_2"],
+        "unlockType": "derived",
+        "requirementsAll": ["B-3", "B-7", "B-11"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-7", "A-8", "B-7", "B-8", "B-11", "C-1"],
-        "sourceDialogueIds": ["npc_1.layer_2"],
+        "sourceEvidenceIds": ["B-3", "B-7", "B-11"],
+        "sourceDialogueIds": [],
         "sourceFactIds": ["fact_3"]
       },
       "progression": {
@@ -133,24 +133,24 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_1"],
+        "relatedNpcIds": [],
         "relatedLocationIds": ["living_room", "kitchen"],
         "phaseTags": ["exploration", "interrogation"]
       }
     },
     {
       "factId": "fact_5",
-      "displayName": "卫国强与张铁柱都在隐瞒彼此关系",
-      "summary": "两人的说法互相冲突，证明他们谁都没有说出完整真相。",
-      "category": "relationship",
+      "displayName": "卫国强与张铁柱对来访关系的说法不一致",
+      "summary": "卫国强称与张铁柱不熟，张铁柱则称自己是被卫国强叫来的。",
+      "category": "contradiction",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["C-7"],
+        "unlockType": "dialogue_only",
+        "requirementsAll": ["npc_2.layer_1", "npc_3.layer_1"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-6", "A-14", "B-12", "C-7"],
-        "sourceDialogueIds": ["dialog_1"],
-        "sourceFactIds": []
+        "sourceEvidenceIds": [],
+        "sourceDialogueIds": ["npc_2.layer_1", "npc_3.layer_1"],
+        "sourceFactIds": ["fact_1"]
       },
       "progression": {
         "usedFor": ["interrogation", "progression_map"],
@@ -162,20 +162,20 @@
       "scope": {
         "relatedNpcIds": ["npc_2", "npc_3"],
         "relatedLocationIds": ["living_room", "bedroom"],
-        "phaseTags": ["exploration", "interrogation"]
+        "phaseTags": ["interrogation"]
       }
     },
     {
       "factId": "fact_6",
-      "displayName": "张铁柱当晚也来过",
-      "summary": "张铁柱在关键时间段内来到赵建民家，并与他发生过争执后离开。",
+      "displayName": "张铁柱承认案发当晚来过赵家",
+      "summary": "张铁柱在审讯中承认自己案发当晚来过赵建民家，并与死者发生过争执后离开。",
       "category": "timeline",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": ["npc_3.layer_1"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-14", "B-12"],
+        "sourceEvidenceIds": [],
         "sourceDialogueIds": ["npc_3.layer_1"],
         "sourceFactIds": ["fact_5"]
       },
@@ -194,16 +194,16 @@
     },
     {
       "factId": "fact_7",
-      "displayName": "林秀华在发现尸体时间上说了谎",
-      "summary": "法医时间线和她自己的说法证明，林秀华并不是早上才第一次发现赵建民。",
-      "category": "lie",
+      "displayName": "林秀华关于发现尸体时间的说法与尸检时间不一致",
+      "summary": "林秀华称自己早上七点发现尸体，而尸检时间显示死亡发生在前一晚21:00至23:00之间。",
+      "category": "contradiction",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["C-2"],
+        "requirementsAll": ["A-11", "npc_1.layer_1"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-9", "A-11", "C-2"],
-        "sourceDialogueIds": ["npc_1.layer_1", "npc_1.layer_3"],
+        "sourceEvidenceIds": ["A-11"],
+        "sourceDialogueIds": ["npc_1.layer_1"],
         "sourceFactIds": []
       },
       "progression": {
@@ -221,16 +221,16 @@
     },
     {
       "factId": "fact_8",
-      "displayName": "张铁柱偷走了手表",
-      "summary": "关于失踪手表的整条线索最终指向的是张铁柱，而不是卫国强。",
-      "category": "theft",
+      "displayName": "张铁柱承认拿走过一只手表",
+      "summary": "张铁柱在审讯中承认自己离开前拿走过窗台上的一只手表。",
+      "category": "statement",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["C-6", "npc_3.layer_2"],
+        "requirementsAll": ["A-5", "npc_3.layer_2"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-5", "B-4", "B-16", "C-6"],
-        "sourceDialogueIds": ["npc_3.layer_2", "dialog_3"],
+        "sourceEvidenceIds": ["A-5"],
+        "sourceDialogueIds": ["npc_3.layer_2"],
         "sourceFactIds": ["fact_6"]
       },
       "progression": {
@@ -248,16 +248,16 @@
     },
     {
       "factId": "fact_9",
-      "displayName": "林秀华伪装了现场",
-      "summary": "被更换过的床头灯、被擦拭的血迹和完整清理路径证明，现场存在主动伪装，而不只是慌乱善后。",
+      "displayName": "床头灯与清理痕迹显示现场状态曾被改动",
+      "summary": "无法点亮的床头灯、型号不一致的灯泡接口记录，以及连续的清理痕迹说明现场状态并非原始状态。",
       "category": "crime_scene",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "derived",
-        "requirementsAll": ["C-2", "B-11"],
+        "requirementsAll": ["B-11", "B-14", "fact_7"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-13", "B-14", "B-11", "C-2"],
-        "sourceDialogueIds": ["npc_1.layer_2", "npc_1.layer_3"],
+        "sourceEvidenceIds": ["A-13", "B-11", "B-14"],
+        "sourceDialogueIds": [],
         "sourceFactIds": ["fact_4", "fact_7"]
       },
       "progression": {
@@ -268,51 +268,51 @@
         "supportsEndingIds": ["ending_2", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1"],
-        "relatedLocationIds": ["kitchen", "bedroom"],
-        "phaseTags": ["exploration", "interrogation", "ending"]
+        "relatedNpcIds": [],
+        "relatedLocationIds": ["bedroom", "living_room", "kitchen"],
+        "phaseTags": ["exploration", "interrogation"]
       }
     },
     {
       "factId": "fact_10",
-      "displayName": "林秀华长期遭受家暴",
-      "summary": "淤青、药物和法医复核共同证明赵建民长期对林秀华实施家暴。",
-      "category": "motive",
+      "displayName": "林秀华双腕存在多处新旧伤痕，浴室内有长期使用的跌打损伤药",
+      "summary": "林秀华双腕可见新旧不一的淤痕，法医复核显示存在多处旧伤，浴室药瓶日期最早可追溯到五年前。",
+      "category": "forensic",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "derived",
-        "requirementsAll": ["C-3"],
+        "unlockType": "evidence_only",
+        "requirementsAll": ["A-10", "A-16", "B-10", "B-17"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-10", "B-9", "B-10", "A-16", "B-17", "C-3"],
-        "sourceDialogueIds": ["npc_1.layer_3", "dialog_4"],
+        "sourceEvidenceIds": ["A-10", "A-16", "B-9", "B-10", "B-17"],
+        "sourceDialogueIds": [],
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["interrogation", "motive_proof", "progression_map"],
+        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_12"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
         "supportsEndingIds": ["ending_2", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1", "victim"],
+        "relatedNpcIds": ["npc_1"],
         "relatedLocationIds": ["kitchen", "bathroom"],
-        "phaseTags": ["exploration", "interrogation", "ending"]
+        "phaseTags": ["exploration", "interrogation"]
       }
     },
     {
       "factId": "fact_11",
-      "displayName": "赵建民用账簿控制着三名嫌疑人",
-      "summary": "那本账簿不是普通记账本，而是赵建民控制案件中关键人物的核心工具。",
-      "category": "story_structure",
+      "displayName": "账簿中记录了卫、张、林三人的名字",
+      "summary": "床头账簿内明确记录了卫、张、林三人的名字。",
+      "category": "document",
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "derived",
-        "requirementsAll": ["C-5"],
+        "unlockType": "evidence_only",
+        "requirementsAll": ["A-12"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-12", "B-5", "B-6", "C-5"],
-        "sourceDialogueIds": ["npc_2.layer_2"],
-        "sourceFactIds": ["fact_2"]
+        "sourceEvidenceIds": ["A-12"],
+        "sourceDialogueIds": [],
+        "sourceFactIds": []
       },
       "progression": {
         "usedFor": ["story_progression", "hidden_truth", "progression_map"],
@@ -322,24 +322,24 @@
         "supportsEndingIds": ["ending_3", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1", "npc_2", "npc_3", "victim"],
-        "relatedLocationIds": ["bedroom", "living_room", "kitchen"],
-        "phaseTags": ["exploration", "interrogation", "ending"]
+        "relatedNpcIds": ["npc_1", "npc_2", "npc_3"],
+        "relatedLocationIds": ["bedroom"],
+        "phaseTags": ["exploration", "interrogation"]
       }
     },
     {
       "factId": "fact_12",
-      "displayName": "林秀华就是凶手",
-      "summary": "凶器路径、现场伪装和动机链条共同将林秀华锁定为直接杀人者。",
-      "category": "culprit",
+      "displayName": "林秀华在审讯中承认案发后清理过现场，并曾用炉钩击打死者",
+      "summary": "林秀华在第三层审讯中承认案发当晚曾用炉钩击打赵建民，并在事后清理了现场痕迹。",
+      "category": "confession",
       "truth": { "truthClass": "culprit_truth", "isHiddenTruth": false },
       "unlock": {
-        "unlockType": "derived",
-        "requirementsAll": ["C-1", "C-2", "C-3", "npc_1.layer_3"],
+        "unlockType": "dialogue_only",
+        "requirementsAll": ["npc_1.layer_3"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["C-1", "C-2", "C-3"],
+        "sourceEvidenceIds": ["A-3", "A-11", "B-11"],
         "sourceDialogueIds": ["npc_1.layer_3"],
-        "sourceFactIds": ["fact_4", "fact_9", "fact_10"]
+        "sourceFactIds": ["fact_4", "fact_7", "fact_9", "fact_10"]
       },
       "progression": {
         "usedFor": ["accusation", "main_ending", "progression_map"],
@@ -356,15 +356,15 @@
     },
     {
       "factId": "fact_13",
-      "displayName": "卫国强是林秀华失散多年的儿子",
-      "summary": "账簿、赵建民的控制逻辑与审讯真相共同揭开了卫国强和林秀华之间隐藏的母子关系。",
-      "category": "hidden_identity",
+      "displayName": "卫国强的身世信息与林秀华二十年前失子经历可以对应",
+      "summary": "卫国强被收养的时间信息，与林秀华二十年前失去孩子的经历可以对应起来。",
+      "category": "hidden_background",
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["npc_2.layer_3"],
+        "requirementsAll": ["fact_11", "npc_2.layer_3"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["C-5", "C-8"],
+        "sourceEvidenceIds": ["A-12"],
         "sourceDialogueIds": ["npc_2.layer_3", "npc_1.layer_1"],
         "sourceFactIds": ["fact_11"]
       },
@@ -383,16 +383,16 @@
     },
     {
       "factId": "fact_14",
-      "displayName": "张铁柱是赵建民的儿子",
-      "summary": "账簿、手表和张铁柱的反应共同揭开了他与赵建民之间隐藏的父子关系。",
-      "category": "hidden_identity",
+      "displayName": "张铁柱与赵建民及其母亲遗物之间存在未公开联系",
+      "summary": "账簿记录、失踪手表和张铁柱的审讯内容显示，他与赵建民及其母亲遗物之间存在未公开联系。",
+      "category": "hidden_background",
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["npc_3.layer_3"],
+        "requirementsAll": ["fact_11", "fact_8", "npc_3.layer_3"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["C-5", "C-6", "C-8"],
-        "sourceDialogueIds": ["npc_3.layer_3"],
+        "sourceEvidenceIds": ["A-5", "A-12"],
+        "sourceDialogueIds": ["npc_3.layer_2", "npc_3.layer_3"],
         "sourceFactIds": ["fact_8", "fact_11"]
       },
       "progression": {
@@ -410,16 +410,16 @@
     },
     {
       "factId": "fact_15",
-      "displayName": "张铁柱偷了手表，但没有杀赵建民",
-      "summary": "张铁柱确实犯下偷窃并试图掩饰，但死亡时间说明命案发生在他离开之后。",
+      "displayName": "张铁柱承认拿走手表，但现有死亡时间记录无法直接将其与命案时间重合",
+      "summary": "张铁柱承认自己拿走过手表，但现有死亡时间记录显示，命案不一定发生在他离开之前。",
       "category": "misdirection",
       "truth": { "truthClass": "misdirection", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "derived",
-        "requirementsAll": ["npc_3.layer_2", "A-11"],
+        "requirementsAll": ["fact_6", "fact_8", "A-11"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-11", "C-6"],
-        "sourceDialogueIds": ["npc_3.layer_2"],
+        "sourceEvidenceIds": ["A-11"],
+        "sourceDialogueIds": ["npc_3.layer_1", "npc_3.layer_2"],
         "sourceFactIds": ["fact_6", "fact_8"]
       },
       "progression": {
@@ -437,17 +437,17 @@
     },
     {
       "factId": "fact_16",
-      "displayName": "这起谋杀掩盖着一段破碎的家庭历史",
-      "summary": "完整真相比杀人本身更大。赵建民的家暴、勒索与隐藏血缘扭曲了案中每个人的人生。",
+      "displayName": "账簿记录与身世线索显示本案还涉及被长期隐瞒的家庭关系",
+      "summary": "账簿中记录的人名，以及两条被追出的身世线索，显示这起命案之外还存在被长期隐瞒的家庭关系。",
       "category": "meta_truth",
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "derived",
-        "requirementsAll": ["fact_12", "fact_13", "fact_14"],
+        "requirementsAll": ["fact_11", "fact_13", "fact_14"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["C-5", "C-8"],
-        "sourceDialogueIds": ["npc_1.layer_3", "npc_2.layer_3", "npc_3.layer_3"],
-        "sourceFactIds": ["fact_12", "fact_13", "fact_14"]
+        "sourceEvidenceIds": ["A-12", "A-5"],
+        "sourceDialogueIds": ["npc_2.layer_3", "npc_3.layer_3"],
+        "sourceFactIds": ["fact_11", "fact_13", "fact_14", "fact_12"]
       },
       "progression": {
         "usedFor": ["complete_ending", "global_progression"],
@@ -464,17 +464,17 @@
     }
   ],
   "factRelationships": [
-    { "fromFactId": "fact_1", "toFactId": "fact_2", "relationshipType": "supports", "displayText": "先证明卫国强当晚来过，再证明他为什么而来。" },
-    { "fromFactId": "fact_3", "toFactId": "fact_4", "relationshipType": "supports", "displayText": "客厅痕迹支撑了完整的清理链条。" },
-    { "fromFactId": "fact_7", "toFactId": "fact_9", "relationshipType": "supports", "displayText": "林秀华关于时间线的谎言支持了现场伪装这一结论。" },
-    { "fromFactId": "fact_10", "toFactId": "fact_12", "relationshipType": "supports_motive", "displayText": "长期家暴构成了林秀华的杀人动机。" },
-    { "fromFactId": "fact_4", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "案后清理直接把林秀华与命案善后联系在一起。" },
-    { "fromFactId": "fact_9", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "现场伪装进一步锁定了林秀华是凶手。" },
-    { "fromFactId": "fact_11", "toFactId": "fact_13", "relationshipType": "supports", "displayText": "账簿控制模式支持了母子关系的揭示。" },
-    { "fromFactId": "fact_11", "toFactId": "fact_14", "relationshipType": "supports", "displayText": "账簿控制模式支持了父子关系的揭示。" },
-    { "fromFactId": "fact_8", "toFactId": "fact_15", "relationshipType": "supports", "displayText": "先确认偷表，再排除张铁柱是凶手。" },
-    { "fromFactId": "fact_12", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "谋杀真相只是更深家庭真相的一部分。" },
-    { "fromFactId": "fact_13", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "卫国强的身世揭示支撑了完整真相。" },
-    { "fromFactId": "fact_14", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "张铁柱的身世揭示支撑了完整真相。" }
+    { "fromFactId": "fact_1", "toFactId": "fact_2", "relationshipType": "supports", "displayText": "先确认卫国强当晚来过，再记录他为何而来。" },
+    { "fromFactId": "fact_3", "toFactId": "fact_4", "relationshipType": "supports", "displayText": "客厅痕迹支撑清理痕迹的连续记录。" },
+    { "fromFactId": "fact_7", "toFactId": "fact_9", "relationshipType": "supports", "displayText": "时间说法与尸检时间的不一致，支撑现场状态被改动的记录。" },
+    { "fromFactId": "fact_4", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "清理痕迹记录为后续承认内容提供背景。" },
+    { "fromFactId": "fact_9", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "现场状态被改动的记录与林秀华的承认内容互相呼应。" },
+    { "fromFactId": "fact_10", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "伤痕与药物记录构成林秀华审讯的重要背景。" },
+    { "fromFactId": "fact_11", "toFactId": "fact_13", "relationshipType": "supports", "displayText": "账簿中的姓名记录支撑卫国强身世线索。" },
+    { "fromFactId": "fact_11", "toFactId": "fact_14", "relationshipType": "supports", "displayText": "账簿中的姓名记录支撑张铁柱的未公开联系线索。" },
+    { "fromFactId": "fact_8", "toFactId": "fact_15", "relationshipType": "supports", "displayText": "先记录张铁柱拿走手表，再比对其与死亡时间的关系。" },
+    { "fromFactId": "fact_11", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "账簿是整体家庭关系线索的基础记录。" },
+    { "fromFactId": "fact_13", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "卫国强的身世线索支撑整体家庭关系记录。" },
+    { "fromFactId": "fact_14", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "张铁柱的未公开联系线索支撑整体家庭关系记录。" }
   ]
 }
