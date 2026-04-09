@@ -1,0 +1,89 @@
+{
+  "templateVersion": "1.0",
+  "schemaType": "scene_layout",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "test_case",
+  "sceneSummary": {
+    "roomCount": 2,
+    "notes": "极简测试场景，只保留最小房间和对象结构，位置字段预留为空。"
+  },
+  "rooms": [
+    {
+      "roomId": "living_room",
+      "displayName": "客厅",
+      "objectCount": 2,
+      "objects": [
+        {
+          "objectId": "living_room_npc_wang_qiang",
+          "displayName": "王强",
+          "objectType": "npc_anchor",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "测试用第二个NPC"
+        },
+        {
+          "objectId": "living_room_chair",
+          "displayName": "椅子",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": false,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "roomId": "kitchen",
+      "displayName": "厨房",
+      "objectCount": 3,
+      "objects": [
+        {
+          "objectId": "kitchen_sink",
+          "displayName": "水槽",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-1", "B-1"],
+          "notes": "测试用唯一证据链挂在这里"
+        },
+        {
+          "objectId": "kitchen_npc_li_mei",
+          "displayName": "李梅",
+          "objectType": "npc_anchor",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-2"],
+          "notes": "观察型线索"
+        },
+        {
+          "objectId": "kitchen_table",
+          "displayName": "桌子",
+          "objectType": "furniture",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": false,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": ""
+        }
+      ]
+    }
+  ]
+}
