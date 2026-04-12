@@ -181,8 +181,7 @@ namespace DetectiveGame.UI
 
             var lines = new List<string>();
 
-            AddIfNotBlank(lines, npc.relationshipToVictim);
-            AddIfNotBlank(lines, npc.initialStatement);
+            AddIfNotBlank(lines, npc.profileText);
 
             if (lines.Count == 0)
             {
