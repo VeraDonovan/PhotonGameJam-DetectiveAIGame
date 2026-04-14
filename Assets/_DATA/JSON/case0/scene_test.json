@@ -1,0 +1,89 @@
+{
+  "templateVersion": "1.0",
+  "schemaType": "scene_layout",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case_test",
+  "sceneSummary": {
+    "roomCount": 2,
+    "notes": "测试场景，客厅和卧室，物品编号与 Atlas 对应。"
+  },
+  "rooms": [
+    {
+      "roomId": "living_room",
+      "displayName": "客厅",
+      "objectCount": 3,
+      "objects": [
+        {
+          "objectId": "living room_0",
+          "displayName": "沙发",
+          "objectType": "furniture",
+          "placementSlotId": "slot1",
+          "placementPosition": "0,0,0",
+          "placementRotation": "0,0,0",
+          "interactive": false,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "测试用沙发。"
+        },
+        {
+          "objectId": "living room_1",
+          "displayName": "茶几",
+          "objectType": "furniture",
+          "placementSlotId": "slot2",
+          "placementPosition": "2,0,1",
+          "placementRotation": "0,45,0",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["E-1"],
+          "notes": "茶几上可以放东西。"
+        },
+        {
+          "objectId": "living room_2",
+          "displayName": "电视机",
+          "objectType": "electronics",
+          "placementSlotId": "slot3",
+          "placementPosition": "-3,0,2",
+          "placementRotation": "0,90,0",
+          "interactive": true,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "电视机可以开关。"
+        }
+      ]
+    },
+    {
+      "roomId": "bedroom",
+      "displayName": "卧室",
+      "objectCount": 2,
+      "objects": [
+        {
+          "objectId": "bedroom_0",
+          "displayName": "床",
+          "objectType": "furniture",
+          "placementSlotId": "slot1",
+          "placementPosition": "1,0,3",
+          "placementRotation": "0,0,0",
+          "interactive": false,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["E-2"],
+          "notes": "床底下可以藏东西。"
+        },
+        {
+          "objectId": "bedroom_1",
+          "displayName": "书桌",
+          "objectType": "furniture",
+          "placementSlotId": "slot2",
+          "placementPosition": "-2,0,4",
+          "placementRotation": "0,180,0",
+          "interactive": true,
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "书桌可以交互。"
+        }
+      ]
+    }
+  ]
+}
