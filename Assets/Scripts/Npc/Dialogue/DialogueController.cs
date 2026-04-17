@@ -7,6 +7,7 @@ public class DialogueController : MonoBehaviour {
     public TMP_InputField playerInputField;
     [SerializeField] private DeepSeekDialogueClient dialogueClient;
     [SerializeField] private KeyCode submitKey = KeyCode.Return;
+    private int nextDialogueRequestId;
 
     void Awake() {
         if (Instance == null) {
@@ -53,14 +54,15 @@ public class DialogueController : MonoBehaviour {
                               $"NPC initial statement: {currentNPC.initialStatement}\n" +
                               "Answer in character. Keep the reply short and conversational.";
 
-        DialogueManager.Instance.ShowDialogue("Thinking...");
+        int dialogueRequestId = nextDialogueRequestId++;
+        DialogueManager.Instance.ReserveOrderedDialogue(dialogueRequestId);
         StartCoroutine(dialogueClient.SendDialogueRequest(
             systemPrompt,
             playerInput,
-            aiResponse => DialogueManager.Instance.ShowDialogue(aiResponse),
+            aiResponse => DialogueManager.Instance.ShowDialogueInOrder(dialogueRequestId, aiResponse),
             error => {
                 Debug.LogError("DeepSeek dialogue request failed: " + error);
-                DialogueManager.Instance.ShowDialogue("AI request failed: " + error);
+                DialogueManager.Instance.ShowDialogueInOrder(dialogueRequestId, "AI request failed: " + error);
             }));
     }
 
