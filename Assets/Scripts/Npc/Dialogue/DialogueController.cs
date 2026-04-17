@@ -1,10 +1,12 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class DialogueController : MonoBehaviour {
     public static DialogueController Instance;
     public NPCData currentNPC;
-    public TMP_InputField playerInputField;  // 输入框引用
+    public TMP_InputField playerInputField;
+    [SerializeField] private DeepSeekDialogueClient dialogueClient;
+    [SerializeField] private KeyCode submitKey = KeyCode.Return;
 
     void Awake() {
         if (Instance == null) {
@@ -12,35 +14,58 @@ public class DialogueController : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
+
+        if (dialogueClient == null) {
+            dialogueClient = DeepSeekDialogueClient.Instance;
+        }
     }
 
-    // 按钮点击时调用
     public void OnSubmitButtonClick() {
         string input = playerInputField.text;
         ProcessPlayerInput(input);
+        playerInputField.text = string.Empty;
+        playerInputField.ActivateInputField();
     }
 
-    public async void ProcessPlayerInput(string playerInput) {
+    private void Update() {
+        if (Input.GetKeyDown(submitKey)) {
+            OnSubmitButtonClick();
+        }
+    }
+
+    public void ProcessPlayerInput(string playerInput) {
         if (currentNPC == null) {
-            Debug.LogError("❌ 当前NPC未设置，无法进行对话");
+            Debug.LogError("Current NPC is not set. Dialogue cannot continue.");
             return;
         }
 
-        string prompt = $"玩家问：{playerInput}\n" +
-                        $"NPC背景：{currentNPC.backstory}\n" +
-                        $"NPC初始陈述：{currentNPC.initialStatement}\n" +
-                        $"请以NPC {currentNPC.displayName} 的身份回答。";
+        if (dialogueClient == null) {
+            dialogueClient = DeepSeekDialogueClient.Instance;
+        }
 
-        Debug.Log("📨 Prompt: " + prompt);
+        if (dialogueClient == null) {
+            Debug.LogError("DeepSeekDialogueClient is not set. Add it to the scene under Gameplay/AI.");
+            return;
+        }
 
-        // 暂时用假数据代替 AI
-        string aiResponse = $"NPC {currentNPC.displayName} 回复：你好，我收到了你的输入：{playerInput}";
+        string systemPrompt = $"You are NPC {currentNPC.displayName} in a detective game.\n" +
+                              $"NPC backstory: {currentNPC.backstory}\n" +
+                              $"NPC initial statement: {currentNPC.initialStatement}\n" +
+                              "Answer in character. Keep the reply short and conversational.";
 
-        DialogueManager.Instance.ShowDialogue(aiResponse);
+        DialogueManager.Instance.ShowDialogue("Thinking...");
+        StartCoroutine(dialogueClient.SendDialogueRequest(
+            systemPrompt,
+            playerInput,
+            aiResponse => DialogueManager.Instance.ShowDialogue(aiResponse),
+            error => {
+                Debug.LogError("DeepSeek dialogue request failed: " + error);
+                DialogueManager.Instance.ShowDialogue("AI request failed: " + error);
+            }));
     }
 
     public void SetCurrentNPC(NPCData npc) {
         currentNPC = npc;
-        Debug.Log("🎯 当前对话NPC已设置为: " + npc.displayName);
+        Debug.Log("Current dialogue NPC set to: " + npc.displayName);
     }
 }
