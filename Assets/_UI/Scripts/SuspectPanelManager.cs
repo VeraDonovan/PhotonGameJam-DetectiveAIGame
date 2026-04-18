@@ -20,7 +20,6 @@ namespace DetectiveGame.UI
 
         private readonly Dictionary<string, SuspectIconEntry> entriesByNpcId = new Dictionary<string, SuspectIconEntry>();
 
-        private NpcRuntimeManager npcRuntimeManager;
         private NpcDatabase npcDatabase;
         private FactDatabase factDatabase;
         private EventManager eventManager;
@@ -48,7 +47,6 @@ namespace DetectiveGame.UI
         {
             var appRoot = AppRoot.Instance;
             eventManager = appRoot.EventManager;
-            npcRuntimeManager = appRoot.NpcRuntimeManager;
             npcDatabase = appRoot.DatabaseManager.NpcDatabase;
             factDatabase = appRoot.DatabaseManager.FactDatabase;
         }
@@ -63,11 +61,6 @@ namespace DetectiveGame.UI
             if (npcDatabase == null)
             {
                 throw new InvalidOperationException("SuspectPanelManager requires AppRoot.DatabaseManager.NpcDatabase.");
-            }
-
-            if (npcRuntimeManager == null)
-            {
-                throw new InvalidOperationException("SuspectPanelManager requires AppRoot.NpcRuntimeManager.");
             }
 
             if (factDatabase == null)
@@ -88,25 +81,17 @@ namespace DetectiveGame.UI
 
         private void SubscribeToEvents()
         {
-            eventManager.Subscribe<NpcDiscoveredEvent>(HandleNpcDiscovered);
             eventManager.Subscribe<FactUnlockedEvent>(HandleFactUnlocked);
         }
 
         private void UnsubscribeFromEvents()
         {
-            eventManager.Unsubscribe<NpcDiscoveredEvent>(HandleNpcDiscovered);
             eventManager.Unsubscribe<FactUnlockedEvent>(HandleFactUnlocked);
         }
 
         private void RefreshFromRuntimeState()
         {
-            EnsureSuspectEntries(npcRuntimeManager.DiscoveredNpcIds);
-            RefreshSelectedDetail();
-        }
-
-        private void HandleNpcDiscovered(NpcDiscoveredEvent eventData)
-        {
-            EnsureSuspectEntries(new[] { eventData.NpcId });
+            EnsureSuspectEntries(npcDatabase.NpcById.Keys);
             RefreshSelectedDetail();
         }
 

@@ -110,4 +110,6 @@ MonoBehaviour:
   playerInputField: {fileID: 0}
   dialogueClient: {fileID: 0}
   basePrompt: {fileID: 4900000, guid: b17d71a64b7f44f69f0e28adcf818af0, type: 3}
+  npcContextRulesPrompt: {fileID: 4900000, guid: 58cd93cd21fd4a46a3a53c69160c0132, type: 3}
+  revealLogicRulesPrompt: {fileID: 4900000, guid: 7a9f79d12e4e4e40b8bb2e603544a811, type: 3}
   submitKey: 13

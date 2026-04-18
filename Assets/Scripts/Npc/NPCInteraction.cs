@@ -34,7 +34,11 @@ public class NPCInteraction : MonoBehaviour {
         Debug.Log("👉 玩家按下 F 与 NPC 交互: " + assembler.dialogueConfig.displayName);
 
         // 这里可以选择不同功能，比如进入对话
-        DialogueManager.Instance.ShowDialogue(assembler.dialogueConfig.initialStatement);
+        if (DialogueController.Instance != null)
+        {
+            DialogueController.Instance.SetCurrentNPC(assembler.dialogueConfig);
+            DialogueController.Instance.StartNpcOpeningDialogue();
+        }
 
         // 或者执行其他功能
         // Debug.Log("执行其他功能");

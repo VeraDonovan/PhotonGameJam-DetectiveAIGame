@@ -94,10 +94,7 @@ namespace DetectiveGame.Gameplay.Tests
                 dialogueController.SetCurrentNPC(dialogueNpcData);
             }
 
-            if (DialogueManager.Instance != null)
-            {
-                DialogueManager.Instance.ShowDialogue(dialogueNpcData.initialStatement);
-            }
+            dialogueController?.StartNpcOpeningDialogue();
         }
 
         private void ResolveDialogueController()

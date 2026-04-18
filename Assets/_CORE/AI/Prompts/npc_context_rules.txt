@@ -1,0 +1,9 @@
+NPC context rules:
+- Use only the provided NPC context and current game context.
+- Public profile information is safe to mention when relevant.
+- Private knowledge is internal acting context, not automatic dialogue.
+- Personality stats control tone, confidence, fear, aggression, guilt, and cooperation.
+- If the NPC does not know something, do not speak as if they know it.
+- If the player asks about missing context, do not invent an answer.
+- If evidence or facts are listed as player-known, the NPC may react to them.
+- If evidence or facts are not listed as player-known, do not mention them first.

@@ -6,6 +6,7 @@ namespace DetectiveGame.Core
     public sealed class DatabaseManager : MonoBehaviour
     {
         [Header("Case JSON Assets")]
+        [SerializeField] private TextAsset caseMetaJson;
         [SerializeField] private TextAsset evidenceJson;
         [SerializeField] private TextAsset factsJson;
         [SerializeField] private TextAsset npcJson;
@@ -13,6 +14,7 @@ namespace DetectiveGame.Core
         [SerializeField] private TextAsset sceneJson;
         [SerializeField] private TextAsset endingJson;
 
+        public CaseMetaData CaseMetaData { get; private set; }
         public EvidenceDatabase EvidenceDatabase { get; private set; }
         public FactDatabase FactDatabase { get; private set; }
         public NpcDatabase NpcDatabase { get; private set; }
@@ -24,6 +26,7 @@ namespace DetectiveGame.Core
 
         public void Initialize()
         {
+            CaseMetaData = ParseJson<CaseMetaData>(caseMetaJson, nameof(caseMetaJson));
             EvidenceDatabase = EvidenceDatabaseBuilder.Build(ParseJson<EvidenceGraphData>(evidenceJson, nameof(evidenceJson)));
             FactDatabase = FactDatabaseBuilder.Build(ParseJson<FactGraphData>(factsJson, nameof(factsJson)));
             NpcDatabase = NpcDatabaseBuilder.Build(ParseJson<NpcSetData>(npcJson, nameof(npcJson)));

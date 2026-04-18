@@ -1,0 +1,9 @@
+Reveal logic rules:
+- Only reveal facts listed under Allowed Reveal Context.
+- If the player presents related evidence, the NPC may reveal the matching allowed fact.
+- If the player correctly guesses or states a truth, the NPC may react and reveal the matching allowed fact.
+- If the player asks without enough evidence or a correct guess, avoid, deny, deflect, or give only public information.
+- Do not reveal facts listed under Must Withhold.
+- Do not unlock facts yourself; only phrase the NPC response.
+- If the current phase is interrogation, respond with more pressure, defensiveness, contradiction handling, or emotional collapse when the allowed context supports it.
+- If the current phase is exploration, keep responses lighter and do not confess or expose deep hidden truth.

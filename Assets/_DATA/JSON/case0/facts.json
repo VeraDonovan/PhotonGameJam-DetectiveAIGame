@@ -45,7 +45,6 @@
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_2", "fact_5"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -72,7 +71,6 @@
         "sourceFactIds": ["fact_1"]
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_11"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -99,7 +97,6 @@
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_4"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -126,7 +123,6 @@
         "sourceFactIds": ["fact_3"]
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_9", "fact_12"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -153,7 +149,6 @@
         "sourceFactIds": ["fact_1"]
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_6"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -180,7 +175,6 @@
         "sourceFactIds": ["fact_5"]
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_8", "fact_15"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -207,7 +201,6 @@
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_9", "fact_12"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -234,7 +227,6 @@
         "sourceFactIds": ["fact_6", "fact_17"]
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_14", "fact_15"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -261,7 +253,6 @@
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_8"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -288,7 +279,6 @@
         "sourceFactIds": ["fact_4", "fact_7"]
       },
       "progression": {
-        "usedFor": ["interrogation", "accusation", "progression_map"],
         "unlocksFactIds": ["fact_12"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -315,7 +305,6 @@
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["interrogation", "progression_map"],
         "unlocksFactIds": ["fact_12"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -342,7 +331,6 @@
         "sourceFactIds": []
       },
       "progression": {
-        "usedFor": ["story_progression", "hidden_truth", "progression_map"],
         "unlocksFactIds": ["fact_13", "fact_14", "fact_16"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -369,7 +357,6 @@
         "sourceFactIds": ["fact_4", "fact_7", "fact_9", "fact_10"]
       },
       "progression": {
-        "usedFor": ["accusation", "main_ending", "progression_map"],
         "unlocksFactIds": ["fact_16"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -396,7 +383,6 @@
         "sourceFactIds": ["fact_11"]
       },
       "progression": {
-        "usedFor": ["hidden_ending", "complete_ending", "progression_map"],
         "unlocksFactIds": ["fact_16"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -423,7 +409,6 @@
         "sourceFactIds": ["fact_8", "fact_11"]
       },
       "progression": {
-        "usedFor": ["complete_ending", "progression_map"],
         "unlocksFactIds": ["fact_16"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -450,7 +435,6 @@
         "sourceFactIds": ["fact_6", "fact_8"]
       },
       "progression": {
-        "usedFor": ["remove_suspicion", "progression_map"],
         "unlocksFactIds": ["fact_14"],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],
@@ -477,7 +461,6 @@
         "sourceFactIds": ["fact_11", "fact_13", "fact_14", "fact_12"]
       },
       "progression": {
-        "usedFor": ["complete_ending", "global_progression"],
         "unlocksFactIds": [],
         "unlocksDialogueIds": [],
         "unlocksEvidenceIds": [],

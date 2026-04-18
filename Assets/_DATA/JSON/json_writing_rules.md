@@ -20,6 +20,122 @@ Use this test before writing any entry:
 - If it is neutral learned information, put it in `facts`.
 - If it is a basic public person profile, put it in `npc`.
 
+## `case_meta`
+
+This file is for public case-level setup information.
+
+Use this file for information the player or Watson can know at the start of the case.
+
+It should contain:
+
+- case id and title
+- linked data file names
+- public setting information
+- public victim identity and initial body condition
+- objective case summary text
+- public suspect summary cards if needed
+- public/objective relationship map entries
+
+It should not contain:
+
+- player objectives or instructions
+- investigation steps
+- hidden relationships
+- motives
+- culprit identity
+- control, blackmail, abuse, or other hidden-truth relationship labels
+- deductions about what the clues mean
+
+### `caseBackground`
+
+`caseBackground.briefBackground` is the case-panel summary text.
+
+Write it like a short police report summary with explicit field labels. It should answer basic known setup information only:
+
+- when
+- where
+- who the victim is
+- where the victim was found
+- what the initial death/body condition is
+
+Required format:
+
+- `时间：...`
+- `地点：...`
+- `案件详情：...`
+
+Good case-background content:
+
+- `时间：1994年，具体日期待核。\n地点：某北方工业城市，赵建民家中。\n案件详情：52岁的国营钢厂会计赵建民被发现死于家中。尸体带有明显酒气，头部存在致命钝器伤。`
+
+Bad case-background content:
+
+- `搜查住宅，收集物证，理清人物关系`
+- `需要确认案发时间、来访经过、现场痕迹与死者的人际关系`
+- `赵建民多年用债务、羞耻和隐秘的家庭关系操控他人`
+- `这不是一起单纯的谋杀案`
+
+### `relationshipMap`
+
+`relationshipMap` is for public/objective relationship records only.
+
+Use it for relationships that can be stated at case start without revealing hidden truth.
+
+Good relationship-map content:
+
+- `victim -> npc_1: 夫妻`
+- `victim -> npc_2: 生意往来`
+- `victim -> npc_3: 讨债关系`
+
+Bad relationship-map content:
+
+- hidden blood relations
+- blackmail relationships
+- abuse/control relationships
+- motive relationships
+- any relationship known only by the victim or one suspect
+
+Hidden relationship records belong in `truth`, not in `case_meta`.
+
+### Case Type Reference For AI Generation
+
+Use this reference when generating new cases. This is authoring guidance, not player-facing text.
+
+For the current prototype scope, generate cases in this broad format:
+
+- one-sentence concept: a murder that happened inside a residence
+- primary location: residence
+
+Murder type tags may be combined when they do not conflict.
+
+By scene presentation:
+
+- homicide disguised as suicide
+- conspiracy murder, with multiple perpetrators acting together
+
+By special circumstance:
+
+- dismemberment case
+- no-body case, with the body hidden inside the residence
+- rape-murder
+- hired killing
+
+By method:
+
+- poisoning
+- killing by omission, such as deliberately not feeding a dependent infant
+- direct violence, such as knife attack, shooting, blunt-force attack, strangling by hand, or ligature strangulation
+
+By motive:
+
+- killing for money
+- killing related to an affair
+- revenge killing
+- killing to silence a witness or cover another crime
+- killing in rage after humiliation or persecution
+- killing from hooligan/criminal impulse
+- killing a relative to escape financial burden
+
 ## `truth`
 
 This file is the full hidden answer key for the case.

@@ -39,9 +39,7 @@
     ]
   },
   "caseBackground": {
-    "briefBackground": "赵建民死于家中。三名彼此有关联的嫌疑人，各自隐瞒着前一夜发生的一部分真相。",
-    "watsonDebrief": "这不是一起单纯的谋杀案。赵建民多年用债务、羞耻和隐秘的家庭关系操控他人。你需要还原那一夜发生了什么，以及他究竟把谁困在了这张网里。",
-    "openingObjective": "搜查住宅，收集物证，理清人物关系，为后续审讯做准备。"
+    "briefBackground": "时间：1994年，具体日期待核。\n地点：某北方工业城市，赵建民家中。\n案件详情：52岁的国营钢厂会计赵建民被发现死于家中。尸体带有明显酒气，头部存在致命钝器伤。"
   },
   "caseTruth": {
     "realKillerId": "npc_1",
@@ -86,50 +84,30 @@
   ],
   "relationshipMap": [
     {
-      "fromId": "npc_1",
-      "toId": "npc_2",
-      "type": "blood_relation",
-      "displayText": "亲生母子",
-      "knownBy": [
-        "victim"
-      ]
-    },
-    {
-      "fromId": "victim",
-      "toId": "npc_3",
-      "type": "blood_relation",
-      "displayText": "亲生父子",
-      "knownBy": [
-        "victim"
-      ]
-    },
-    {
       "fromId": "victim",
       "toId": "npc_2",
-      "type": "blackmail",
-      "displayText": "以非法账簿进行勒索",
+      "type": "business_contact",
+      "displayText": "生意往来",
       "knownBy": [
-        "victim",
-        "npc_2"
+        "public"
       ]
     },
     {
       "fromId": "victim",
       "toId": "npc_1",
-      "type": "abuse_control",
-      "displayText": "长达二十年的家暴与控制",
+      "type": "spouse",
+      "displayText": "夫妻",
       "knownBy": [
-        "victim",
-        "npc_1"
+        "public"
       ]
     },
     {
       "fromId": "victim",
       "toId": "npc_3",
-      "type": "psychological_control",
-      "displayText": "以身世嘲弄和操控",
+      "type": "debt_dispute",
+      "displayText": "讨债关系",
       "knownBy": [
-        "victim"
+        "public"
       ]
     }
   ]

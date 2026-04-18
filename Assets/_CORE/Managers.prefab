@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee48328924c42c4fb7e9da6a526d847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caseMetaJson: {fileID: 4900000, guid: b34bdff6719c2634080f663af2dda872, type: 3}
   evidenceJson: {fileID: 4900000, guid: f3ceae8f7b029aa478c9cd41ece4c285, type: 3}
   factsJson: {fileID: 4900000, guid: bbb2c4d8c2d0227429154c980d172f78, type: 3}
   npcJson: {fileID: 4900000, guid: 3cbab6172a6959646a5d178757af9b32, type: 3}

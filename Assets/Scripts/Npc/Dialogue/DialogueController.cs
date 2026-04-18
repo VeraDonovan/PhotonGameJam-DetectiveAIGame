@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Text;
+using DetectiveGame.Core;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +10,8 @@ public class DialogueController : MonoBehaviour {
     public TMP_InputField playerInputField;
     [SerializeField] private DeepSeekDialogueClient dialogueClient;
     [SerializeField] private TextAsset basePrompt;
+    [SerializeField] private TextAsset npcContextRulesPrompt;
+    [SerializeField] private TextAsset revealLogicRulesPrompt;
     [SerializeField] private KeyCode submitKey = KeyCode.Return;
     private int nextDialogueRequestId;
 
@@ -36,6 +41,15 @@ public class DialogueController : MonoBehaviour {
     }
 
     public void ProcessPlayerInput(string playerInput) {
+        SendDialogueRequest(playerInput);
+    }
+
+    public void StartNpcOpeningDialogue() {
+        SendDialogueRequest(
+            "The player has approached you at the crime scene. You are already a suspect in this case. Speak first with a short in-character opening line based on your public profile, private context, and current game phase. Do not reveal hidden truth unless the allowed reveal context permits it.");
+    }
+
+    private void SendDialogueRequest(string playerInput) {
         if (currentNPC == null) {
             Debug.LogError("Current NPC is not set. Dialogue cannot continue.");
             return;
@@ -52,6 +66,16 @@ public class DialogueController : MonoBehaviour {
 
         if (basePrompt == null) {
             Debug.LogError("DialogueController is missing a base prompt TextAsset.");
+            return;
+        }
+
+        if (npcContextRulesPrompt == null) {
+            Debug.LogError("DialogueController is missing an NPC context rules prompt TextAsset.");
+            return;
+        }
+
+        if (revealLogicRulesPrompt == null) {
+            Debug.LogError("DialogueController is missing a reveal logic rules prompt TextAsset.");
             return;
         }
 
@@ -75,10 +99,191 @@ public class DialogueController : MonoBehaviour {
     }
 
     private string BuildSystemPrompt() {
-        return basePrompt.text + "\n\n" +
-               "Current NPC context:\n" +
-               $"- Name: {currentNPC.displayName}\n" +
-               $"- Backstory: {currentNPC.backstory}\n" +
-               $"- Initial statement: {currentNPC.initialStatement}";
+        var prompt = new StringBuilder();
+        AppendPromptSection(prompt, basePrompt.text);
+        AppendPromptSection(prompt, npcContextRulesPrompt.text);
+        AppendPromptSection(prompt, revealLogicRulesPrompt.text);
+        AppendNpcContext(prompt);
+        AppendRuntimeContext(prompt);
+        return prompt.ToString();
+    }
+
+    private static void AppendPromptSection(StringBuilder prompt, string sectionText) {
+        if (prompt.Length > 0) {
+            prompt.AppendLine();
+        }
+
+        prompt.AppendLine(sectionText);
+    }
+
+    private void AppendNpcContext(StringBuilder prompt) {
+        prompt.AppendLine();
+        prompt.AppendLine("Current NPC context:");
+        prompt.AppendLine($"- Name: {currentNPC.displayName}");
+        prompt.AppendLine($"- Backstory: {currentNPC.backstory}");
+        prompt.AppendLine($"- Initial statement: {currentNPC.initialStatement}");
+        prompt.AppendLine($"- Composure: {currentNPC.stats?.composure ?? 0}");
+        prompt.AppendLine($"- Lie: {currentNPC.stats?.lie ?? 0}");
+        prompt.AppendLine($"- Aggression: {currentNPC.stats?.aggression ?? 0}");
+        prompt.AppendLine($"- Cooperation: {currentNPC.stats?.cooperation ?? 0}");
+        prompt.AppendLine($"- Guilt: {currentNPC.stats?.guilt ?? 0}");
+        prompt.AppendLine($"- Trauma: {currentNPC.stats?.trauma ?? 0}");
+    }
+
+    private void AppendRuntimeContext(StringBuilder prompt) {
+        var appRoot = AppRoot.Instance;
+        if (appRoot == null || appRoot.DatabaseManager == null || appRoot.ProgressManager == null) {
+            prompt.AppendLine();
+            prompt.AppendLine("Current game context:");
+            prompt.AppendLine("- Runtime context unavailable. Use only the NPC context above.");
+            return;
+        }
+
+        var databaseManager = appRoot.DatabaseManager;
+        var progressManager = appRoot.ProgressManager;
+
+        prompt.AppendLine();
+        prompt.AppendLine("Current game context:");
+        prompt.AppendLine($"- Phase: {appRoot.GameStateManager?.CurrentPhase.ToString() ?? "Unknown"}");
+        prompt.AppendLine("- Scene premise: The current NPC is already a suspect at the crime scene. They know a death occurred and police are investigating.");
+
+        AppendKnownEvidence(prompt, databaseManager, progressManager);
+        AppendKnownFacts(prompt, databaseManager, progressManager);
+        AppendNpcTruthContext(prompt, databaseManager, progressManager);
+    }
+
+    private static void AppendKnownEvidence(
+        StringBuilder prompt,
+        DatabaseManager databaseManager,
+        ProgressManager progressManager) {
+        prompt.AppendLine();
+        prompt.AppendLine("Player-known evidence:");
+        if (progressManager.CollectedEvidenceIds.Count == 0) {
+            prompt.AppendLine("- None");
+            return;
+        }
+
+        foreach (var evidenceId in progressManager.CollectedEvidenceIds) {
+            if (databaseManager.EvidenceDatabase != null &&
+                databaseManager.EvidenceDatabase.TryGetEvidence(evidenceId, out var evidence)) {
+                prompt.AppendLine($"- {evidenceId}: {evidence.displayName} - {evidence.summary}");
+            } else {
+                prompt.AppendLine($"- {evidenceId}");
+            }
+        }
+    }
+
+    private static void AppendKnownFacts(
+        StringBuilder prompt,
+        DatabaseManager databaseManager,
+        ProgressManager progressManager) {
+        prompt.AppendLine();
+        prompt.AppendLine("Player-known facts:");
+        if (progressManager.UnlockedFactIds.Count == 0) {
+            prompt.AppendLine("- None");
+            return;
+        }
+
+        foreach (var factId in progressManager.UnlockedFactIds) {
+            if (databaseManager.FactDatabase != null &&
+                databaseManager.FactDatabase.TryGetFact(factId, out var fact)) {
+                prompt.AppendLine($"- {factId}: {fact.displayName} - {fact.summary}");
+            } else {
+                prompt.AppendLine($"- {factId}");
+            }
+        }
+    }
+
+    private void AppendNpcTruthContext(
+        StringBuilder prompt,
+        DatabaseManager databaseManager,
+        ProgressManager progressManager) {
+        if (databaseManager.TruthDatabase == null ||
+            !databaseManager.TruthDatabase.TryGetNpcTruth(currentNPC.npcId, out var npcTruth)) {
+            return;
+        }
+
+        prompt.AppendLine();
+        prompt.AppendLine("NPC private acting context:");
+        prompt.AppendLine($"- Actual relationship to victim: {npcTruth.actualRelationshipToVictim}");
+        prompt.AppendLine($"- Is killer: {npcTruth.isKiller}");
+        prompt.AppendLine($"- Backstory: {npcTruth.backstory}");
+        prompt.AppendLine($"- Real motive: {npcTruth.realMotive}");
+        prompt.AppendLine($"- Hidden truth: {npcTruth.hiddenTruth}");
+        AppendList(prompt, "NPC knowledge:", npcTruth.knowledge);
+
+        AppendRevealContext(prompt, npcTruth.dialogueTriggers, progressManager);
+    }
+
+    private static void AppendRevealContext(
+        StringBuilder prompt,
+        IReadOnlyList<DialogueTriggerData> dialogueTriggers,
+        ProgressManager progressManager) {
+        prompt.AppendLine();
+        prompt.AppendLine("Allowed Reveal Context:");
+        var addedAllowedReveal = false;
+        foreach (var trigger in dialogueTriggers) {
+            if (!RequirementsSatisfied(trigger.unlockRequirements, progressManager)) {
+                continue;
+            }
+
+            addedAllowedReveal = true;
+            AppendTrigger(prompt, trigger);
+        }
+
+        if (!addedAllowedReveal) {
+            prompt.AppendLine("- None");
+        }
+
+        prompt.AppendLine();
+        prompt.AppendLine("Guess-sensitive reveal candidates:");
+        var addedGuessReveal = false;
+        foreach (var trigger in dialogueTriggers) {
+            if (RequirementsSatisfied(trigger.unlockRequirements, progressManager)) {
+                continue;
+            }
+
+            addedGuessReveal = true;
+            AppendTrigger(prompt, trigger);
+        }
+
+        if (!addedGuessReveal) {
+            prompt.AppendLine("- None");
+        }
+    }
+
+    private static void AppendTrigger(StringBuilder prompt, DialogueTriggerData trigger) {
+        prompt.AppendLine($"- Trigger: {trigger.triggerId}");
+        prompt.AppendLine($"  Topic: {trigger.topic}");
+        prompt.AppendLine($"  Reveal goal: {trigger.revealGoal}");
+        prompt.AppendLine($"  AI guidance: {trigger.aiGuidance}");
+        AppendList(prompt, "  Must withhold:", trigger.withhold);
+        AppendList(prompt, "  Example phrasing:", trigger.examplePhrasings);
+    }
+
+    private static void AppendList(StringBuilder prompt, string heading, IReadOnlyList<string> values) {
+        prompt.AppendLine(heading);
+        if (values == null || values.Count == 0) {
+            prompt.AppendLine("- None");
+            return;
+        }
+
+        foreach (var value in values) {
+            prompt.AppendLine($"- {value}");
+        }
+    }
+
+    private static bool RequirementsSatisfied(IReadOnlyList<string> requirements, ProgressManager progressManager) {
+        if (requirements == null || requirements.Count == 0) {
+            return true;
+        }
+
+        foreach (var requirement in requirements) {
+            if (!progressManager.IsEvidenceCollected(requirement) && !progressManager.IsFactUnlocked(requirement)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
