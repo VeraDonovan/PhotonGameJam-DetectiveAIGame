@@ -57,6 +57,62 @@
         "她知道自己清理过客厅和厨房的痕迹。",
         "她知道赵建民多年来一直在虐待她。"
       ],
+      "personalTimeline": [
+        {
+          "sequence": 1,
+          "time": "昨晚约19:00后",
+          "locationId": "kitchen",
+          "event": "林秀华在家中，知道卫国强来过赵建民家并与赵建民谈事。",
+          "whatThisNpcKnows": "她知道先来了一个成年男性访客，对方和赵建民谈完后走得很急。",
+          "whatThisNpcClaims": "昨晚有人来过，一个男的来谈事，谈完就走了。",
+          "whatThisNpcHides": "她不会主动说明自己是否听见具体谈话内容，也不会主动解释卫国强与赵建民之间的账簿关系。"
+        },
+        {
+          "sequence": 2,
+          "time": "昨晚稍后",
+          "locationId": "kitchen",
+          "event": "林秀华知道又来了一个年轻男人，后来被赵建民骂走。",
+          "whatThisNpcKnows": "她知道张铁柱来过，并且赵建民与张铁柱发生过冲突。",
+          "whatThisNpcClaims": "后来又来了个年轻的，赵建民把他骂走了。",
+          "whatThisNpcHides": "她不会主动说明张铁柱来访与身世秘密可能有关。"
+        },
+        {
+          "sequence": 3,
+          "time": "昨晚21:00-23:00之间",
+          "locationId": "living_room",
+          "event": "赵建民醉酒后再次对林秀华施暴，林秀华抓起炉钩击中其太阳穴。",
+          "whatThisNpcKnows": "她知道自己在冲突中用炉钩打中了赵建民，赵建民随后倒地死亡。",
+          "whatThisNpcClaims": "在被足够证据施压前，她只说自己以为赵建民喝多了睡着。",
+          "whatThisNpcHides": "她隐藏自己是直接击打者，也隐藏死亡其实发生在前一晚。"
+        },
+        {
+          "sequence": 4,
+          "time": "案发后深夜",
+          "locationId": "living_room",
+          "event": "林秀华清理客厅地面和炉钩相关痕迹。",
+          "whatThisNpcKnows": "她知道客厅和凶器附近有血迹，自己清理过这些痕迹。",
+          "whatThisNpcClaims": "在被追问前，她不主动承认清理行为。",
+          "whatThisNpcHides": "她隐藏清理行为与自己击打赵建民之间的直接关系。"
+        },
+        {
+          "sequence": 5,
+          "time": "案发后深夜",
+          "locationId": "kitchen",
+          "event": "林秀华处理厨房水槽与抹布上的残留。",
+          "whatThisNpcKnows": "她知道抹布和水槽痕迹来自清理血迹。",
+          "whatThisNpcClaims": "她可能用切菜或收拾厨房解释异常痕迹。",
+          "whatThisNpcHides": "她隐藏清理路线从客厅延伸到厨房。"
+        },
+        {
+          "sequence": 6,
+          "time": "次日早上约7:00",
+          "locationId": "bedroom",
+          "event": "林秀华报案，称自己早上发现赵建民叫不醒。",
+          "whatThisNpcKnows": "她知道赵建民前一晚已经死亡。",
+          "whatThisNpcClaims": "早上七点发现他没起床，叫不醒，就报警了。",
+          "whatThisNpcHides": "她隐藏自己早在深夜就知道赵建民死亡。"
+        }
+      ],
       "dialogueTriggers": [
         {
           "triggerId": "npc_1.trigger_1",
@@ -144,6 +200,44 @@
         "他知道赵建民掌握着自己旧账目的把柄。",
         "他知道自己案发当晚来过赵家。",
         "他不知道林秀华是自己的母亲。"
+      ],
+      "personalTimeline": [
+        {
+          "sequence": 1,
+          "time": "昨晚约19:00",
+          "locationId": "living_room",
+          "event": "卫国强来到赵建民家，与赵建民谈账簿相关的私事。",
+          "whatThisNpcKnows": "他知道自己来赵家的真实目的是拿回记录旧账的账簿。",
+          "whatThisNpcClaims": "我昨晚来过，七点左右，和赵建民有点私事要谈。",
+          "whatThisNpcHides": "他隐藏账簿里记着自己的违规旧账，也隐藏自己被赵建民长期威胁。"
+        },
+        {
+          "sequence": 2,
+          "time": "昨晚约19:00后",
+          "locationId": "living_room",
+          "event": "赵建民拒绝交出账簿，卫国强谈崩后离开。",
+          "whatThisNpcKnows": "他知道自己离开时赵建民还活着。",
+          "whatThisNpcClaims": "谈完就走了。",
+          "whatThisNpcHides": "他隐藏自己和赵建民谈崩，也避免说明自己离开时的具体情绪和目的。"
+        },
+        {
+          "sequence": 3,
+          "time": "昨晚稍后至死亡前",
+          "locationId": "living_room",
+          "event": "卫国强不在赵建民家中。",
+          "whatThisNpcKnows": "他不知道赵建民具体什么时候死亡，也不知道林秀华之后做了什么。",
+          "whatThisNpcClaims": "他会坚持自己离开后没有再回来。",
+          "whatThisNpcHides": "他可能回避明确解释自己如何确认离开时赵建民仍活着。"
+        },
+        {
+          "sequence": 4,
+          "time": "次日早上",
+          "locationId": "living_room",
+          "event": "卫国强得知赵建民死亡后主动来到现场协助调查。",
+          "whatThisNpcKnows": "他知道自己主动出现会显得配合，也能影响调查方向。",
+          "whatThisNpcClaims": "我和赵会计认识，听说出了事，过来看看。",
+          "whatThisNpcHides": "他隐藏自己想把怀疑引向张铁柱，并隐藏自己害怕账簿内容暴露。"
+        }
       ],
       "dialogueTriggers": [
         {
@@ -247,6 +341,53 @@
         "他知道赵建民欠自己母亲的钱。",
         "他知道是自己拿走了手表。",
         "他不知道赵建民其实知道他的真实身份。"
+      ],
+      "personalTimeline": [
+        {
+          "sequence": 1,
+          "time": "昨晚约19:00后",
+          "locationId": "living_room",
+          "event": "张铁柱来到赵建民家，向赵建民讨一笔与母亲有关的旧债。",
+          "whatThisNpcKnows": "他知道自己是来讨债的，也知道自己和赵建民发生过争执。",
+          "whatThisNpcClaims": "我昨晚去过，和他有点事，谈不拢。",
+          "whatThisNpcHides": "他一开始隐藏自己真正认识赵建民并为讨债而来。"
+        },
+        {
+          "sequence": 2,
+          "time": "昨晚稍后",
+          "locationId": "living_room",
+          "event": "赵建民用身世相关的话嘲弄张铁柱，张铁柱没有听懂真实含义。",
+          "whatThisNpcKnows": "他记得赵建民说过刺痛他的话，但不明白赵建民知道自己的真实身份。",
+          "whatThisNpcClaims": "他会说两人只是吵了一架。",
+          "whatThisNpcHides": "他不主动复述赵建民关于身世的嘲弄。"
+        },
+        {
+          "sequence": 3,
+          "time": "离开前",
+          "locationId": "living_room",
+          "event": "张铁柱拿走窗台上的手表。",
+          "whatThisNpcKnows": "他知道自己拿走了手表，也知道手表和母亲有关。",
+          "whatThisNpcClaims": "在被追问前，他会说不知道手表在哪里。",
+          "whatThisNpcHides": "他隐藏自己偷走手表，以及自己对手表和母亲关系的执念。"
+        },
+        {
+          "sequence": 4,
+          "time": "离开后至死亡时间",
+          "locationId": "outside",
+          "event": "张铁柱已经离开赵建民家。",
+          "whatThisNpcKnows": "他知道自己离开后没有再回到赵家。",
+          "whatThisNpcClaims": "谈不拢后我就走了。",
+          "whatThisNpcHides": "他隐藏离开前拿走手表，所以也回避说清离开时的完整经过。"
+        },
+        {
+          "sequence": 5,
+          "time": "次日早上",
+          "locationId": "bedroom",
+          "event": "张铁柱被卫国强牵进现场，站在卧室里回避尸体。",
+          "whatThisNpcKnows": "他知道自己被卫国强叫来，也知道自己害怕面对赵建民尸体。",
+          "whatThisNpcClaims": "我不认识这家人，是卫国强叫我来的。",
+          "whatThisNpcHides": "他隐藏自己昨晚已经来过赵家，也隐藏自己拿走手表。"
+        }
       ],
       "dialogueTriggers": [
         {

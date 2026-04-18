@@ -51,8 +51,21 @@ namespace DetectiveGame.Core
         public string realMotive;
         public string hiddenTruth;
         public List<string> knowledge = new List<string>();
+        public List<NpcPersonalTimelineEntryData> personalTimeline = new List<NpcPersonalTimelineEntryData>();
         public List<DialogueTriggerData> dialogueTriggers = new List<DialogueTriggerData>();
         public List<TruthInterrogationLayerData> interrogationLayers = new List<TruthInterrogationLayerData>();
+    }
+
+    [Serializable]
+    public sealed class NpcPersonalTimelineEntryData
+    {
+        public int sequence;
+        public string time;
+        public string locationId;
+        public string @event;
+        public string whatThisNpcKnows;
+        public string whatThisNpcClaims;
+        public string whatThisNpcHides;
     }
 
     [Serializable]

@@ -141,15 +141,16 @@ public class DialogueController : MonoBehaviour {
 
         var databaseManager = appRoot.DatabaseManager;
         var progressManager = appRoot.ProgressManager;
+        var currentPhase = appRoot.GameStateManager?.CurrentPhase;
 
         prompt.AppendLine();
         prompt.AppendLine("Current game context:");
-        prompt.AppendLine($"- Phase: {appRoot.GameStateManager?.CurrentPhase.ToString() ?? "Unknown"}");
+        prompt.AppendLine($"- Phase: {currentPhase?.ToString() ?? "Unknown"}");
         prompt.AppendLine("- Scene premise: The current NPC is already a suspect at the crime scene. They know a death occurred and police are investigating.");
 
         AppendKnownEvidence(prompt, databaseManager, progressManager);
         AppendKnownFacts(prompt, databaseManager, progressManager);
-        AppendNpcTruthContext(prompt, databaseManager, progressManager);
+        AppendNpcTruthContext(prompt, databaseManager, progressManager, currentPhase == GamePhase.Interrogation);
     }
 
     private static void AppendKnownEvidence(
@@ -197,7 +198,8 @@ public class DialogueController : MonoBehaviour {
     private void AppendNpcTruthContext(
         StringBuilder prompt,
         DatabaseManager databaseManager,
-        ProgressManager progressManager) {
+        ProgressManager progressManager,
+        bool includeInterrogationContext) {
         if (databaseManager.TruthDatabase == null ||
             !databaseManager.TruthDatabase.TryGetNpcTruth(currentNPC.npcId, out var npcTruth)) {
             return;
@@ -211,18 +213,47 @@ public class DialogueController : MonoBehaviour {
         prompt.AppendLine($"- Real motive: {npcTruth.realMotive}");
         prompt.AppendLine($"- Hidden truth: {npcTruth.hiddenTruth}");
         AppendList(prompt, "NPC knowledge:", npcTruth.knowledge);
+        AppendPersonalTimeline(prompt, npcTruth.personalTimeline);
 
-        AppendRevealContext(prompt, npcTruth.dialogueTriggers, progressManager);
+        AppendRevealContext(prompt, npcTruth.dialogueTriggers, npcTruth.interrogationLayers, progressManager, includeInterrogationContext);
+    }
+
+    private static void AppendPersonalTimeline(
+        StringBuilder prompt,
+        IReadOnlyList<NpcPersonalTimelineEntryData> personalTimeline) {
+        prompt.AppendLine();
+        prompt.AppendLine("NPC personal timeline:");
+        if (personalTimeline == null || personalTimeline.Count == 0) {
+            prompt.AppendLine("- None");
+            return;
+        }
+
+        foreach (var timelineEntry in personalTimeline) {
+            if (timelineEntry == null) {
+                continue;
+            }
+
+            prompt.AppendLine($"- {timelineEntry.time} @ {timelineEntry.locationId}: {timelineEntry.@event}");
+            prompt.AppendLine($"  Knows: {timelineEntry.whatThisNpcKnows}");
+            prompt.AppendLine($"  Claims: {timelineEntry.whatThisNpcClaims}");
+            prompt.AppendLine($"  Hides: {timelineEntry.whatThisNpcHides}");
+        }
     }
 
     private static void AppendRevealContext(
         StringBuilder prompt,
         IReadOnlyList<DialogueTriggerData> dialogueTriggers,
-        ProgressManager progressManager) {
+        IReadOnlyList<TruthInterrogationLayerData> interrogationLayers,
+        ProgressManager progressManager,
+        bool includeInterrogationContext) {
         prompt.AppendLine();
         prompt.AppendLine("Allowed Reveal Context:");
         var addedAllowedReveal = false;
-        foreach (var trigger in dialogueTriggers) {
+        foreach (var trigger in dialogueTriggers ?? new List<DialogueTriggerData>()) {
+            if (trigger == null) {
+                continue;
+            }
+
             if (!RequirementsSatisfied(trigger.unlockRequirements, progressManager)) {
                 continue;
             }
@@ -238,7 +269,11 @@ public class DialogueController : MonoBehaviour {
         prompt.AppendLine();
         prompt.AppendLine("Guess-sensitive reveal candidates:");
         var addedGuessReveal = false;
-        foreach (var trigger in dialogueTriggers) {
+        foreach (var trigger in dialogueTriggers ?? new List<DialogueTriggerData>()) {
+            if (trigger == null) {
+                continue;
+            }
+
             if (RequirementsSatisfied(trigger.unlockRequirements, progressManager)) {
                 continue;
             }
@@ -250,6 +285,31 @@ public class DialogueController : MonoBehaviour {
         if (!addedGuessReveal) {
             prompt.AppendLine("- None");
         }
+
+        prompt.AppendLine();
+        prompt.AppendLine("Current NPC interrogation guidance:");
+        if (!includeInterrogationContext) {
+            prompt.AppendLine("- None. Current phase is not interrogation.");
+            return;
+        }
+
+        var addedInterrogationGuidance = false;
+        foreach (var layer in interrogationLayers ?? new List<TruthInterrogationLayerData>()) {
+            if (layer == null) {
+                continue;
+            }
+
+            if (!RequirementsSatisfied(layer.requiredEvidenceIds, progressManager)) {
+                continue;
+            }
+
+            addedInterrogationGuidance = true;
+            AppendInterrogationLayer(prompt, layer);
+        }
+
+        if (!addedInterrogationGuidance) {
+            prompt.AppendLine("- None");
+        }
     }
 
     private static void AppendTrigger(StringBuilder prompt, DialogueTriggerData trigger) {
@@ -259,6 +319,17 @@ public class DialogueController : MonoBehaviour {
         prompt.AppendLine($"  AI guidance: {trigger.aiGuidance}");
         AppendList(prompt, "  Must withhold:", trigger.withhold);
         AppendList(prompt, "  Example phrasing:", trigger.examplePhrasings);
+    }
+
+    private static void AppendInterrogationLayer(StringBuilder prompt, TruthInterrogationLayerData layer) {
+        prompt.AppendLine($"- Layer: {layer.layerId}");
+        prompt.AppendLine($"  Round type: {layer.roundType}");
+        prompt.AppendLine($"  Topic: {layer.topic}");
+        prompt.AppendLine($"  Reveal goal: {layer.revealGoal}");
+        prompt.AppendLine($"  AI guidance: {layer.aiGuidance}");
+        AppendList(prompt, "  Required evidence:", layer.requiredEvidenceIds);
+        AppendList(prompt, "  Reveal facts:", layer.revealFactIds);
+        AppendList(prompt, "  Example phrasing:", layer.examplePhrasings);
     }
 
     private static void AppendList(StringBuilder prompt, string heading, IReadOnlyList<string> values) {

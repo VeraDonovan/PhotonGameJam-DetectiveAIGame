@@ -10,11 +10,28 @@
     "roomCount": 4,
     "notes": "定义房间列表、场景物件、可藏证据槽位，以及后续地图摆放用的预留字段。"
   },
+  "npcPlacements": [
+    {
+      "npcId": "npc_1",
+      "locationId": "kitchen",
+      "locationObjectId": "kitchen_npc_lin_xiuhua"
+    },
+    {
+      "npcId": "npc_2",
+      "locationId": "living_room",
+      "locationObjectId": "living_room_npc_wei_guoqiang"
+    },
+    {
+      "npcId": "npc_3",
+      "locationId": "bedroom",
+      "locationObjectId": "bedroom_npc_zhang_tiezhu"
+    }
+  ],
   "rooms": [
     {
       "roomId": "living_room",
       "displayName": "客厅",
-      "objectCount": 7,
+      "objectCount": 8,
       "objects": [
         {
           "objectId": "living_room_sofa",
@@ -99,6 +116,19 @@
           "canHideEvidence": false,
           "hiddenEvidenceIds": [],
           "notes": "窗台文字交互：窗台上一圈灰，中间有个长方形空白，大小像一只手表。触发 fact_17。"
+        },
+        {
+          "objectId": "living_room_npc_wei_guoqiang",
+          "npcId": "npc_2",
+          "displayName": "卫国强",
+          "objectType": "npc_anchor",
+          "placementSlotId": "",
+          "placementPosition": "",
+          "placementRotation": "",
+          "interactive": true,
+          "canHideEvidence": true,
+          "hiddenEvidenceIds": ["A-6", "B-1", "B-4", "B-5", "B-6"],
+          "notes": "与卫国强相关的观察与对话线索锚点。"
         }
       ]
     },
@@ -145,6 +175,7 @@
         },
         {
           "objectId": "kitchen_npc_lin_xiuhua",
+          "npcId": "npc_1",
           "displayName": "林秀华",
           "objectType": "npc_anchor",
           "placementSlotId": "",
@@ -200,6 +231,7 @@
         },
         {
           "objectId": "bedroom_npc_zhang_tiezhu",
+          "npcId": "npc_3",
           "displayName": "张铁柱",
           "objectType": "npc_anchor",
           "placementSlotId": "",
