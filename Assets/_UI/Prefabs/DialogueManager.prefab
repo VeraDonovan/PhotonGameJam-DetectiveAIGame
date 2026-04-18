@@ -108,3 +108,6 @@ MonoBehaviour:
     initialStatement: 
     interrogationLayers: []
   playerInputField: {fileID: 0}
+  dialogueClient: {fileID: 0}
+  basePrompt: {fileID: 4900000, guid: b17d71a64b7f44f69f0e28adcf818af0, type: 3}
+  submitKey: 13

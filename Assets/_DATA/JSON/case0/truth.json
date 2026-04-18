@@ -76,7 +76,7 @@
         {
           "triggerId": "npc_1.trigger_2",
           "topic": "现场清理",
-          "unlockRequirements": ["B-11"],
+          "unlockRequirements": ["fact_4"],
           "revealGoal": "让玩家知道她承认案发后处理过带血痕迹。",
           "aiGuidance": "如果玩家用清理痕迹施压，她可以承认自己清理过现场，但会把行为描述成慌乱中的处理，而不是主动给出完整作案结论。",
           "withhold": [
@@ -107,29 +107,25 @@
       "interrogationLayers": [
         {
           "layerId": "npc_1.layer_1",
-          "topic": "她当晚在场，并看见过来访者。",
-          "revealGoal": "让玩家知道案发当晚先后有两名男性来访者。",
-          "aiGuidance": "如果玩家追问案发当晚情况，她可以承认自己看到过两名男性来访，但会避免主动解释更多关系背景。",
+          "roundType": "shake",
+          "topic": "第一轮：动摇。承认当晚有访客，并承认清理过现场。",
+          "revealGoal": "让玩家知道案发当晚先后有两名男性来访者，并确认她处理过带血痕迹。",
+          "requiredEvidenceIds": ["A-11", "A-1", "B-7", "A-4"],
+          "revealFactIds": ["fact_7", "fact_4"],
+          "aiGuidance": "如果玩家用死亡时间、烟蒂、抹布血检或地板擦拭痕迹施压，她可以承认有访客和清理现场，但仍不主动承认杀人。",
           "examplePhrasings": [
             "那晚先后来了两个人。",
-            "一个来谈事，另一个后来被赶走了。"
+            "是我收拾过那些血迹，我只是想让屋里看起来正常一点。"
           ]
         },
         {
           "layerId": "npc_1.layer_2",
-          "topic": "她清理过凶器和现场。",
-          "revealGoal": "让玩家知道她承认案发后处理过带血痕迹。",
-          "aiGuidance": "如果玩家用清理痕迹施压，她可以承认自己清理过现场，但会把行为描述成慌乱中的处理，而不是主动给出完整作案结论。",
-          "examplePhrasings": [
-            "是我收拾过那些血迹。",
-            "我只是想让屋里看起来别那么吓人。"
-          ]
-        },
-        {
-          "layerId": "npc_1.layer_3",
-          "topic": "她是怎么杀死赵建民的，又为什么会下手。",
-          "revealGoal": "让玩家知道她承认自己在再次遭受施暴时用炉钩击打了赵建民。",
-          "aiGuidance": "在第三层崩溃时，她可以承认自己动了手，并提到家暴、孩子和当晚冲突，但表达应像情绪失控后的供述，不需要固定逐字复述。",
+          "roundType": "collapse",
+          "topic": "第二轮：崩溃。承认长期家暴，并完成认罪。",
+          "revealGoal": "让玩家知道她在再次遭受施暴时用炉钩击打赵建民，并在事后清理现场、改动灯泡状态、次日报警。",
+          "requiredEvidenceIds": ["B-10", "B-14"],
+          "revealFactIds": ["fact_10", "fact_12"],
+          "aiGuidance": "如果玩家用淤青法医报告或旧款灯泡继续施压，她可以彻底崩溃并交代完整经过。表达应像情绪失控后的供述，不需要固定逐字复述。",
           "examplePhrasings": [
             "他又动手了，我拿起炉钩砸了过去。",
             "我只想让他停下来，没想到会变成这样。"
@@ -214,29 +210,25 @@
       "interrogationLayers": [
         {
           "layerId": "npc_2.layer_1",
-          "topic": "他案发当晚来过这里，不是事后路过。",
-          "revealGoal": "让玩家知道他承认自己案发当晚来过赵家。",
-          "aiGuidance": "如果玩家抓住时间和来访痕迹追问，他可以承认自己当晚来过，但会先把目的描述成私事，不主动展开账簿内容。",
+          "roundType": "shake",
+          "topic": "第一轮：动摇。承认昨晚来过，并承认为账簿而来。",
+          "revealGoal": "让玩家知道他案发当晚来过赵家，真实目的是要回账簿。",
+          "requiredEvidenceIds": ["A-1", "A-2", "A-12"],
+          "revealFactIds": ["fact_1", "fact_2"],
+          "aiGuidance": "如果玩家抓住烟蒂、陈述矛盾、账簿和林秀华供词追问，他可以承认自己当晚来过并且是为了账簿，但坚持离开时赵建民还活着。",
           "examplePhrasings": [
             "我那晚确实来过。",
-            "我来找他谈点私事，说完就走了。"
+            "那本账簿里有我的旧事，我来是想把它拿回来。"
           ]
         },
         {
           "layerId": "npc_2.layer_2",
-          "topic": "他来不是出于关心，而是为了账簿。",
-          "revealGoal": "让玩家知道他承认自己来找赵建民与账簿记录有关。",
-          "aiGuidance": "如果玩家拿账簿和来访目的施压，他可以承认账簿里记有自己的旧账，并承认自己此行是想拿回账簿，但不需要固定成整段台词。",
-          "examplePhrasings": [
-            "那本账簿里有我的旧事。",
-            "我来是想把它拿回来。"
-          ]
-        },
-        {
-          "layerId": "npc_2.layer_3",
-          "topic": "他隐藏的家庭身份。",
-          "revealGoal": "让玩家知道这条身世线索对他造成强烈冲击。",
-          "aiGuidance": "如果玩家把收养背景、年龄和林秀华失子经历串起来，他的反应应是震惊、否认和崩溃，而不是清晰讲出答案。",
+          "roundType": "collapse",
+          "topic": "第二轮：崩溃。身世真相瓦解。",
+          "revealGoal": "让玩家知道卫国强是林秀华年轻时被迫送走的亲生儿子。",
+          "requiredEvidenceIds": ["A-12"],
+          "revealFactIds": ["fact_13"],
+          "aiGuidance": "如果玩家交叉引用林秀华第二轮崩溃台词并追问身世，他的反应应是震惊、否认和崩溃，而不是清晰讲出答案。",
           "examplePhrasings": [
             "不可能，这说不通。",
             "他怎么会知道这种事。"
@@ -275,7 +267,7 @@
         {
           "triggerId": "npc_3.trigger_2",
           "topic": "失踪手表",
-          "unlockRequirements": ["A-5"],
+          "unlockRequirements": ["fact_17"],
           "revealGoal": "让玩家知道他对失踪手表明显防备，并在高压力下承认自己拿走了手表。",
           "aiGuidance": "如果玩家持续追问手表去向，他可以先回避，再承认自己拿走了表，并强调这只表和母亲有关。",
           "withhold": [
@@ -321,29 +313,25 @@
       "interrogationLayers": [
         {
           "layerId": "npc_3.layer_1",
-          "topic": "他案发当晚也来过这里。",
-          "revealGoal": "让玩家知道他承认案发当晚来过赵家，并与死者发生争执。",
-          "aiGuidance": "如果玩家抓住来访矛盾追问，他可以承认自己来过，也可以承认与赵建民吵过，但不会主动给出更深背景。",
+          "roundType": "shake",
+          "topic": "第一轮：动摇。承认来过、偷走手表，并触发排除凶手转折。",
+          "revealGoal": "让玩家知道他案发当晚来过赵家并拿走手表，但现有死亡时间无法直接指向他。",
+          "requiredEvidenceIds": ["A-11"],
+          "revealFactIds": ["fact_6", "fact_8", "fact_15"],
+          "aiGuidance": "如果玩家抓住陈述矛盾、窗台手表空痕和手表背面信息追问，他可以承认来过并拿走手表。此轮应把他从凶手线转向身世线。",
           "examplePhrasings": [
             "我那晚来过。",
-            "我们吵了一架，后来我就走了。"
+            "对，表是我拿走的，那东西本来就和我妈有关。"
           ]
         },
         {
           "layerId": "npc_3.layer_2",
-          "topic": "他拿走了手表。",
-          "revealGoal": "让玩家知道他承认自己拿走了手表，并认为那只表和母亲有关。",
-          "aiGuidance": "如果玩家持续追问手表去向，他可以承认自己拿走了表，并强调这只表和母亲有关，但不需要固定逐字表达。",
-          "examplePhrasings": [
-            "对，表是我拿走的。",
-            "那东西本来就和我妈有关。"
-          ]
-        },
-        {
-          "layerId": "npc_3.layer_3",
-          "topic": "他隐藏的家庭身份。",
-          "revealGoal": "让玩家知道他开始怀疑自己与赵建民之间存在血缘关系。",
-          "aiGuidance": "如果玩家把账簿、手表和赵建民的话连起来追问，他应表现出愤怒、困惑和对身世的追问，而不是自己直接下结论。",
+          "roundType": "collapse",
+          "topic": "第二轮：崩溃。身世真相瓦解。",
+          "revealGoal": "让玩家知道张铁柱开始怀疑自己与赵建民之间存在血缘关系。",
+          "requiredEvidenceIds": ["A-12"],
+          "revealFactIds": ["fact_14"],
+          "aiGuidance": "如果玩家把账簿、手表和赵建民的嘲弄连起来追问，他应表现出愤怒、否认、长久沉默和对身世的追问，而不是自己直接下结论。",
           "examplePhrasings": [
             "他和我到底是什么关系？",
             "他是不是早就知道我是谁？"

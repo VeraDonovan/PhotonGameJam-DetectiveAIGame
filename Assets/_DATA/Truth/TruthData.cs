@@ -71,8 +71,11 @@ namespace DetectiveGame.Core
     public sealed class TruthInterrogationLayerData
     {
         public string layerId;
+        public string roundType;
         public string topic;
         public string revealGoal;
+        public List<string> requiredEvidenceIds = new List<string>();
+        public List<string> revealFactIds = new List<string>();
         public string aiGuidance;
         public List<string> examplePhrasings = new List<string>();
     }

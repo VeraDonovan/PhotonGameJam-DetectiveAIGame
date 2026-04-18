@@ -221,6 +221,11 @@ namespace DetectiveGame.Gameplay.Tests
                         ValidateRequirementId(errors, databaseManager, $"Dialogue trigger '{trigger.triggerId}'", requirementId);
                     }
                 }
+
+                foreach (var layer in npcTruth.interrogationLayers ?? new List<TruthInterrogationLayerData>())
+                {
+                    ValidateInterrogationLayerReferences(errors, databaseManager, layer);
+                }
             }
 
             foreach (var deductionTruth in databaseManager.TruthDatabase.DeductionTruthById.Values)
@@ -231,6 +236,34 @@ namespace DetectiveGame.Gameplay.Tests
                     {
                         errors.Add($"Deduction truth '{deductionTruth.truthId}' requires missing fact '{factId}'.");
                     }
+                }
+            }
+        }
+
+        private static void ValidateInterrogationLayerReferences(
+            List<string> errors,
+            DatabaseManager databaseManager,
+            TruthInterrogationLayerData layer)
+        {
+            if (string.IsNullOrWhiteSpace(layer.layerId))
+            {
+                errors.Add("Interrogation layer contains a blank layer id.");
+                return;
+            }
+
+            foreach (var evidenceId in layer.requiredEvidenceIds ?? new List<string>())
+            {
+                if (!databaseManager.EvidenceDatabase.EvidenceById.ContainsKey(evidenceId))
+                {
+                    errors.Add($"Interrogation layer '{layer.layerId}' requires missing evidence '{evidenceId}'.");
+                }
+            }
+
+            foreach (var factId in layer.revealFactIds ?? new List<string>())
+            {
+                if (!databaseManager.FactDatabase.FactById.ContainsKey(factId))
+                {
+                    errors.Add($"Interrogation layer '{layer.layerId}' reveals missing fact '{factId}'.");
                 }
             }
         }
@@ -363,7 +396,22 @@ namespace DetectiveGame.Gameplay.Tests
                 {
                     report.AppendLine($"  isKiller: {npcTruth.isKiller}");
                     report.AppendLine($"  motivePresent: {ToYesNo(!string.IsNullOrWhiteSpace(npcTruth.realMotive))}");
+                    AppendInterrogationLayerSummary(report, databaseManager, npcTruth.interrogationLayers);
                 }
+            }
+        }
+
+        private static void AppendInterrogationLayerSummary(
+            StringBuilder report,
+            DatabaseManager databaseManager,
+            IEnumerable<TruthInterrogationLayerData> layers)
+        {
+            foreach (var layer in layers ?? new List<TruthInterrogationLayerData>())
+            {
+                report.AppendLine($"  - {layer.layerId} [{FormatEmpty(layer.roundType)}]");
+                report.AppendLine($"    topic: {FormatEmpty(layer.topic)}");
+                AppendResolvedEvidenceList(report, databaseManager, "requiredEvidence", layer.requiredEvidenceIds);
+                AppendResolvedFactList(report, databaseManager, "revealFacts", layer.revealFactIds);
             }
         }
 
@@ -452,6 +500,35 @@ namespace DetectiveGame.Gameplay.Tests
             }
 
             report.AppendLine(hasAny ? string.Empty : "None");
+        }
+
+        private static void AppendResolvedEvidenceList(
+            StringBuilder report,
+            DatabaseManager databaseManager,
+            string label,
+            IEnumerable<string> evidenceIds)
+        {
+            report.Append($"  {label}: ");
+
+            var hasAny = false;
+            foreach (var evidenceId in evidenceIds ?? new List<string>())
+            {
+                hasAny = true;
+                if (databaseManager.EvidenceDatabase.TryGetEvidence(evidenceId, out var evidence))
+                {
+                    report.Append($"{evidenceId}({evidence.displayName}); ");
+                    continue;
+                }
+
+                report.Append($"{evidenceId}(MISSING); ");
+            }
+
+            report.AppendLine(hasAny ? string.Empty : "None");
+        }
+
+        private static string FormatEmpty(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "unset" : value;
         }
 
         private static void AppendResolvedLayerList(

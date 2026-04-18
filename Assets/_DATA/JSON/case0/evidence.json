@@ -15,8 +15,6 @@
     { "evidenceId": "A-2", "tier": "A", "displayName": "两只茶杯", "summary": "客厅桌面有两只使用过的茶杯，杯中仍有残茶。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "wei_visit" },
     { "evidenceId": "A-3", "tier": "A", "displayName": "位置异常的炉钩子", "summary": "炉钩子的摆放方向与其他工具不同，末端留有深色残留。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
     { "evidenceId": "A-4", "tier": "A", "displayName": "被擦拭的地面污迹", "summary": "炉边地面有一处被擦拭过的深色污迹，地板缝隙中残留少量沉积物。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
-    { "evidenceId": "A-5", "tier": "A", "displayName": "手表空痕", "summary": "窗台积灰中留有一处长方形空白痕迹。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "watch_line" },
-    { "evidenceId": "A-7", "tier": "A", "displayName": "水槽边的深色残留", "summary": "厨房水槽边缘留有不属于日常油污的深色残留。", "locationId": "kitchen", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
     { "evidenceId": "A-8", "tier": "A", "displayName": "变色抹布", "summary": "垃圾桶里发现一块使用过且颜色异常的抹布。", "locationId": "kitchen", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
     { "evidenceId": "A-10", "tier": "A", "displayName": "双腕淤痕", "summary": "林秀华双侧手腕可见新旧不一的淤痕。", "locationId": "kitchen", "targetNpcId": "npc_1", "requirements": [], "mapGroup": "abuse_line" },
     { "evidenceId": "A-11", "tier": "A", "displayName": "初步尸检结果", "summary": "死者太阳穴存在钝器伤，死亡时间估计为21:00至23:00。", "locationId": "bedroom", "targetNpcId": null, "requirements": [], "mapGroup": "time_of_death" },
@@ -24,10 +22,9 @@
     { "evidenceId": "A-13", "tier": "A", "displayName": "损坏的床头灯", "summary": "床头灯无法正常点亮。", "locationId": "bedroom", "targetNpcId": null, "requirements": [], "mapGroup": "lin_lie" },
     { "evidenceId": "A-16", "tier": "A", "displayName": "跌打损伤药", "summary": "厕所镜柜内放有多瓶跌打损伤药，其中一瓶接近用尽。", "locationId": "bathroom", "targetNpcId": null, "requirements": [], "mapGroup": "abuse_line" },
     { "evidenceId": "B-3", "tier": "B", "displayName": "残留物比对记录", "summary": "炉钩末端残留与客厅地面缝隙残留在颜色和质地上接近。", "locationId": "living_room", "targetNpcId": null, "requirements": ["A-3", "A-4"], "mapGroup": "cleanup_chain" },
-    { "evidenceId": "B-7", "tier": "B", "displayName": "抹布血检结果", "summary": "检测结果显示抹布上留有与死者一致的血迹。", "locationId": "kitchen", "targetNpcId": null, "requirements": ["A-7", "A-8"], "mapGroup": "cleanup_chain" },
+    { "evidenceId": "B-7", "tier": "B", "displayName": "抹布血检结果", "summary": "检测结果显示抹布上留有与死者一致的血迹。", "locationId": "kitchen", "targetNpcId": null, "requirements": ["A-8"], "mapGroup": "cleanup_chain" },
     { "evidenceId": "B-9", "tier": "B", "displayName": "淤痕形态记录", "summary": "法医记录显示双腕淤痕呈指状分布。", "locationId": "kitchen", "targetNpcId": null, "requirements": ["A-10"], "mapGroup": "abuse_line" },
     { "evidenceId": "B-10", "tier": "B", "displayName": "旧伤复核结果", "summary": "法医复核显示林秀华身上存在多处不同时期形成的旧伤。", "locationId": "kitchen", "targetNpcId": null, "requirements": ["B-9"], "mapGroup": "abuse_line" },
-    { "evidenceId": "B-11", "tier": "B", "displayName": "多处残留对应记录", "summary": "客厅地面、水槽边缘和抹布上的异常残留可以互相对应。", "locationId": "kitchen", "targetNpcId": null, "requirements": ["B-3", "B-7"], "mapGroup": "cleanup_chain" },
     { "evidenceId": "B-14", "tier": "B", "displayName": "灯泡与接口记录", "summary": "床头灯的灯泡与接口较新，型号与灯座不一致。", "locationId": "bedroom", "targetNpcId": null, "requirements": ["A-13"], "mapGroup": "lin_lie" },
     { "evidenceId": "B-15", "tier": "B", "displayName": "颈部痕迹复核", "summary": "死者颈部痕迹属于旧伤，不构成本次直接死因。", "locationId": "bedroom", "targetNpcId": null, "requirements": ["A-11"], "mapGroup": "cause_of_death" },
     { "evidenceId": "B-17", "tier": "B", "displayName": "药瓶日期记录", "summary": "镜柜内最早一瓶跌打损伤药的日期可追溯到五年前。", "locationId": "bathroom", "targetNpcId": null, "requirements": ["B-10"], "mapGroup": "abuse_line" }
@@ -35,12 +32,9 @@
   "relationships": [
     { "fromId": "A-3", "toId": "B-3", "relationshipType": "supports", "displayText": "炉钩残留可与地面残留进行比对。" },
     { "fromId": "A-4", "toId": "B-3", "relationshipType": "supports", "displayText": "地面缝隙残留可与炉钩残留进行比对。" },
-    { "fromId": "A-7", "toId": "B-7", "relationshipType": "supports", "displayText": "水槽边残留与抹布一并送检。" },
     { "fromId": "A-8", "toId": "B-7", "relationshipType": "supports", "displayText": "抹布作为检测对象形成血检结果。" },
     { "fromId": "A-10", "toId": "B-9", "relationshipType": "supports", "displayText": "双腕淤痕进入法医形态记录。" },
     { "fromId": "B-9", "toId": "B-10", "relationshipType": "supports", "displayText": "淤痕记录可进一步进入旧伤复核。" },
-    { "fromId": "B-3", "toId": "B-11", "relationshipType": "supports", "displayText": "客厅残留比对结果纳入整体对应记录。" },
-    { "fromId": "B-7", "toId": "B-11", "relationshipType": "supports", "displayText": "抹布血检结果纳入整体对应记录。" },
     { "fromId": "A-13", "toId": "B-14", "relationshipType": "supports", "displayText": "床头灯本体可进入灯泡与接口复核。" },
     { "fromId": "A-11", "toId": "B-15", "relationshipType": "supports", "displayText": "尸检结果可进一步复核颈部痕迹。" },
     { "fromId": "A-16", "toId": "B-17", "relationshipType": "supports", "displayText": "镜柜内药物可记录最早使用日期。" }

@@ -6,6 +6,7 @@ public class DialogueController : MonoBehaviour {
     public NPCData currentNPC;
     public TMP_InputField playerInputField;
     [SerializeField] private DeepSeekDialogueClient dialogueClient;
+    [SerializeField] private TextAsset basePrompt;
     [SerializeField] private KeyCode submitKey = KeyCode.Return;
     private int nextDialogueRequestId;
 
@@ -45,14 +46,16 @@ public class DialogueController : MonoBehaviour {
         }
 
         if (dialogueClient == null) {
-            Debug.LogError("DeepSeekDialogueClient is not set. Add it to the scene under Gameplay/AI.");
+            Debug.LogError("DeepSeekDialogueClient is not set. Add it to the scene under _CORE/AI.");
             return;
         }
 
-        string systemPrompt = $"You are NPC {currentNPC.displayName} in a detective game.\n" +
-                              $"NPC backstory: {currentNPC.backstory}\n" +
-                              $"NPC initial statement: {currentNPC.initialStatement}\n" +
-                              "Answer in character. Keep the reply short and conversational.";
+        if (basePrompt == null) {
+            Debug.LogError("DialogueController is missing a base prompt TextAsset.");
+            return;
+        }
+
+        string systemPrompt = BuildSystemPrompt();
 
         int dialogueRequestId = nextDialogueRequestId++;
         DialogueManager.Instance.ReserveOrderedDialogue(dialogueRequestId);
@@ -69,5 +72,13 @@ public class DialogueController : MonoBehaviour {
     public void SetCurrentNPC(NPCData npc) {
         currentNPC = npc;
         Debug.Log("Current dialogue NPC set to: " + npc.displayName);
+    }
+
+    private string BuildSystemPrompt() {
+        return basePrompt.text + "\n\n" +
+               "Current NPC context:\n" +
+               $"- Name: {currentNPC.displayName}\n" +
+               $"- Backstory: {currentNPC.backstory}\n" +
+               $"- Initial statement: {currentNPC.initialStatement}";
     }
 }

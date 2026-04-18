@@ -65,10 +65,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["A-12", "npc_2.layer_2"],
+        "requirementsAll": ["A-12", "npc_2.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-12"],
-        "sourceDialogueIds": ["npc_2.layer_2"],
+        "sourceDialogueIds": ["npc_2.layer_1"],
         "sourceFactIds": ["fact_1"]
       },
       "progression": {
@@ -119,9 +119,9 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "derived",
-        "requirementsAll": ["B-3", "B-7", "B-11"],
+        "requirementsAll": ["B-3", "B-7"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["B-3", "B-7", "B-11"],
+        "sourceEvidenceIds": ["B-3", "B-7"],
         "sourceDialogueIds": [],
         "sourceFactIds": ["fact_3"]
       },
@@ -227,11 +227,11 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["A-5", "npc_3.layer_2"],
+        "requirementsAll": ["fact_17", "npc_3.layer_1"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-5"],
-        "sourceDialogueIds": ["npc_3.layer_2"],
-        "sourceFactIds": ["fact_6"]
+        "sourceEvidenceIds": [],
+        "sourceDialogueIds": ["npc_3.layer_1"],
+        "sourceFactIds": ["fact_6", "fact_17"]
       },
       "progression": {
         "usedFor": ["interrogation", "progression_map"],
@@ -247,6 +247,33 @@
       }
     },
     {
+      "factId": "fact_17",
+      "displayName": "窗台曾有手表但现已失踪",
+      "summary": "窗台积灰中留有长方形空白，大小像一只手表，说明这里原本放过一只手表。",
+      "category": "crime_scene",
+      "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
+      "unlock": {
+        "unlockType": "interaction",
+        "requirementsAll": [],
+        "requirementsAny": [],
+        "sourceEvidenceIds": [],
+        "sourceDialogueIds": [],
+        "sourceFactIds": []
+      },
+      "progression": {
+        "usedFor": ["interrogation", "progression_map"],
+        "unlocksFactIds": ["fact_8"],
+        "unlocksDialogueIds": [],
+        "unlocksEvidenceIds": [],
+        "supportsEndingIds": []
+      },
+      "scope": {
+        "relatedNpcIds": ["npc_3"],
+        "relatedLocationIds": ["living_room"],
+        "phaseTags": ["exploration", "interrogation"]
+      }
+    },
+    {
       "factId": "fact_9",
       "displayName": "床头灯与清理痕迹显示现场状态曾被改动",
       "summary": "无法点亮的床头灯、型号不一致的灯泡接口记录，以及连续的清理痕迹说明现场状态并非原始状态。",
@@ -254,9 +281,9 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "derived",
-        "requirementsAll": ["B-11", "B-14", "fact_7"],
+        "requirementsAll": ["fact_4", "B-14", "fact_7"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-13", "B-11", "B-14"],
+        "sourceEvidenceIds": ["A-13", "B-14"],
         "sourceDialogueIds": [],
         "sourceFactIds": ["fact_4", "fact_7"]
       },
@@ -335,10 +362,10 @@
       "truth": { "truthClass": "culprit_truth", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "dialogue_only",
-        "requirementsAll": ["npc_1.layer_3"],
+        "requirementsAll": ["npc_1.layer_2"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-3", "A-11", "B-11"],
-        "sourceDialogueIds": ["npc_1.layer_3"],
+        "sourceEvidenceIds": ["A-3", "A-11", "B-3", "B-7", "B-14"],
+        "sourceDialogueIds": ["npc_1.layer_2"],
         "sourceFactIds": ["fact_4", "fact_7", "fact_9", "fact_10"]
       },
       "progression": {
@@ -362,10 +389,10 @@
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["fact_11", "npc_2.layer_3"],
+        "requirementsAll": ["fact_11", "npc_2.layer_2"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-12"],
-        "sourceDialogueIds": ["npc_2.layer_3", "npc_1.layer_1"],
+        "sourceDialogueIds": ["npc_2.layer_2", "npc_1.layer_2"],
         "sourceFactIds": ["fact_11"]
       },
       "progression": {
@@ -389,10 +416,10 @@
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["fact_11", "fact_8", "npc_3.layer_3"],
+        "requirementsAll": ["fact_11", "fact_8", "npc_3.layer_2"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-5", "A-12"],
-        "sourceDialogueIds": ["npc_3.layer_2", "npc_3.layer_3"],
+        "sourceEvidenceIds": ["A-12"],
+        "sourceDialogueIds": ["npc_3.layer_1", "npc_3.layer_2"],
         "sourceFactIds": ["fact_8", "fact_11"]
       },
       "progression": {
@@ -445,8 +472,8 @@
         "unlockType": "derived",
         "requirementsAll": ["fact_11", "fact_13", "fact_14"],
         "requirementsAny": [],
-        "sourceEvidenceIds": ["A-12", "A-5"],
-        "sourceDialogueIds": ["npc_2.layer_3", "npc_3.layer_3"],
+        "sourceEvidenceIds": ["A-12"],
+        "sourceDialogueIds": ["npc_2.layer_2", "npc_3.layer_2"],
         "sourceFactIds": ["fact_11", "fact_13", "fact_14", "fact_12"]
       },
       "progression": {
@@ -472,6 +499,7 @@
     { "fromFactId": "fact_10", "toFactId": "fact_12", "relationshipType": "supports", "displayText": "伤痕与药物记录构成林秀华审讯的重要背景。" },
     { "fromFactId": "fact_11", "toFactId": "fact_13", "relationshipType": "supports", "displayText": "账簿中的姓名记录支撑卫国强身世线索。" },
     { "fromFactId": "fact_11", "toFactId": "fact_14", "relationshipType": "supports", "displayText": "账簿中的姓名记录支撑张铁柱的未公开联系线索。" },
+    { "fromFactId": "fact_17", "toFactId": "fact_8", "relationshipType": "supports", "displayText": "窗台空痕支撑手表失踪后的追问。" },
     { "fromFactId": "fact_8", "toFactId": "fact_15", "relationshipType": "supports", "displayText": "先记录张铁柱拿走手表，再比对其与死亡时间的关系。" },
     { "fromFactId": "fact_11", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "账簿是整体家庭关系线索的基础记录。" },
     { "fromFactId": "fact_13", "toFactId": "fact_16", "relationshipType": "supports", "displayText": "卫国强的身世线索支撑整体家庭关系记录。" },

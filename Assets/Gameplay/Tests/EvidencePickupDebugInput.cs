@@ -10,7 +10,7 @@ namespace DetectiveGame.Gameplay.Tests
         [SerializeField] private string[] evidenceIds =
         {
             "A-3", "A-4", "B-3",
-            "A-7", "A-8", "B-7", "B-8", "B-11", "C-1",
+            "A-8", "B-7", "B-8", "C-1",
             "A-9", "A-11", "A-13", "B-14", "C-2",
             "A-10", "B-9", "B-10", "A-16", "B-17", "C-3"
         };

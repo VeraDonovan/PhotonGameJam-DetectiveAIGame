@@ -13,11 +13,11 @@
       "category": "bad",
       "requirements": {
         "requiredFactIds": [],
-        "requiredNpcLayerIds": ["npc_3.layer_1", "npc_3.layer_2", "npc_1.layer_1"],
+        "requiredNpcLayerIds": ["npc_3.layer_1", "npc_1.layer_1"],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "只突破张铁柱前两层审讯，以及林秀华第一层审讯。",
+      "unlockConditionText": "突破张铁柱第一轮审讯，以及林秀华第一轮审讯。",
       "result": "张铁柱因偷窃与撒谎被错认成主要嫌疑人，卫国强洗脱怀疑，林秀华也暂时逃过追责。"
     },
     {
@@ -26,11 +26,11 @@
       "category": "main",
       "requirements": {
         "requiredFactIds": ["fact_12"],
-        "requiredNpcLayerIds": ["npc_1.layer_3"],
+        "requiredNpcLayerIds": ["npc_1.layer_2"],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "完整突破林秀华第三层审讯。",
+      "unlockConditionText": "突破林秀华第二轮审讯。",
       "result": "林秀华认罪。案件在杀人层面上被解开，但更深的家庭真相仍埋在水面之下。"
     },
     {
@@ -39,11 +39,11 @@
       "category": "hidden",
       "requirements": {
         "requiredFactIds": ["fact_13"],
-        "requiredNpcLayerIds": ["npc_2.layer_3"],
+        "requiredNpcLayerIds": ["npc_2.layer_2"],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "突破卫国强第三层审讯。",
+      "unlockConditionText": "突破卫国强第二轮审讯。",
       "result": "母子关系被揭开，卫国强在审讯室崩溃，只问了一句能不能见林秀华。"
     },
     {
@@ -52,11 +52,11 @@
       "category": "complete",
       "requirements": {
         "requiredFactIds": ["fact_12", "fact_13", "fact_14", "fact_16"],
-        "requiredNpcLayerIds": ["npc_1.layer_3", "npc_2.layer_3", "npc_3.layer_3"],
+        "requiredNpcLayerIds": ["npc_1.layer_2", "npc_2.layer_2", "npc_3.layer_2"],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
       },
-      "unlockConditionText": "将三名嫌疑人都推进到第三层，并揭开全部隐藏真相。",
+      "unlockConditionText": "将三名嫌疑人都推进到第二轮，并揭开全部隐藏真相。",
       "result": "那本账簿揭开了赵建民二十年来的控制与勒索，也揭开了这起命案背后扭曲的家庭史。林秀华得知卫国强的身份后，最终选择沉默。"
     }
   ]

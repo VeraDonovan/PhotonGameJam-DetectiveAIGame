@@ -96,9 +96,9 @@
           "placementPosition": "",
           "placementRotation": "",
           "interactive": true,
-          "canHideEvidence": true,
-          "hiddenEvidenceIds": ["A-5"],
-          "notes": "失踪的手表原本放在这里。"
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
+          "notes": "窗台文字交互：窗台上一圈灰，中间有个长方形空白，大小像一只手表。触发 fact_17。"
         }
       ]
     },
@@ -127,8 +127,8 @@
           "placementPosition": "",
           "placementRotation": "",
           "interactive": true,
-          "canHideEvidence": true,
-          "hiddenEvidenceIds": ["A-7"],
+          "canHideEvidence": false,
+          "hiddenEvidenceIds": [],
           "notes": ""
         },
         {
