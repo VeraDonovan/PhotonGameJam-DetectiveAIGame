@@ -7,16 +7,20 @@ namespace DetectiveGame.Core
     public sealed class UIManager : MonoBehaviour
     {
         [SerializeField] private KeyCode inventoryToggleKey = KeyCode.Tab;
+        [SerializeField] private GameObject menuPanelRoot;
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private InventoryPanelManager inventoryPanelManager;
+        [SerializeField] private bool menuOpenOnStart = true;
         [SerializeField] private bool inventoryOpenOnStart;
 
+        public bool IsMenuOpen => menuPanelRoot != null && menuPanelRoot.activeSelf;
         public bool IsInventoryOpen => inventoryRoot.activeSelf;
 
         public void Initialize()
         {
             ValidateConfiguration();
 
+            SetMenuOpen(menuOpenOnStart);
             inventoryRoot.SetActive(inventoryOpenOnStart);
 
             if (inventoryOpenOnStart)
@@ -41,6 +45,50 @@ namespace DetectiveGame.Core
             {
                 inventoryPanelManager.RefreshActiveTab();
             }
+        }
+
+        public void SetMenuOpen(bool isOpen)
+        {
+            if (menuPanelRoot != null)
+            {
+                menuPanelRoot.SetActive(isOpen);
+            }
+        }
+
+        public bool StartGame()
+        {
+            var appRoot = AppRoot.Instance;
+            if (appRoot == null || !appRoot.GameStateManager.TryStartGame())
+            {
+                return false;
+            }
+
+            SetMenuOpen(false);
+            return true;
+        }
+
+        public bool EnterInterrogationPhase()
+        {
+            var appRoot = AppRoot.Instance;
+            return appRoot != null && appRoot.GameStateManager.TryBeginInterrogation();
+        }
+
+        public bool ConfirmSuspectForFinalPhase(string suspectId)
+        {
+            var appRoot = AppRoot.Instance;
+            if (appRoot == null)
+            {
+                return false;
+            }
+
+            appRoot.ProgressManager.SubmitAccusation(suspectId);
+            return appRoot.GameStateManager.TryOpenAccusation();
+        }
+
+        public bool EnterResultPhase()
+        {
+            var appRoot = AppRoot.Instance;
+            return appRoot != null && appRoot.GameStateManager.TryShowResult();
         }
 
         private void ValidateConfiguration()

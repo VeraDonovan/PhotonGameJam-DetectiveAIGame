@@ -99,5 +99,5 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 # fish files
-/DesignDoc
+/Assets/DesignDoc
 /AGENTS.md

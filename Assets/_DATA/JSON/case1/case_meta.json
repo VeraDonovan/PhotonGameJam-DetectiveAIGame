@@ -1,0 +1,120 @@
+{
+  "templateVersion": "2.2",
+  "schemaType": "case_meta",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case1",
+  "title": "最后一班夜车",
+  "linkedDataFiles": {
+    "npc": "npc.json",
+    "evidence": "evidence.json",
+    "facts": "facts.json",
+    "statements": "statements.json",
+    "truth": "truth.json",
+    "ending": "ending.json",
+    "npcAi": {
+      "npc_1": "npc_ai_lin.json",
+      "npc_2": "npc_ai_wei.json",
+      "npc_3": "npc_ai_zhang.json"
+    }
+  },
+  "setting": {
+    "year": 1994,
+    "cityDisplayName": "中国北方某工业城市",
+    "toneTags": [
+      "家庭悲剧",
+      "审讯推理",
+      "长期控制",
+      "身份秘密"
+    ]
+  },
+  "victim": {
+    "victimId": "victim",
+    "displayName": "赵建民",
+    "age": 52,
+    "identity": "钢铁厂会计，临近退休",
+    "publicImage": "表面老实克制，实际控制欲极强",
+    "coreSecret": "他长期用账簿、债务和身世秘密控制身边的人。",
+    "causeOfDeath": "太阳穴遭钝器击打致死",
+    "estimatedTimeOfDeath": "21:00-23:00",
+    "bodyState": [
+      "尸体带有明显酒气",
+      "手腕与颈部可见旧伤"
+    ]
+  },
+  "caseBackground": {
+    "briefBackground": "1994年冬夜，钢铁厂会计赵建民死于家中。现场有人为清理痕迹，屋内留下三名主要嫌疑人：其妻林秀华、做倒卖生意的卫国强，以及前来讨债的张铁柱。玩家先完成现场搜索与对话，再通过搭档选择两名嫌疑人进入不可逆的审讯阶段。"
+  },
+  "caseTruth": {
+    "realKillerId": "npc_1",
+    "surfaceTruth": "三名嫌疑人都在隐瞒案发当晚的真实目的或与死者的关键关系。",
+    "fullTruth": "林秀华在长期家暴和当晚再次受辱后，用炉钩击中赵建民太阳穴，随后清理现场并伪造第二天才发现尸体的表象。",
+    "metaTruth": "赵建民多年来分别以账簿、债务和身世秘密操控三名嫌疑人，这起命案是那套控制系统的反噬。"
+  },
+  "suspectSummaries": [
+    {
+      "npcId": "npc_1",
+      "displayName": "林秀华",
+      "age": 44,
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "archetype": "死者家属",
+      "summary": "女，44岁，赵建民之妻，平时几乎只在家属区活动，案发时一直待在厨房附近。",
+      "motiveSummary": "",
+      "hiddenTruthSummary": ""
+    },
+    {
+      "npcId": "npc_2",
+      "displayName": "卫国强",
+      "age": 35,
+      "locationId": "living_room",
+      "relationshipToVictim": "生意往来者",
+      "archetype": "熟人访客",
+      "summary": "男，35岁，做倒买倒卖生意，与赵建民有旧账往来，案发后主动留在客厅配合调查。",
+      "motiveSummary": "",
+      "hiddenTruthSummary": ""
+    },
+    {
+      "npcId": "npc_3",
+      "displayName": "张铁柱",
+      "age": 27,
+      "locationId": "bedroom",
+      "relationshipToVictim": "讨债人",
+      "archetype": "外来青年",
+      "summary": "男，27岁，无固定职业，自称是被卫国强叫来帮忙的人，实际与死者有债务纠纷。",
+      "motiveSummary": "",
+      "hiddenTruthSummary": ""
+    }
+  ],
+  "relationshipMap": [
+    {
+      "fromId": "victim",
+      "toId": "npc_1",
+      "type": "spouse",
+      "displayText": "夫妻",
+      "knownBy": [
+        "public"
+      ]
+    },
+    {
+      "fromId": "victim",
+      "toId": "npc_2",
+      "type": "business_contact",
+      "displayText": "生意往来",
+      "knownBy": [
+        "public"
+      ]
+    },
+    {
+      "fromId": "victim",
+      "toId": "npc_3",
+      "type": "debt_dispute",
+      "displayText": "债务纠纷",
+      "knownBy": [
+        "public"
+      ]
+    }
+  ]
+}

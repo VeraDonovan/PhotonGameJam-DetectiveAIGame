@@ -1,0 +1,354 @@
+{
+  "templateVersion": "1.0",
+  "schemaType": "npc_statements",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case1",
+  "uiRules": {
+    "replacementMode": "latest_unlocked_per_topic",
+    "historyStorage": "keep_all_versions",
+    "suspectPanelDisplay": "replace_topic_text_only"
+  },
+  "statementTopics": [
+    {
+      "topicId": "lin_discovery_time",
+      "npcId": "npc_1",
+      "displayName": "发现尸体时间",
+      "sortOrder": 10,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_lin_discovery_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "林秀华称自己于早上七点发现赵建民叫不醒。",
+          "unlockRequirements": [
+            "talk_lin_intro"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "基础口供。用于搜索阶段和第一次追问。"
+        },
+        {
+          "statementId": "stmt_lin_discovery_02",
+          "status": "contradicted",
+          "phase": "interrogation",
+          "text": "林秀华称自己因服药睡得很沉，以为赵建民只是醉酒睡着。",
+          "unlockRequirements": [
+            "A-11",
+            "npc_1.layer_1"
+          ],
+          "replacesStatementId": "stmt_lin_discovery_01",
+          "aiUsage": "被死亡时间施压后的退让版本。"
+        },
+        {
+          "statementId": "stmt_lin_discovery_03",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "林秀华承认自己昨晚就知道赵建民倒下。",
+          "unlockRequirements": [
+            "npc_1.layer_2"
+          ],
+          "replacesStatementId": "stmt_lin_discovery_02",
+          "aiUsage": "完整认罪后的修正口供。"
+        }
+      ]
+    },
+    {
+      "topicId": "lin_visitors",
+      "npcId": "npc_1",
+      "displayName": "案发当晚来访者",
+      "sortOrder": 20,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_lin_visitors_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "林秀华否认案发当晚有访客。",
+          "unlockRequirements": [
+            "talk_lin_intro"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "初始回避说法。"
+        },
+        {
+          "statementId": "stmt_lin_visitors_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "林秀华承认案发当晚先后有两名男性到访赵家。",
+          "unlockRequirements": [
+            "A-1",
+            "npc_1.layer_1"
+          ],
+          "replacesStatementId": "stmt_lin_visitors_01",
+          "aiUsage": "承认有来访者后的修正口供。"
+        }
+      ]
+    },
+    {
+      "topicId": "lin_cleanup",
+      "npcId": "npc_1",
+      "displayName": "现场清理",
+      "sortOrder": 30,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_lin_cleanup_01",
+          "status": "claimed",
+          "phase": "interrogation",
+          "text": "林秀华称自己只顺手擦过地面，不清楚痕迹来源。",
+          "unlockRequirements": [
+            "fact_2"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "第一轮防守说辞。"
+        },
+        {
+          "statementId": "stmt_lin_cleanup_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "林秀华承认自己清理过客厅和厨房痕迹。",
+          "unlockRequirements": [
+            "npc_1.layer_1"
+          ],
+          "replacesStatementId": "stmt_lin_cleanup_01",
+          "aiUsage": "承认清理行为后的主题显示文本。"
+        }
+      ]
+    },
+    {
+      "topicId": "lin_abuse",
+      "npcId": "npc_1",
+      "displayName": "身上伤痕",
+      "sortOrder": 40,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_lin_abuse_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "林秀华称手臂淤青是做家务时碰伤。",
+          "unlockRequirements": [
+            "observe_lin_arms"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "搜索阶段掩饰口供。"
+        },
+        {
+          "statementId": "stmt_lin_abuse_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "林秀华承认自己长期遭受赵建民殴打。",
+          "unlockRequirements": [
+            "fact_6",
+            "npc_1.layer_2"
+          ],
+          "replacesStatementId": "stmt_lin_abuse_01",
+          "aiUsage": "崩溃后用于嫌疑人详情的最终文本。"
+        }
+      ]
+    },
+    {
+      "topicId": "wei_visit",
+      "npcId": "npc_2",
+      "displayName": "是否到访过赵家",
+      "sortOrder": 10,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_wei_visit_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "卫国强称自己今天早上听说出事后才到赵家查看。",
+          "unlockRequirements": [
+            "talk_wei_intro"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "初始口供。"
+        },
+        {
+          "statementId": "stmt_wei_visit_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "卫国强承认自己昨晚来过赵家，并与赵建民谈过事。",
+          "unlockRequirements": [
+            "A-1",
+            "A-2",
+            "npc_2.layer_1"
+          ],
+          "replacesStatementId": "stmt_wei_visit_01",
+          "aiUsage": "被烟蒂与茶杯施压后的修正口供。"
+        }
+      ]
+    },
+    {
+      "topicId": "wei_purpose",
+      "npcId": "npc_2",
+      "displayName": "来访目的",
+      "sortOrder": 20,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_wei_purpose_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "卫国强称来访只是与赵建民谈私事。",
+          "unlockRequirements": [
+            "talk_wei_intro"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "模糊化来访目的。"
+        },
+        {
+          "statementId": "stmt_wei_purpose_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "卫国强承认自己来赵家是为取回账簿。",
+          "unlockRequirements": [
+            "A-12",
+            "npc_2.layer_1"
+          ],
+          "replacesStatementId": "stmt_wei_purpose_01",
+          "aiUsage": "账簿主题修正口供。"
+        }
+      ]
+    },
+    {
+      "topicId": "wei_zhang_relation",
+      "npcId": "npc_2",
+      "displayName": "与张铁柱的关系",
+      "sortOrder": 30,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_wei_zhang_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "卫国强称自己与张铁柱只是认识。",
+          "unlockRequirements": [
+            "talk_wei_about_zhang"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "搜索阶段的淡化说法。"
+        },
+        {
+          "statementId": "stmt_wei_zhang_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "卫国强承认张铁柱是自己叫来壮胆的。",
+          "unlockRequirements": [
+            "fact_12",
+            "npc_2.layer_1"
+          ],
+          "replacesStatementId": "stmt_wei_zhang_01",
+          "aiUsage": "关系被拆穿后的修正版本。"
+        }
+      ]
+    },
+    {
+      "topicId": "wei_identity",
+      "npcId": "npc_2",
+      "displayName": "身世线索",
+      "sortOrder": 40,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_wei_identity_01",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "卫国强意识到赵建民可能早已掌握自己的身世。",
+          "unlockRequirements": [
+            "npc_2.layer_2"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "第二轮崩溃后的最终主题文本。"
+        }
+      ]
+    },
+    {
+      "topicId": "zhang_house",
+      "npcId": "npc_3",
+      "displayName": "是否认识赵家",
+      "sortOrder": 10,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_zhang_house_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "张铁柱称自己不认识赵家人，只是被卫国强叫来。",
+          "unlockRequirements": [
+            "talk_zhang_intro"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "初始撇清关系口供。"
+        },
+        {
+          "statementId": "stmt_zhang_house_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "张铁柱承认自己昨晚来赵家向赵建民讨债。",
+          "unlockRequirements": [
+            "npc_3.layer_1"
+          ],
+          "replacesStatementId": "stmt_zhang_house_01",
+          "aiUsage": "承认来访和讨债目的后的主题文本。"
+        }
+      ]
+    },
+    {
+      "topicId": "zhang_watch",
+      "npcId": "npc_3",
+      "displayName": "窗台手表",
+      "sortOrder": 20,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_zhang_watch_01",
+          "status": "claimed",
+          "phase": "exploration",
+          "text": "张铁柱称口袋里的东西与案件无关。",
+          "unlockRequirements": [
+            "talk_zhang_pocket"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "搜索阶段的藏匿说法。"
+        },
+        {
+          "statementId": "stmt_zhang_watch_02",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "张铁柱承认自己拿走了窗台手表，并称那是母亲的东西。",
+          "unlockRequirements": [
+            "A-5",
+            "npc_3.layer_1"
+          ],
+          "replacesStatementId": "stmt_zhang_watch_01",
+          "aiUsage": "手表主题修正口供。"
+        }
+      ]
+    },
+    {
+      "topicId": "zhang_identity",
+      "npcId": "npc_3",
+      "displayName": "赵建民说过的话",
+      "sortOrder": 30,
+      "suspectDetailVisible": true,
+      "entries": [
+        {
+          "statementId": "stmt_zhang_identity_01",
+          "status": "corrected",
+          "phase": "interrogation",
+          "text": "张铁柱确认赵建民临死前提到的身世羞辱并非虚言。",
+          "unlockRequirements": [
+            "npc_3.layer_2"
+          ],
+          "replacesStatementId": "",
+          "aiUsage": "张铁柱身世线最终主题文本。"
+        }
+      ]
+    }
+  ]
+}

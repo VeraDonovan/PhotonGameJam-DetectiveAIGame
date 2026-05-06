@@ -6,8 +6,14 @@ namespace DetectiveGame.Core
     {
         public Dictionary<string, bool> EvidenceCollectedById { get; } = new Dictionary<string, bool>();
         public Dictionary<string, bool> FactUnlockedById { get; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> StatementUnlockedById { get; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> InterrogationLayerUnlockedById { get; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> ProgressTokenById { get; } = new Dictionary<string, bool>();
         public HashSet<string> CollectedEvidenceIds { get; } = new HashSet<string>();
         public HashSet<string> UnlockedFactIds { get; } = new HashSet<string>();
+        public HashSet<string> UnlockedStatementIds { get; } = new HashSet<string>();
+        public HashSet<string> UnlockedInterrogationLayerIds { get; } = new HashSet<string>();
+        public HashSet<string> UnlockedProgressTokens { get; } = new HashSet<string>();
         public HashSet<string> KnownSuspectIds { get; } = new HashSet<string>();
         public HashSet<string> SelectedSuspectIds { get; } = new HashSet<string>();
 

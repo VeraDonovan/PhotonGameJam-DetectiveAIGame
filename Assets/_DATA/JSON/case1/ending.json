@@ -1,0 +1,84 @@
+{
+  "templateVersion": "2.0",
+  "schemaType": "ending_set",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case1",
+  "endings": [
+    {
+      "endingId": "ending_1",
+      "displayName": "错误结局",
+      "category": "bad",
+      "requirements": {
+        "requiredFactIds": [
+          "fact_13"
+        ],
+        "requiredNpcLayerIds": [
+          "npc_1.layer_1",
+          "npc_3.layer_1"
+        ],
+        "requiredEvidenceIds": [],
+        "requiredAnyFactIds": []
+      },
+      "unlockConditionText": "只推进到林秀华第一轮和张铁柱第一轮，就可能把注意力停在“清理现场的人”和“拿走手表的人”身上。",
+      "result": "你得到了不完整的突破，却没有真正钉死凶手。张铁柱可能因偷表和撒谎被错误推上前台，真正的核心真相仍被掩在林秀华的沉默里。"
+    },
+    {
+      "endingId": "ending_2",
+      "displayName": "主线结局",
+      "category": "main",
+      "requirements": {
+        "requiredFactIds": [
+          "fact_14"
+        ],
+        "requiredNpcLayerIds": [
+          "npc_1.layer_2"
+        ],
+        "requiredEvidenceIds": [],
+        "requiredAnyFactIds": []
+      },
+      "unlockConditionText": "完成林秀华第二轮审讯，取得完整定案供述。",
+      "result": "林秀华认罪，赵建民之死在刑事层面得到了答案。但账簿背后的身世真相仍可能永远埋在案卷之外。"
+    },
+    {
+      "endingId": "ending_3",
+      "displayName": "隐藏结局",
+      "category": "hidden",
+      "requirements": {
+        "requiredFactIds": [
+          "fact_15"
+        ],
+        "requiredNpcLayerIds": [
+          "npc_2.layer_2"
+        ],
+        "requiredEvidenceIds": [],
+        "requiredAnyFactIds": []
+      },
+      "unlockConditionText": "完成卫国强第二轮审讯，揭开他与林秀华的母子关系。",
+      "result": "卫国强终于知道了自己的来处，也终于明白赵建民这些年为什么总像是在故意看他笑话。真相找到了，但比找不到更痛。"
+    },
+    {
+      "endingId": "ending_4",
+      "displayName": "完整结局",
+      "category": "complete",
+      "requirements": {
+        "requiredFactIds": [
+          "fact_14",
+          "fact_15",
+          "fact_16"
+        ],
+        "requiredNpcLayerIds": [
+          "npc_1.layer_2",
+          "npc_2.layer_2",
+          "npc_3.layer_2"
+        ],
+        "requiredEvidenceIds": [],
+        "requiredAnyFactIds": []
+      },
+      "unlockConditionText": "拿到林秀华定案供述，并同时揭开卫国强和张铁柱两条身世线。",
+      "result": "你不仅结了案，还拆开了赵建民二十年来用账簿维系的整套控制系统。赵建民死了，但那本账簿直到最后一页都还在记人。"
+    }
+  ]
+}

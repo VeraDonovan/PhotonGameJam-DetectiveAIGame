@@ -20,6 +20,26 @@ namespace DetectiveGame.Core
         public string FactId { get; }
     }
 
+    public readonly struct StatementUnlockedEvent
+    {
+        public StatementUnlockedEvent(string statementId)
+        {
+            StatementId = statementId;
+        }
+
+        public string StatementId { get; }
+    }
+
+    public readonly struct InterrogationLayerUnlockedEvent
+    {
+        public InterrogationLayerUnlockedEvent(string layerId)
+        {
+            LayerId = layerId;
+        }
+
+        public string LayerId { get; }
+    }
+
     public readonly struct NpcDiscoveredEvent
     {
         public NpcDiscoveredEvent(string npcId)

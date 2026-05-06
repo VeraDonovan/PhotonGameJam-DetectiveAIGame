@@ -89,6 +89,7 @@ namespace DetectiveGame.Core
         public string revealGoal;
         public List<string> requiredEvidenceIds = new List<string>();
         public List<string> revealFactIds = new List<string>();
+        public List<string> relatedStatementTopicIds = new List<string>();
         public string aiGuidance;
         public List<string> examplePhrasings = new List<string>();
     }

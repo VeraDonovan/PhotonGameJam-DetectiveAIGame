@@ -21,8 +21,9 @@ namespace DetectiveGame.UI
         private readonly Dictionary<string, SuspectIconEntry> entriesByNpcId = new Dictionary<string, SuspectIconEntry>();
 
         private NpcDatabase npcDatabase;
-        private FactDatabase factDatabase;
+        private StatementDatabase statementDatabase;
         private EventManager eventManager;
+        private ProgressManager progressManager;
         private SuspectIconEntry selectedEntry;
 
         private void Awake()
@@ -48,7 +49,8 @@ namespace DetectiveGame.UI
             var appRoot = AppRoot.Instance;
             eventManager = appRoot.EventManager;
             npcDatabase = appRoot.DatabaseManager.NpcDatabase;
-            factDatabase = appRoot.DatabaseManager.FactDatabase;
+            statementDatabase = appRoot.DatabaseManager.StatementDatabase;
+            progressManager = appRoot.ProgressManager;
         }
 
         private void ValidateConfiguration()
@@ -63,9 +65,14 @@ namespace DetectiveGame.UI
                 throw new InvalidOperationException("SuspectPanelManager requires AppRoot.DatabaseManager.NpcDatabase.");
             }
 
-            if (factDatabase == null)
+            if (statementDatabase == null)
             {
-                throw new InvalidOperationException("SuspectPanelManager requires AppRoot.DatabaseManager.FactDatabase.");
+                throw new InvalidOperationException("SuspectPanelManager requires AppRoot.DatabaseManager.StatementDatabase.");
+            }
+
+            if (progressManager == null)
+            {
+                throw new InvalidOperationException("SuspectPanelManager requires AppRoot.ProgressManager.");
             }
 
             if (iconContentRoot == null)
@@ -81,12 +88,12 @@ namespace DetectiveGame.UI
 
         private void SubscribeToEvents()
         {
-            eventManager.Subscribe<FactUnlockedEvent>(HandleFactUnlocked);
+            eventManager.Subscribe<StatementUnlockedEvent>(HandleStatementUnlocked);
         }
 
         private void UnsubscribeFromEvents()
         {
-            eventManager.Unsubscribe<FactUnlockedEvent>(HandleFactUnlocked);
+            eventManager.Unsubscribe<StatementUnlockedEvent>(HandleStatementUnlocked);
         }
 
         private void RefreshFromRuntimeState()
@@ -114,7 +121,7 @@ namespace DetectiveGame.UI
                     continue;
                 }
 
-                var baseDetailText = BuildBaseDetailText(npc.npcId);
+                var baseDetailText = BuildDetailText(npc.npcId);
                 var entry = Instantiate(iconEntryPrefab, iconContentRoot);
                 entry.Initialize(
                     npc.npcId,
@@ -132,32 +139,27 @@ namespace DetectiveGame.UI
             }
         }
 
-        private void HandleFactUnlocked(FactUnlockedEvent eventData)
+        private void HandleStatementUnlocked(StatementUnlockedEvent eventData)
         {
-            if (!factDatabase.TryGetFact(eventData.FactId, out var fact) || fact == null)
+            if (!statementDatabase.TryGetStatement(eventData.StatementId, out var statement) || statement == null)
             {
                 return;
             }
 
-            var updatedSelectedEntry = false;
-            foreach (var npcId in fact.scope?.relatedNpcIds ?? new List<string>())
+            foreach (var npc in npcDatabase.NpcById.Values)
             {
-                if (!entriesByNpcId.TryGetValue(npcId, out var entry))
+                if (!entriesByNpcId.TryGetValue(npc.npcId, out var entry))
                 {
                     continue;
                 }
 
-                AppendFactToEntry(entry, fact.summary);
-                updatedSelectedEntry |= selectedEntry == entry;
+                entry.SetDetailText(BuildDetailText(npc.npcId));
             }
 
-            if (updatedSelectedEntry)
-            {
-                RefreshSelectedDetail();
-            }
+            RefreshSelectedDetail();
         }
 
-        private string BuildBaseDetailText(string npcId)
+        private string BuildDetailText(string npcId)
         {
             if (!npcDatabase.TryGetNpc(npcId, out var npc) || npc == null)
             {
@@ -167,6 +169,7 @@ namespace DetectiveGame.UI
             var lines = new List<string>();
 
             AddIfNotBlank(lines, npc.profileText);
+            AppendLatestUnlockedTopicStatements(lines, npcId);
 
             if (lines.Count == 0)
             {
@@ -188,37 +191,48 @@ namespace DetectiveGame.UI
             return builder.ToString();
         }
 
+        private void AppendLatestUnlockedTopicStatements(List<string> lines, string npcId)
+        {
+            var topics = new List<StatementTopicData>(statementDatabase.GetTopicsByNpc(npcId));
+            topics.Sort((left, right) => left.sortOrder.CompareTo(right.sortOrder));
+
+            foreach (var topic in topics)
+            {
+                if (topic == null || !topic.suspectDetailVisible)
+                {
+                    continue;
+                }
+
+                var latestEntry = GetLatestUnlockedStatement(topic.topicId);
+                if (latestEntry == null)
+                {
+                    continue;
+                }
+
+                AddIfNotBlank(lines, latestEntry.text);
+            }
+        }
+
+        private StatementEntryData GetLatestUnlockedStatement(string topicId)
+        {
+            StatementEntryData latestEntry = null;
+            foreach (var entry in statementDatabase.GetStatementsByTopic(topicId))
+            {
+                if (entry != null && progressManager.IsStatementUnlocked(entry.statementId))
+                {
+                    latestEntry = entry;
+                }
+            }
+
+            return latestEntry;
+        }
+
         private static void AddIfNotBlank(List<string> lines, string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
                 lines.Add(value.Trim());
             }
-        }
-
-        private void AppendFactToEntry(SuspectIconEntry entry, string factSummary)
-        {
-            if (entry == null || string.IsNullOrWhiteSpace(factSummary))
-            {
-                return;
-            }
-
-            var trimmedSummary = factSummary.Trim();
-            if (entry.DetailText.Contains(trimmedSummary, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            var builder = new StringBuilder();
-            if (!string.IsNullOrWhiteSpace(entry.DetailText))
-            {
-                builder.Append(entry.DetailText.TrimEnd());
-                builder.AppendLine();
-            }
-
-            builder.Append("- ");
-            builder.Append(trimmedSummary);
-            entry.SetDetailText(builder.ToString());
         }
 
         private void HandleEntrySelected(SuspectIconEntry entry)
@@ -235,6 +249,11 @@ namespace DetectiveGame.UI
 
         private void RefreshSelectedDetail()
         {
+            foreach (var pair in entriesByNpcId)
+            {
+                pair.Value.SetDetailText(BuildDetailText(pair.Key));
+            }
+
             SetDetailText(selectedEntry != null ? selectedEntry.DetailText : defaultDetailText);
         }
 

@@ -1,0 +1,319 @@
+{
+  "templateVersion": "2.3",
+  "schemaType": "case_truth",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case1",
+  "caseTruth": {
+    "realKillerId": "npc_1",
+    "realMotive": "林秀华在长期家暴与当晚再次受辱后反击，用炉钩击中赵建民太阳穴。",
+    "coverUp": "林秀华在案发后清理了客厅和厨房痕迹，处理抹布与水槽，并伪造第二天才发现尸体的表象。",
+    "coreHiddenStory": "赵建民长期用账簿、债务和身世秘密操控林秀华、卫国强与张铁柱。"
+  },
+  "timeline": [
+    {
+      "sequence": 1,
+      "time": "约19:00",
+      "event": "卫国强来到赵家，索要记有自己旧账把柄的账簿。",
+      "participants": [
+        "npc_2",
+        "victim"
+      ]
+    },
+    {
+      "sequence": 2,
+      "time": "稍后",
+      "event": "张铁柱来到赵家讨债，与赵建民争执后离开，并拿走窗台上的手表。",
+      "participants": [
+        "npc_3",
+        "victim"
+      ]
+    },
+    {
+      "sequence": 3,
+      "time": "21:00-23:00",
+      "event": "赵建民醉酒后再次对林秀华施暴并羞辱她，林秀华用炉钩击中其太阳穴。",
+      "participants": [
+        "npc_1",
+        "victim"
+      ]
+    },
+    {
+      "sequence": 4,
+      "time": "深夜",
+      "event": "林秀华拖地、擦拭炉钩、冲洗抹布，并尝试用旧灯泡伪造第二天发现尸体的说法。",
+      "participants": [
+        "npc_1"
+      ]
+    },
+    {
+      "sequence": 5,
+      "time": "次日早晨",
+      "event": "林秀华报警，称自己早上才发现赵建民死亡。",
+      "participants": [
+        "npc_1"
+      ]
+    }
+  ],
+  "npcTruths": [
+    {
+      "npcId": "npc_1",
+      "actualRelationshipToVictim": "妻子",
+      "isKiller": true,
+      "backstory": "长期遭受赵建民家暴，并被其用失去的孩子折磨。",
+      "realMotive": "在长期压迫和当晚再次受辱后反击。",
+      "hiddenTruth": "她是直接击打者，也是现场清理与伪装的执行者。",
+      "knowledge": [
+        "知道自己击中了赵建民",
+        "知道自己处理过现场痕迹",
+        "知道赵建民长期对自己施暴"
+      ],
+      "personalTimeline": [
+        {
+          "sequence": 1,
+          "time": "昨晚两次来访期间",
+          "locationId": "kitchen",
+          "event": "听见两名男性先后来访。",
+          "whatThisNpcKnows": "知道有两名访客。",
+          "whatThisNpcClaims": "起初否认有人来过，之后才承认。",
+          "whatThisNpcHides": "不主动说明来访者与赵建民的真实关系。"
+        },
+        {
+          "sequence": 2,
+          "time": "21:00-23:00",
+          "locationId": "living_room",
+          "event": "反击并击中赵建民。",
+          "whatThisNpcKnows": "知道自己是直接击打者。",
+          "whatThisNpcClaims": "在完全崩溃前坚持只是后来发现尸体。",
+          "whatThisNpcHides": "隐瞒真实案发经过。"
+        },
+        {
+          "sequence": 3,
+          "time": "深夜",
+          "locationId": "living_room",
+          "event": "处理现场痕迹与灯泡。",
+          "whatThisNpcKnows": "知道自己参与全部清理。",
+          "whatThisNpcClaims": "第一轮只承认顺手擦过地。",
+          "whatThisNpcHides": "不主动把清理与杀人连成完整链条。"
+        }
+      ],
+      "dialogueTriggers": [],
+      "interrogationLayers": [
+        {
+          "layerId": "npc_1.layer_1",
+          "roundType": "shake",
+          "topic": "承认昨晚有访客并承认自己清理过现场",
+          "revealGoal": "得到林秀华第一轮突破：她撒谎并清理过现场。",
+          "requiredEvidenceIds": [
+            "A-11",
+            "A-1",
+            "B-7",
+            "A-4"
+          ],
+          "revealFactIds": [
+            "fact_5",
+            "fact_13"
+          ],
+          "relatedStatementTopicIds": [
+            "lin_discovery_time",
+            "lin_visitors",
+            "lin_cleanup"
+          ],
+          "aiGuidance": "",
+          "examplePhrasings": []
+        },
+        {
+          "layerId": "npc_1.layer_2",
+          "roundType": "collapse",
+          "topic": "承认长期家暴、击打行为和整套伪装",
+          "revealGoal": "形成林秀华完整定案供述。",
+          "requiredEvidenceIds": [
+            "B-10",
+            "B-14"
+          ],
+          "revealFactIds": [
+            "fact_14"
+          ],
+          "relatedStatementTopicIds": [
+            "lin_discovery_time",
+            "lin_abuse",
+            "lin_cleanup"
+          ],
+          "aiGuidance": "",
+          "examplePhrasings": []
+        }
+      ]
+    },
+    {
+      "npcId": "npc_2",
+      "actualRelationshipToVictim": "被赵建民用旧账控制的人；同时是林秀华被送走的亲生儿子",
+      "isKiller": false,
+      "backstory": "来赵家是为了账簿，不知道自己的真实身世。",
+      "realMotive": "夺回账簿，摆脱控制。",
+      "hiddenTruth": "林秀华是他的生母，但他在案发开始时并不知情。",
+      "knowledge": [
+        "知道账簿里记着自己的把柄",
+        "知道自己昨晚来过赵家",
+        "不知道林秀华和自己的血缘关系"
+      ],
+      "personalTimeline": [
+        {
+          "sequence": 1,
+          "time": "约19:00",
+          "locationId": "living_room",
+          "event": "到赵家索回账簿。",
+          "whatThisNpcKnows": "知道自己此行是为账簿。",
+          "whatThisNpcClaims": "最开始只说自己今天早上才来。",
+          "whatThisNpcHides": "不主动说明账簿具体内容。"
+        },
+        {
+          "sequence": 2,
+          "time": "争执后",
+          "locationId": "living_room",
+          "event": "离开赵家。",
+          "whatThisNpcKnows": "知道自己离开时赵建民还活着。",
+          "whatThisNpcClaims": "承认来过，但强调自己不是凶手。",
+          "whatThisNpcHides": "不主动承认自己叫了张铁柱来壮胆。"
+        }
+      ],
+      "dialogueTriggers": [],
+      "interrogationLayers": [
+        {
+          "layerId": "npc_2.layer_1",
+          "roundType": "shake",
+          "topic": "承认昨晚来过，并承认是为账簿而来",
+          "revealGoal": "确认卫国强是案发前来访者，且与账簿把柄直接相关。",
+          "requiredEvidenceIds": [
+            "A-1",
+            "A-2",
+            "A-12"
+          ],
+          "revealFactIds": [
+            "fact_9",
+            "fact_10"
+          ],
+          "relatedStatementTopicIds": [
+            "wei_visit",
+            "wei_purpose",
+            "wei_zhang_relation"
+          ],
+          "aiGuidance": "",
+          "examplePhrasings": []
+        },
+        {
+          "layerId": "npc_2.layer_2",
+          "roundType": "collapse",
+          "topic": "母子身世线崩溃",
+          "revealGoal": "揭开卫国强与林秀华的母子关系。",
+          "requiredEvidenceIds": [
+            "A-12"
+          ],
+          "revealFactIds": [
+            "fact_15"
+          ],
+          "relatedStatementTopicIds": [
+            "wei_identity"
+          ],
+          "aiGuidance": "",
+          "examplePhrasings": []
+        }
+      ]
+    },
+    {
+      "npcId": "npc_3",
+      "actualRelationshipToVictim": "前来讨债的人；同时是赵建民的亲生儿子",
+      "isKiller": false,
+      "backstory": "为病中的母亲筹钱来讨债，拿走了手表，但不是凶手。",
+      "realMotive": "讨回旧债并拿回母亲的手表。",
+      "hiddenTruth": "赵建民是他的生父，但他直到第二轮审讯才真正明白。",
+      "knowledge": [
+        "知道母亲与赵建民有旧债",
+        "知道自己拿走了手表",
+        "不知道赵建民临终羞辱话语的真实含义"
+      ],
+      "personalTimeline": [
+        {
+          "sequence": 1,
+          "time": "昨晚稍后",
+          "locationId": "living_room",
+          "event": "来到赵家讨债。",
+          "whatThisNpcKnows": "知道自己来是为了讨债。",
+          "whatThisNpcClaims": "起初只说自己不认识赵家人。",
+          "whatThisNpcHides": "隐瞒讨债与拿表行为。"
+        },
+        {
+          "sequence": 2,
+          "time": "争执后",
+          "locationId": "living_room",
+          "event": "拿走手表后离开。",
+          "whatThisNpcKnows": "知道那是母亲的手表。",
+          "whatThisNpcClaims": "第一轮才承认自己拿了表。",
+          "whatThisNpcHides": "不主动讲清母亲旧事。"
+        }
+      ],
+      "dialogueTriggers": [],
+      "interrogationLayers": [
+        {
+          "layerId": "npc_3.layer_1",
+          "roundType": "shake",
+          "topic": "承认昨晚来过、承认讨债、承认拿走手表",
+          "revealGoal": "把张铁柱推进到“讨债且拿表，但并非凶手”的位置。",
+          "requiredEvidenceIds": [
+            "A-5"
+          ],
+          "revealFactIds": [
+            "fact_11"
+          ],
+          "relatedStatementTopicIds": [
+            "zhang_house",
+            "zhang_watch"
+          ],
+          "aiGuidance": "",
+          "examplePhrasings": []
+        },
+        {
+          "layerId": "npc_3.layer_2",
+          "roundType": "collapse",
+          "topic": "得知自己其实是赵建民的儿子",
+          "revealGoal": "揭开张铁柱的身世真相。",
+          "requiredEvidenceIds": [
+            "A-12"
+          ],
+          "revealFactIds": [
+            "fact_16"
+          ],
+          "relatedStatementTopicIds": [
+            "zhang_identity"
+          ],
+          "aiGuidance": "",
+          "examplePhrasings": []
+        }
+      ]
+    }
+  ],
+  "deductionTruths": [
+    {
+      "truthId": "truth_main_case",
+      "displayName": "林秀华是真凶",
+      "requiresFactIds": [
+        "fact_14"
+      ]
+    },
+    {
+      "truthId": "truth_wei_identity",
+      "displayName": "卫国强是林秀华失散多年的儿子",
+      "requiresFactIds": [
+        "fact_15"
+      ]
+    },
+    {
+      "truthId": "truth_zhang_identity",
+      "displayName": "张铁柱是赵建民的亲生儿子",
+      "requiresFactIds": [
+        "fact_16"
+      ]
+    }
+  ]
+}

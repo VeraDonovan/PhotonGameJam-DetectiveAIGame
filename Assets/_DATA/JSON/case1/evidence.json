@@ -1,0 +1,252 @@
+{
+  "templateVersion": "2.1",
+  "schemaType": "evidence_graph",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case1",
+  "tierDefinition": {
+    "A": "玩家可直接发现的物理线索或现场观察结果",
+    "B": "基于物理线索得到的化验、复核或法医结论"
+  },
+  "evidenceNodes": [
+    {
+      "evidenceId": "A-1",
+      "tier": "A",
+      "displayName": "烟灰缸里的大前门烟蒂",
+      "summary": "客厅烟灰缸里有两枚大前门烟蒂，死者平时并不抽这一牌子。",
+      "locationId": "living_room",
+      "targetNpcId": "npc_2",
+      "requirements": [],
+      "mapGroup": "wei_visit"
+    },
+    {
+      "evidenceId": "A-2",
+      "tier": "A",
+      "displayName": "两只用过的茶杯",
+      "summary": "茶几上放着两只都使用过的茶杯，茶色很深，像是聊了不短时间。",
+      "locationId": "living_room",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "wei_visit"
+    },
+    {
+      "evidenceId": "A-3",
+      "tier": "A",
+      "displayName": "方向异常的炉钩子",
+      "summary": "工具架上的炉钩子摆放方向与其他工具不同，末端留有深色擦痕。",
+      "locationId": "living_room",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "cleanup_chain"
+    },
+    {
+      "evidenceId": "A-4",
+      "tier": "A",
+      "displayName": "被擦拭过的地板污迹",
+      "summary": "炉边地板有一小块深色污迹已被擦拭，缝隙里留有残留物。",
+      "locationId": "living_room",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "cleanup_chain"
+    },
+    {
+      "evidenceId": "A-5",
+      "tier": "A",
+      "displayName": "窗台上的手表空痕",
+      "summary": "窗台灰层中间有一块长方形空白，大小像一只刚被拿走的手表。",
+      "locationId": "living_room",
+      "targetNpcId": "npc_3",
+      "requirements": [],
+      "mapGroup": "watch_line"
+    },
+    {
+      "evidenceId": "A-7",
+      "tier": "A",
+      "displayName": "水槽边缘的异常残留",
+      "summary": "厨房水槽边有铁锈色残留，和普通洗碗留下的水痕不一致。",
+      "locationId": "kitchen",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "cleanup_chain"
+    },
+    {
+      "evidenceId": "A-8",
+      "tier": "A",
+      "displayName": "变色抹布",
+      "summary": "垃圾桶里有一块用过的抹布，局部颜色明显发暗。",
+      "locationId": "kitchen",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "cleanup_chain"
+    },
+    {
+      "evidenceId": "A-10",
+      "tier": "A",
+      "displayName": "林秀华双臂淤青",
+      "summary": "林秀华双臂有新旧叠加的淤青，形状规整，不像偶然碰撞。",
+      "locationId": "kitchen",
+      "targetNpcId": "npc_1",
+      "requirements": [],
+      "mapGroup": "abuse_line"
+    },
+    {
+      "evidenceId": "A-11",
+      "tier": "A",
+      "displayName": "初步尸检结果",
+      "summary": "死者太阳穴受钝器击打致死，死亡时间估计为21:00到23:00之间，身上带酒气。",
+      "locationId": "bedroom",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "time_of_death"
+    },
+    {
+      "evidenceId": "A-12",
+      "tier": "A",
+      "displayName": "床头账簿",
+      "summary": "床头柜里有一本账簿，末页写着“卫、张、林”三列数字记录。",
+      "locationId": "bedroom",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "ledger_line"
+    },
+    {
+      "evidenceId": "A-13",
+      "tier": "A",
+      "displayName": "损坏的床头灯",
+      "summary": "床头灯无法点亮，与林秀华声称“早上发现时灯还亮着”的说法不符。",
+      "locationId": "bedroom",
+      "targetNpcId": "npc_1",
+      "requirements": [],
+      "mapGroup": "lamp_line"
+    },
+    {
+      "evidenceId": "A-16",
+      "tier": "A",
+      "displayName": "跌打损伤药",
+      "summary": "厕所镜柜里有多瓶跌打损伤药，其中一瓶已经快用完。",
+      "locationId": "bathroom",
+      "targetNpcId": "npc_1",
+      "requirements": [],
+      "mapGroup": "abuse_line"
+    },
+    {
+      "evidenceId": "B-3",
+      "tier": "B",
+      "displayName": "地板与炉钩残留比对",
+      "summary": "炉钩末端残留与客厅地板缝隙中的残留在颜色和质地上高度一致。",
+      "locationId": "living_room",
+      "targetNpcId": null,
+      "requirements": [
+        "A-3",
+        "A-4"
+      ],
+      "mapGroup": "cleanup_chain"
+    },
+    {
+      "evidenceId": "B-7",
+      "tier": "B",
+      "displayName": "抹布血检结果",
+      "summary": "抹布上的血迹与死者血型一致。",
+      "locationId": "kitchen",
+      "targetNpcId": null,
+      "requirements": [
+        "A-8"
+      ],
+      "mapGroup": "cleanup_chain"
+    },
+    {
+      "evidenceId": "B-10",
+      "tier": "B",
+      "displayName": "长期外力伤复核",
+      "summary": "法医确认林秀华身上至少有三处不同时期形成的旧伤，符合长期受暴特征。",
+      "locationId": "kitchen",
+      "targetNpcId": null,
+      "requirements": [
+        "A-10"
+      ],
+      "mapGroup": "abuse_line"
+    },
+    {
+      "evidenceId": "B-14",
+      "tier": "B",
+      "displayName": "旧式灯泡鉴定",
+      "summary": "床头灯灯泡为早已停产的旧型号，且灯丝已断，不可能整夜亮着。",
+      "locationId": "bedroom",
+      "targetNpcId": null,
+      "requirements": [
+        "A-13"
+      ],
+      "mapGroup": "lamp_line"
+    },
+    {
+      "evidenceId": "B-15",
+      "tier": "B",
+      "displayName": "颈部旧伤补充报告",
+      "summary": "死者颈部细痕属于旧伤，与本次死亡无直接关系，可排除勒死判断。",
+      "locationId": "bedroom",
+      "targetNpcId": null,
+      "requirements": [
+        "A-11"
+      ],
+      "mapGroup": "cause_of_death"
+    },
+    {
+      "evidenceId": "B-17",
+      "tier": "B",
+      "displayName": "药瓶日期追溯",
+      "summary": "镜柜里最早一瓶跌打损伤药的购入日期可以追溯到五年前。",
+      "locationId": "bathroom",
+      "targetNpcId": null,
+      "requirements": [
+        "A-16"
+      ],
+      "mapGroup": "abuse_line"
+    }
+  ],
+  "relationships": [
+    {
+      "fromId": "A-3",
+      "toId": "B-3",
+      "relationshipType": "supports",
+      "displayText": "炉钩末端残留可与地板残留比对。"
+    },
+    {
+      "fromId": "A-4",
+      "toId": "B-3",
+      "relationshipType": "supports",
+      "displayText": "地板缝隙残留可进入比对。"
+    },
+    {
+      "fromId": "A-8",
+      "toId": "B-7",
+      "relationshipType": "supports",
+      "displayText": "抹布可进行血迹检验。"
+    },
+    {
+      "fromId": "A-10",
+      "toId": "B-10",
+      "relationshipType": "supports",
+      "displayText": "双臂淤青进入法医复核。"
+    },
+    {
+      "fromId": "A-13",
+      "toId": "B-14",
+      "relationshipType": "supports",
+      "displayText": "床头灯可进行灯泡鉴定。"
+    },
+    {
+      "fromId": "A-11",
+      "toId": "B-15",
+      "relationshipType": "supports",
+      "displayText": "尸检结果可补充复核颈部旧伤。"
+    },
+    {
+      "fromId": "A-16",
+      "toId": "B-17",
+      "relationshipType": "supports",
+      "displayText": "药瓶可追溯最早使用日期。"
+    }
+  ]
+}

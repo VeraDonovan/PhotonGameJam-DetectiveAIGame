@@ -1,0 +1,55 @@
+{
+  "templateVersion": "2.1",
+  "schemaType": "npc_set",
+  "language": {
+    "schema": "en",
+    "content": "zh-CN"
+  },
+  "caseId": "case1",
+  "npcs": [
+    {
+      "npcId": "npc_1",
+      "roleType": "suspect",
+      "displayName": "林秀华",
+      "gender": "女",
+      "age": 44,
+      "occupation": "家属区住户",
+      "locationId": "kitchen",
+      "relationshipToVictim": "妻子",
+      "profileText": "赵建民之妻。性格隐忍寡言，案发时一直待在厨房附近。"
+    },
+    {
+      "npcId": "npc_2",
+      "roleType": "suspect",
+      "displayName": "卫国强",
+      "gender": "男",
+      "age": 35,
+      "occupation": "个体经营者",
+      "locationId": "living_room",
+      "relationshipToVictim": "生意往来者",
+      "profileText": "做倒买倒卖生意，说话圆滑，与赵建民有账目往来。"
+    },
+    {
+      "npcId": "npc_3",
+      "roleType": "suspect",
+      "displayName": "张铁柱",
+      "gender": "男",
+      "age": 27,
+      "occupation": "待业青年",
+      "locationId": "bedroom",
+      "relationshipToVictim": "讨债人",
+      "profileText": "从城郊来讨债的年轻人，拮据、紧张、嘴硬，进屋后一直不敢看尸体。"
+    },
+    {
+      "npcId": "npc_4",
+      "roleType": "assistant",
+      "displayName": "搭档",
+      "gender": "男",
+      "age": 30,
+      "occupation": "办案搭档",
+      "locationId": "yard",
+      "relationshipToVictim": "警方调查人员",
+      "profileText": "负责调查提示，并在搜索阶段结束后帮助玩家进入审讯阶段。"
+    }
+  ]
+}
