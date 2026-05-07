@@ -8,7 +8,7 @@ namespace DetectiveGame.Core
     {
         [SerializeField] private KeyCode inventoryToggleKey = KeyCode.Tab;
         [SerializeField] private GameObject menuPanelRoot;
-        [SerializeField] private GameObject introducePanel;
+    
 
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private InventoryPanelManager inventoryPanelManager;
