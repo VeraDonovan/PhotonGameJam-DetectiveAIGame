@@ -8,14 +8,18 @@ namespace DetectiveGame.Core
     {
         [SerializeField] private KeyCode inventoryToggleKey = KeyCode.Tab;
         [SerializeField] private GameObject menuPanelRoot;
+    
+
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private InventoryPanelManager inventoryPanelManager;
         [SerializeField] private bool menuOpenOnStart = true;
         [SerializeField] private bool inventoryOpenOnStart;
 
+        // [SerializeField] private GameObject introducePanelRoot;
         public bool IsMenuOpen => menuPanelRoot != null && menuPanelRoot.activeSelf;
         public bool IsInventoryOpen => inventoryRoot.activeSelf;
-
+        
+        // public bool IsIntroduceOpen => introducePanelRoot != null && introducePanelRoot.activeSelf;
         public void Initialize()
         {
             ValidateConfiguration();
@@ -54,6 +58,24 @@ namespace DetectiveGame.Core
                 menuPanelRoot.SetActive(isOpen);
             }
         }
+
+        // public void SetIntroduceOpen(bool isOpen)
+        // {   
+        //     Debug.Log("SetIntroduceOpen: " + isOpen);
+        //     if (introducePanelRoot != null)
+        //     {
+        // introducePanelRoot.SetActive(isOpen);
+        //     }
+        // }
+
+        // public void CloseIntroduce()
+        // {   
+        //     Debug.Log("CloseIntroduce called");
+        //     if (introducePanelRoot != null)
+        //     {
+        //     introducePanelRoot.SetActive(false);
+        //     }
+        // }
 
         public bool StartGame()
         {
