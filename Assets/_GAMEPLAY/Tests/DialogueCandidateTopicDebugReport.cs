@@ -12,6 +12,8 @@ namespace DetectiveGame.Gameplay.Tests
         [SerializeField] private GamePhase phase = GamePhase.Exploration;
         [SerializeField] private KeyCode printReportKey = KeyCode.T;
         [SerializeField] private bool printOnStart = true;
+        [SerializeField] private bool unlockProgressTokenBeforeReport = false;
+        [SerializeField] private string progressTokenToUnlock = "talk_lin_intro";
 
         private AppRoot appRoot;
         private DialogueCandidateTopicResolver resolver;
@@ -50,6 +52,11 @@ namespace DetectiveGame.Gameplay.Tests
 
         private void PrintReport()
         {
+            if (unlockProgressTokenBeforeReport && !string.IsNullOrWhiteSpace(progressTokenToUnlock))
+            {
+                appRoot.ProgressManager.UnlockProgressToken(progressTokenToUnlock);
+            }
+
             var topicSet = resolver.Resolve(
                 npcId,
                 phase,

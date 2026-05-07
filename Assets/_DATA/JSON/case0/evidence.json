@@ -11,12 +11,12 @@
     "B": "基于物理线索得到的检验、比对或复核结果"
   },
   "evidenceNodes": [
-    { "evidenceId": "A-1", "tier": "A", "displayName": "烟头", "summary": "客厅烟灰缸内留有两枚前门牌香烟的烟头。", "locationId": "living_room", "targetNpcId": "npc_2", "requirements": [], "mapGroup": "wei_visit" },
+    { "evidenceId": "A-1", "tier": "A", "displayName": "烟头", "summary": "客厅烟灰缸内留有两枚前门牌香烟的烟头。", "locationId": "living_room", "targetNpcId": "wei", "requirements": [], "mapGroup": "wei_visit" },
     { "evidenceId": "A-2", "tier": "A", "displayName": "两只茶杯", "summary": "客厅桌面有两只使用过的茶杯，杯中仍有残茶。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "wei_visit" },
     { "evidenceId": "A-3", "tier": "A", "displayName": "位置异常的炉钩子", "summary": "炉钩子的摆放方向与其他工具不同，末端留有深色残留。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
     { "evidenceId": "A-4", "tier": "A", "displayName": "被擦拭的地面污迹", "summary": "炉边地面有一处被擦拭过的深色污迹，地板缝隙中残留少量沉积物。", "locationId": "living_room", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
     { "evidenceId": "A-8", "tier": "A", "displayName": "变色抹布", "summary": "垃圾桶里发现一块使用过且颜色异常的抹布。", "locationId": "kitchen", "targetNpcId": null, "requirements": [], "mapGroup": "cleanup_chain" },
-    { "evidenceId": "A-10", "tier": "A", "displayName": "双腕淤痕", "summary": "林秀华双侧手腕可见新旧不一的淤痕。", "locationId": "kitchen", "targetNpcId": "npc_1", "requirements": [], "mapGroup": "abuse_line" },
+    { "evidenceId": "A-10", "tier": "A", "displayName": "双腕淤痕", "summary": "林秀华双侧手腕可见新旧不一的淤痕。", "locationId": "kitchen", "targetNpcId": "lin", "requirements": [], "mapGroup": "abuse_line" },
     { "evidenceId": "A-11", "tier": "A", "displayName": "初步尸检结果", "summary": "死者太阳穴存在钝器伤，死亡时间估计为21:00至23:00。", "locationId": "bedroom", "targetNpcId": null, "requirements": [], "mapGroup": "time_of_death" },
     { "evidenceId": "A-12", "tier": "A", "displayName": "床头账簿", "summary": "床头柜内发现一本账簿，页内记录有卫、张、林三人的名字。", "locationId": "bedroom", "targetNpcId": null, "requirements": [], "mapGroup": "ledger_line" },
     { "evidenceId": "A-13", "tier": "A", "displayName": "损坏的床头灯", "summary": "床头灯无法正常点亮。", "locationId": "bedroom", "targetNpcId": null, "requirements": [], "mapGroup": "lin_lie" },

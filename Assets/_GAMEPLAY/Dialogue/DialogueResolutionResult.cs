@@ -5,6 +5,8 @@ namespace DetectiveGame.Gameplay.Dialogue
     public sealed class DialogueResolutionResult
     {
         public DialogueResolutionType ResolutionType { get; set; } = DialogueResolutionType.None;
+        public int AnnoyanceDelta { get; set; }
+        public int NewAnnoyance { get; set; }
         public int PressureDelta { get; set; }
         public int NewPressure { get; set; }
         public List<string> UnlockedFactIds { get; } = new List<string>();

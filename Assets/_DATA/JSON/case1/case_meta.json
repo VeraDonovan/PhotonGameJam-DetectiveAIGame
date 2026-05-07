@@ -15,9 +15,9 @@
     "truth": "truth.json",
     "ending": "ending.json",
     "npcAi": {
-      "npc_1": "npc_ai_lin.json",
-      "npc_2": "npc_ai_wei.json",
-      "npc_3": "npc_ai_zhang.json"
+      "lin": "npc_ai_lin.json",
+      "wei": "npc_ai_wei.json",
+      "zhang": "npc_ai_zhang.json"
     }
   },
   "setting": {
@@ -48,14 +48,14 @@
     "briefBackground": "1994年冬夜，钢铁厂会计赵建民死于家中。现场有人为清理痕迹，屋内留下三名主要嫌疑人：其妻林秀华、做倒卖生意的卫国强，以及前来讨债的张铁柱。玩家先完成现场搜索与对话，再通过搭档选择两名嫌疑人进入不可逆的审讯阶段。"
   },
   "caseTruth": {
-    "realKillerId": "npc_1",
+    "realKillerId": "lin",
     "surfaceTruth": "三名嫌疑人都在隐瞒案发当晚的真实目的或与死者的关键关系。",
     "fullTruth": "林秀华在长期家暴和当晚再次受辱后，用炉钩击中赵建民太阳穴，随后擦拭现场血迹、清洗炉钩子和抹布、更换灯泡，企图伪造“早上发现”的假象。",
     "metaTruth": "赵建民生前以一本账簿记录并控制三人命运：卫国强是林秀华被迫送走的亲生儿子，张铁柱是赵建民本人不认的亲生儿子，而林秀华被这套控制系统压了二十年。"
   },
   "suspectSummaries": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "displayName": "林秀华",
       "age": 44,
       "locationId": "kitchen",
@@ -66,7 +66,7 @@
       "hiddenTruthSummary": ""
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "displayName": "卫国强",
       "age": 35,
       "locationId": "living_room",
@@ -77,7 +77,7 @@
       "hiddenTruthSummary": ""
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "displayName": "张铁柱",
       "age": 27,
       "locationId": "bedroom",
@@ -91,7 +91,7 @@
   "relationshipMap": [
     {
       "fromId": "victim",
-      "toId": "npc_1",
+      "toId": "lin",
       "type": "spouse",
       "displayText": "夫妻",
       "knownBy": [
@@ -100,7 +100,7 @@
     },
     {
       "fromId": "victim",
-      "toId": "npc_2",
+      "toId": "wei",
       "type": "business_contact",
       "displayText": "生意往来",
       "knownBy": [
@@ -109,7 +109,7 @@
     },
     {
       "fromId": "victim",
-      "toId": "npc_3",
+      "toId": "zhang",
       "type": "debt_dispute",
       "displayText": "债务纠纷",
       "knownBy": [

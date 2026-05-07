@@ -8,7 +8,7 @@
   "caseId": "case1",
   "npcs": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "roleType": "suspect",
       "displayName": "林秀华",
       "gender": "女",
@@ -19,7 +19,7 @@
       "profileText": "赵建民之妻。性格隐忍寡言，案发时一直待在厨房附近。"
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "roleType": "suspect",
       "displayName": "卫国强",
       "gender": "男",
@@ -30,7 +30,7 @@
       "profileText": "做倒买倒卖生意，说话圆滑，与赵建民有账目往来。"
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "roleType": "suspect",
       "displayName": "张铁柱",
       "gender": "男",

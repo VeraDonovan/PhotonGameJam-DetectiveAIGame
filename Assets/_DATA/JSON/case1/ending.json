@@ -16,8 +16,8 @@
           "fact_13"
         ],
         "requiredNpcLayerIds": [
-          "npc_1.layer_1",
-          "npc_3.layer_1"
+          "lin.layer_1",
+          "zhang.layer_1"
         ],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
@@ -34,7 +34,7 @@
           "fact_14"
         ],
         "requiredNpcLayerIds": [
-          "npc_1.layer_2"
+          "lin.layer_2"
         ],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
@@ -51,7 +51,7 @@
           "fact_15"
         ],
         "requiredNpcLayerIds": [
-          "npc_2.layer_2"
+          "wei.layer_2"
         ],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []
@@ -70,9 +70,9 @@
           "fact_16"
         ],
         "requiredNpcLayerIds": [
-          "npc_1.layer_2",
-          "npc_2.layer_2",
-          "npc_3.layer_2"
+          "lin.layer_2",
+          "wei.layer_2",
+          "zhang.layer_2"
         ],
         "requiredEvidenceIds": [],
         "requiredAnyFactIds": []

@@ -8,7 +8,7 @@
   "caseId": "case0",
   "npcs": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "roleType": "suspect",
       "displayName": "林秀花",
       "age": 44,
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "roleType": "suspect",
       "displayName": "魏国强",
       "age": 35,
@@ -206,7 +206,7 @@
       ]
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "roleType": "suspect",
       "displayName": "张铁柱",
       "age": 27,
@@ -310,7 +310,7 @@
     {
       "dialogId": "dialog_1",
       "triggerRequirements": ["A-12"],
-      "participants": ["npc_2", "npc_3"],
+      "participants": ["wei", "zhang"],
       "type": "exposure",
       "content": [
         "魏国强压低声音，警告张铁柱别乱说话。",
@@ -321,7 +321,7 @@
     {
       "dialogId": "dialog_2",
       "triggerRequirements": ["A-7", "A-8"],
-      "participants": ["npc_1", "npc_2"],
+      "participants": ["lin", "wei"],
       "type": "coverup",
       "content": [
         "林秀花让魏国强不要再靠近她。",
@@ -332,7 +332,7 @@
     {
       "dialogId": "dialog_3",
       "triggerRequirements": ["A-5"],
-      "participants": ["npc_2", "npc_3"],
+      "participants": ["wei", "zhang"],
       "type": "framing",
       "content": [
         "魏国强故意问张铁柱，知不知道窗台上原来放着什么。",
@@ -343,7 +343,7 @@
     {
       "dialogId": "dialog_4",
       "triggerRequirements": ["A-10"],
-      "participants": ["npc_1"],
+      "participants": ["lin"],
       "type": "emotional",
       "content": [
         "林秀花看了一眼自己手臂上的淤青，默默把袖子往下拉。"

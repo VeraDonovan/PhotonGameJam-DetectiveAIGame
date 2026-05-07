@@ -12,17 +12,17 @@
   },
   "npcPlacements": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "locationId": "kitchen",
       "locationObjectId": "kitchen_npc_lin_xiuhua"
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "locationId": "living_room",
       "locationObjectId": "living_room_npc_wei_guoqiang"
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "locationId": "bedroom",
       "locationObjectId": "bedroom_npc_zhang_tiezhu"
     }
@@ -119,7 +119,7 @@
         },
         {
           "objectId": "living_room_npc_wei_guoqiang",
-          "npcId": "npc_2",
+          "npcId": "wei",
           "displayName": "卫国强",
           "objectType": "npc_anchor",
           "placementSlotId": "",
@@ -175,7 +175,7 @@
         },
         {
           "objectId": "kitchen_npc_lin_xiuhua",
-          "npcId": "npc_1",
+          "npcId": "lin",
           "displayName": "林秀华",
           "objectType": "npc_anchor",
           "placementSlotId": "",
@@ -231,7 +231,7 @@
         },
         {
           "objectId": "bedroom_npc_zhang_tiezhu",
-          "npcId": "npc_3",
+          "npcId": "zhang",
           "displayName": "张铁柱",
           "objectType": "npc_anchor",
           "placementSlotId": "",

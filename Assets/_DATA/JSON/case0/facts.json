@@ -38,10 +38,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["A-1", "A-2", "npc_2.layer_1"],
+        "requirementsAll": ["A-1", "A-2", "wei.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-1", "A-2"],
-        "sourceDialogueIds": ["npc_2.layer_1"],
+        "sourceDialogueIds": ["wei.layer_1"],
         "sourceFactIds": []
       },
       "progression": {
@@ -51,7 +51,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_2"],
+        "relatedNpcIds": ["wei"],
         "relatedLocationIds": ["living_room"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -64,10 +64,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["A-12", "npc_2.layer_1"],
+        "requirementsAll": ["A-12", "wei.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-12"],
-        "sourceDialogueIds": ["npc_2.layer_1"],
+        "sourceDialogueIds": ["wei.layer_1"],
         "sourceFactIds": ["fact_1"]
       },
       "progression": {
@@ -77,7 +77,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_2"],
+        "relatedNpcIds": ["wei"],
         "relatedLocationIds": ["living_room", "bedroom"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -142,10 +142,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "dialogue_only",
-        "requirementsAll": ["npc_2.layer_1", "npc_3.layer_1"],
+        "requirementsAll": ["wei.layer_1", "zhang.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": [],
-        "sourceDialogueIds": ["npc_2.layer_1", "npc_3.layer_1"],
+        "sourceDialogueIds": ["wei.layer_1", "zhang.layer_1"],
         "sourceFactIds": ["fact_1"]
       },
       "progression": {
@@ -155,7 +155,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_2", "npc_3"],
+        "relatedNpcIds": ["wei", "zhang"],
         "relatedLocationIds": ["living_room", "bedroom"],
         "phaseTags": ["interrogation"]
       }
@@ -168,10 +168,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "dialogue_only",
-        "requirementsAll": ["npc_3.layer_1"],
+        "requirementsAll": ["zhang.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": [],
-        "sourceDialogueIds": ["npc_3.layer_1"],
+        "sourceDialogueIds": ["zhang.layer_1"],
         "sourceFactIds": ["fact_5"]
       },
       "progression": {
@@ -181,7 +181,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_3"],
+        "relatedNpcIds": ["zhang"],
         "relatedLocationIds": ["bedroom"],
         "phaseTags": ["interrogation"]
       }
@@ -194,10 +194,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["A-11", "npc_1.layer_1"],
+        "requirementsAll": ["A-11", "lin.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-11"],
-        "sourceDialogueIds": ["npc_1.layer_1"],
+        "sourceDialogueIds": ["lin.layer_1"],
         "sourceFactIds": []
       },
       "progression": {
@@ -207,7 +207,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_1"],
+        "relatedNpcIds": ["lin"],
         "relatedLocationIds": ["kitchen", "bedroom"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -220,10 +220,10 @@
       "truth": { "truthClass": "surface_true", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["fact_17", "npc_3.layer_1"],
+        "requirementsAll": ["fact_17", "zhang.layer_1"],
         "requirementsAny": [],
         "sourceEvidenceIds": [],
-        "sourceDialogueIds": ["npc_3.layer_1"],
+        "sourceDialogueIds": ["zhang.layer_1"],
         "sourceFactIds": ["fact_6", "fact_17"]
       },
       "progression": {
@@ -233,7 +233,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_3"],
+        "relatedNpcIds": ["zhang"],
         "relatedLocationIds": ["living_room", "bedroom"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -259,7 +259,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_3"],
+        "relatedNpcIds": ["zhang"],
         "relatedLocationIds": ["living_room"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -311,7 +311,7 @@
         "supportsEndingIds": ["ending_2", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1"],
+        "relatedNpcIds": ["lin"],
         "relatedLocationIds": ["kitchen", "bathroom"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -337,7 +337,7 @@
         "supportsEndingIds": ["ending_3", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1", "npc_2", "npc_3"],
+        "relatedNpcIds": ["lin", "wei", "zhang"],
         "relatedLocationIds": ["bedroom"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -350,10 +350,10 @@
       "truth": { "truthClass": "culprit_truth", "isHiddenTruth": false },
       "unlock": {
         "unlockType": "dialogue_only",
-        "requirementsAll": ["npc_1.layer_2"],
+        "requirementsAll": ["lin.layer_2"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-3", "A-11", "B-3", "B-7", "B-14"],
-        "sourceDialogueIds": ["npc_1.layer_2"],
+        "sourceDialogueIds": ["lin.layer_2"],
         "sourceFactIds": ["fact_4", "fact_7", "fact_9", "fact_10"]
       },
       "progression": {
@@ -363,7 +363,7 @@
         "supportsEndingIds": ["ending_2", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1"],
+        "relatedNpcIds": ["lin"],
         "relatedLocationIds": ["kitchen", "living_room", "bedroom"],
         "phaseTags": ["interrogation", "accusation", "ending"]
       }
@@ -376,10 +376,10 @@
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["fact_11", "npc_2.layer_2"],
+        "requirementsAll": ["fact_11", "wei.layer_2"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-12"],
-        "sourceDialogueIds": ["npc_2.layer_2", "npc_1.layer_2"],
+        "sourceDialogueIds": ["wei.layer_2", "lin.layer_2"],
         "sourceFactIds": ["fact_11"]
       },
       "progression": {
@@ -389,7 +389,7 @@
         "supportsEndingIds": ["ending_3", "ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1", "npc_2"],
+        "relatedNpcIds": ["lin", "wei"],
         "relatedLocationIds": ["kitchen", "living_room", "bedroom"],
         "phaseTags": ["interrogation", "ending"]
       }
@@ -402,10 +402,10 @@
       "truth": { "truthClass": "hidden_true", "isHiddenTruth": true },
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
-        "requirementsAll": ["fact_11", "fact_8", "npc_3.layer_2"],
+        "requirementsAll": ["fact_11", "fact_8", "zhang.layer_2"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-12"],
-        "sourceDialogueIds": ["npc_3.layer_1", "npc_3.layer_2"],
+        "sourceDialogueIds": ["zhang.layer_1", "zhang.layer_2"],
         "sourceFactIds": ["fact_8", "fact_11"]
       },
       "progression": {
@@ -415,7 +415,7 @@
         "supportsEndingIds": ["ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_3", "victim"],
+        "relatedNpcIds": ["zhang", "victim"],
         "relatedLocationIds": ["bedroom", "living_room"],
         "phaseTags": ["interrogation", "ending"]
       }
@@ -431,7 +431,7 @@
         "requirementsAll": ["fact_6", "fact_8", "A-11"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-11"],
-        "sourceDialogueIds": ["npc_3.layer_1", "npc_3.layer_2"],
+        "sourceDialogueIds": ["zhang.layer_1", "zhang.layer_2"],
         "sourceFactIds": ["fact_6", "fact_8"]
       },
       "progression": {
@@ -441,7 +441,7 @@
         "supportsEndingIds": []
       },
       "scope": {
-        "relatedNpcIds": ["npc_3"],
+        "relatedNpcIds": ["zhang"],
         "relatedLocationIds": ["bedroom", "living_room"],
         "phaseTags": ["exploration", "interrogation"]
       }
@@ -457,7 +457,7 @@
         "requirementsAll": ["fact_11", "fact_13", "fact_14"],
         "requirementsAny": [],
         "sourceEvidenceIds": ["A-12"],
-        "sourceDialogueIds": ["npc_2.layer_2", "npc_3.layer_2"],
+        "sourceDialogueIds": ["wei.layer_2", "zhang.layer_2"],
         "sourceFactIds": ["fact_11", "fact_13", "fact_14", "fact_12"]
       },
       "progression": {
@@ -467,7 +467,7 @@
         "supportsEndingIds": ["ending_4"]
       },
       "scope": {
-        "relatedNpcIds": ["npc_1", "npc_2", "npc_3", "victim"],
+        "relatedNpcIds": ["lin", "wei", "zhang", "victim"],
         "relatedLocationIds": ["living_room", "kitchen", "bedroom"],
         "phaseTags": ["ending"]
       }

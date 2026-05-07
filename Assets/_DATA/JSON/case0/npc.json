@@ -8,7 +8,7 @@
   "caseId": "case0",
   "npcs": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "roleType": "suspect",
       "displayName": "林秀华",
       "gender": "女",
@@ -19,7 +19,7 @@
       "profileText": "女，44岁，死者妻子，目前在厨房。"
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "roleType": "suspect",
       "displayName": "卫国强",
       "gender": "男",
@@ -30,7 +30,7 @@
       "profileText": "男，35岁，个体经营者，与死者有生意往来，目前在客厅。"
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "roleType": "suspect",
       "displayName": "张铁柱",
       "gender": "男",

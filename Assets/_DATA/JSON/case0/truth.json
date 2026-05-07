@@ -7,7 +7,7 @@
   },
   "caseId": "case0",
   "caseTruth": {
-    "realKillerId": "npc_1",
+    "realKillerId": "lin",
     "realMotive": "林秀华在长期家暴和案发当晚再次遭受施暴后反击，使用炉钩击中赵建民太阳穴。",
     "coverUp": "林秀华在案发后清理客厅和厨房中的痕迹，并改动床头灯相关状态，将案件伪装成第二天才被发现。",
     "coreHiddenStory": "赵建民长期用账簿、债务和身世秘密控制身边三人，命案背后还埋着被扭曲多年的家庭关系。"
@@ -17,36 +17,36 @@
       "sequence": 1,
       "time": "约19:00",
       "event": "卫国强来到赵建民家，试图拿回记有自己旧账的账簿。",
-      "participants": ["npc_2", "victim"]
+      "participants": ["wei", "victim"]
     },
     {
       "sequence": 2,
       "time": "稍后",
       "event": "张铁柱来到赵建民家，与赵建民发生争执后离开，并拿走窗台上的手表。",
-      "participants": ["npc_3", "victim"]
+      "participants": ["zhang", "victim"]
     },
     {
       "sequence": 3,
       "time": "21:00-23:00",
       "event": "赵建民醉酒后再次对林秀华施暴，林秀华抓起炉钩击中其太阳穴，赵建民死亡。",
-      "participants": ["npc_1", "victim"]
+      "participants": ["lin", "victim"]
     },
     {
       "sequence": 4,
       "time": "案发后",
       "event": "林秀华清理客厅与厨房痕迹，并对现场状态进行改动。",
-      "participants": ["npc_1"]
+      "participants": ["lin"]
     },
     {
       "sequence": 5,
       "time": "次日早晨",
       "event": "林秀华报案，称自己早上才发现尸体。",
-      "participants": ["npc_1"]
+      "participants": ["lin"]
     }
   ],
   "npcTruths": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "actualRelationshipToVictim": "妻子",
       "isKiller": true,
       "backstory": "二十年前，她因意外怀孕被迫结婚。赵建民利用她娘家的债务和失去孩子的创伤，多年来持续对她施加控制与家暴。",
@@ -115,7 +115,7 @@
       ],
       "dialogueTriggers": [
         {
-          "triggerId": "npc_1.trigger_1",
+          "triggerId": "lin.trigger_1",
           "topic": "案发当晚来访者",
           "unlockRequirements": [],
           "revealGoal": "让玩家知道案发当晚先后有两名男性来访者。",
@@ -130,7 +130,7 @@
           ]
         },
         {
-          "triggerId": "npc_1.trigger_2",
+          "triggerId": "lin.trigger_2",
           "topic": "现场清理",
           "unlockRequirements": ["fact_4"],
           "revealGoal": "让玩家知道她承认案发后处理过带血痕迹。",
@@ -145,7 +145,7 @@
           ]
         },
         {
-          "triggerId": "npc_1.trigger_3",
+          "triggerId": "lin.trigger_3",
           "topic": "手臂伤痕",
           "unlockRequirements": ["A-10"],
           "revealGoal": "让玩家知道她对手臂伤痕明显回避，并在高压力下承认这些伤不是一次形成的。",
@@ -162,7 +162,7 @@
       ],
       "interrogationLayers": [
         {
-          "layerId": "npc_1.layer_1",
+          "layerId": "lin.layer_1",
           "roundType": "shake",
           "topic": "第一轮：动摇。承认当晚有访客，并承认清理过现场。",
           "revealGoal": "让玩家知道案发当晚先后有两名男性来访者，并确认她处理过带血痕迹。",
@@ -175,7 +175,7 @@
           ]
         },
         {
-          "layerId": "npc_1.layer_2",
+          "layerId": "lin.layer_2",
           "roundType": "collapse",
           "topic": "第二轮：崩溃。承认长期家暴，并完成认罪。",
           "revealGoal": "让玩家知道她在再次遭受施暴时用炉钩击打赵建民，并在事后清理现场、改动灯泡状态、次日报警。",
@@ -190,7 +190,7 @@
       ]
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "actualRelationshipToVictim": "被赵建民用旧账把柄控制的人；同时是林秀华的亲生儿子",
       "isKiller": false,
       "backstory": "他是做灰色生意的商人，早年曾让赵建民替自己做过假账，之后一直被账簿记录勒索。",
@@ -241,7 +241,7 @@
       ],
       "dialogueTriggers": [
         {
-          "triggerId": "npc_2.trigger_1",
+          "triggerId": "wei.trigger_1",
           "topic": "案发当晚来访",
           "unlockRequirements": ["A-1", "A-2"],
           "revealGoal": "让玩家知道他承认自己案发当晚来过赵家。",
@@ -256,7 +256,7 @@
           ]
         },
         {
-          "triggerId": "npc_2.trigger_2",
+          "triggerId": "wei.trigger_2",
           "topic": "账簿",
           "unlockRequirements": ["A-12"],
           "revealGoal": "让玩家知道他承认自己来找赵建民与账簿记录有关。",
@@ -271,7 +271,7 @@
           ]
         },
         {
-          "triggerId": "npc_2.trigger_3",
+          "triggerId": "wei.trigger_3",
           "topic": "张铁柱",
           "unlockRequirements": ["fact_5"],
           "revealGoal": "让玩家知道他承认认识张铁柱，但会弱化两人关系。",
@@ -286,7 +286,7 @@
           ]
         },
         {
-          "triggerId": "npc_2.trigger_4",
+          "triggerId": "wei.trigger_4",
           "topic": "身世线索",
           "unlockRequirements": ["fact_13"],
           "revealGoal": "让玩家知道这条身世线索对他造成强烈冲击。",
@@ -303,7 +303,7 @@
       ],
       "interrogationLayers": [
         {
-          "layerId": "npc_2.layer_1",
+          "layerId": "wei.layer_1",
           "roundType": "shake",
           "topic": "第一轮：动摇。承认昨晚来过，并承认为账簿而来。",
           "revealGoal": "让玩家知道他案发当晚来过赵家，真实目的是要回账簿。",
@@ -316,7 +316,7 @@
           ]
         },
         {
-          "layerId": "npc_2.layer_2",
+          "layerId": "wei.layer_2",
           "roundType": "collapse",
           "topic": "第二轮：崩溃。身世真相瓦解。",
           "revealGoal": "让玩家知道卫国强是林秀华年轻时被迫送走的亲生儿子。",
@@ -331,7 +331,7 @@
       ]
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "actualRelationshipToVictim": "前来讨债的人；同时是赵建民的亲生儿子",
       "isKiller": false,
       "backstory": "他母亲不久前去世。他来找赵建民讨一笔旧债，离开时顺手拿走了一块与母亲有关的手表。",
@@ -391,7 +391,7 @@
       ],
       "dialogueTriggers": [
         {
-          "triggerId": "npc_3.trigger_1",
+          "triggerId": "zhang.trigger_1",
           "topic": "案发当晚来访",
           "unlockRequirements": ["fact_5"],
           "revealGoal": "让玩家知道他承认案发当晚来过赵家，并与死者发生争执。",
@@ -406,7 +406,7 @@
           ]
         },
         {
-          "triggerId": "npc_3.trigger_2",
+          "triggerId": "zhang.trigger_2",
           "topic": "失踪手表",
           "unlockRequirements": ["fact_17"],
           "revealGoal": "让玩家知道他对失踪手表明显防备，并在高压力下承认自己拿走了手表。",
@@ -421,7 +421,7 @@
           ]
         },
         {
-          "triggerId": "npc_3.trigger_3",
+          "triggerId": "zhang.trigger_3",
           "topic": "卫国强",
           "unlockRequirements": ["fact_5"],
           "revealGoal": "让玩家知道他承认认识卫国强，但不愿细说两人关系。",
@@ -436,7 +436,7 @@
           ]
         },
         {
-          "triggerId": "npc_3.trigger_4",
+          "triggerId": "zhang.trigger_4",
           "topic": "身世线索",
           "unlockRequirements": ["fact_14"],
           "revealGoal": "让玩家知道他开始怀疑自己与赵建民之间存在血缘关系。",
@@ -453,7 +453,7 @@
       ],
       "interrogationLayers": [
         {
-          "layerId": "npc_3.layer_1",
+          "layerId": "zhang.layer_1",
           "roundType": "shake",
           "topic": "第一轮：动摇。承认来过、偷走手表，并触发排除凶手转折。",
           "revealGoal": "让玩家知道他案发当晚来过赵家并拿走手表，但现有死亡时间无法直接指向他。",
@@ -466,7 +466,7 @@
           ]
         },
         {
-          "layerId": "npc_3.layer_2",
+          "layerId": "zhang.layer_2",
           "roundType": "collapse",
           "topic": "第二轮：崩溃。身世真相瓦解。",
           "revealGoal": "让玩家知道张铁柱开始怀疑自己与赵建民之间存在血缘关系。",

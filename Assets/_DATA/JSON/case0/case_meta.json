@@ -42,14 +42,14 @@
     "briefBackground": "时间：1994年，具体日期待核。\n地点：某北方工业城市，赵建民家中。\n案件详情：52岁的国营钢厂会计赵建民被发现死于家中。尸体带有明显酒气，头部存在致命钝器伤。"
   },
   "caseTruth": {
-    "realKillerId": "npc_1",
+    "realKillerId": "lin",
     "surfaceTruth": "三名嫌疑人都在隐瞒案发当晚的行动，以及自己与死者之间的关系。",
     "fullTruth": "林秀华在又一次遭受家暴后杀死了赵建民，随后清理并伪装了现场，第二天才报案。",
     "metaTruth": "这起命案之下，还压着一段被赵建民以勒索与控制扭曲了多年的家庭历史。"
   },
   "suspectSummaries": [
     {
-      "npcId": "npc_1",
+      "npcId": "lin",
       "displayName": "林秀华",
       "age": 44,
       "locationId": "kitchen",
@@ -60,7 +60,7 @@
       "hiddenTruthSummary": ""
     },
     {
-      "npcId": "npc_2",
+      "npcId": "wei",
       "displayName": "卫国强",
       "age": 35,
       "locationId": "living_room",
@@ -71,7 +71,7 @@
       "hiddenTruthSummary": ""
     },
     {
-      "npcId": "npc_3",
+      "npcId": "zhang",
       "displayName": "张铁柱",
       "age": 27,
       "locationId": "bedroom",
@@ -85,7 +85,7 @@
   "relationshipMap": [
     {
       "fromId": "victim",
-      "toId": "npc_2",
+      "toId": "wei",
       "type": "business_contact",
       "displayText": "生意往来",
       "knownBy": [
@@ -94,7 +94,7 @@
     },
     {
       "fromId": "victim",
-      "toId": "npc_1",
+      "toId": "lin",
       "type": "spouse",
       "displayText": "夫妻",
       "knownBy": [
@@ -103,7 +103,7 @@
     },
     {
       "fromId": "victim",
-      "toId": "npc_3",
+      "toId": "zhang",
       "type": "debt_dispute",
       "displayText": "讨债关系",
       "knownBy": [

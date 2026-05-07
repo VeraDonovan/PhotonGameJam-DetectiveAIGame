@@ -28,20 +28,20 @@ namespace DetectiveGame.Core
     [Serializable]
     public sealed class CaseNpcAiLinkedDataFiles
     {
-        public string npc_1;
-        public string npc_2;
-        public string npc_3;
+        public string lin;
+        public string wei;
+        public string zhang;
 
         public string GetFileNameForNpc(string npcId)
         {
             switch (npcId)
             {
-                case "npc_1":
-                    return npc_1;
-                case "npc_2":
-                    return npc_2;
-                case "npc_3":
-                    return npc_3;
+                case "lin":
+                    return lin;
+                case "wei":
+                    return wei;
+                case "zhang":
+                    return zhang;
                 default:
                     return null;
             }

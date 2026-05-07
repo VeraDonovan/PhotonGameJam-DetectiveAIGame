@@ -17,7 +17,7 @@
       "displayName": "大前门烟蒂",
       "summary": "烟灰缸里有几支大前门烟蒂，抽到了过滤嘴。赵建民的妻子说他平时抽别的牌子。",
       "locationId": "living_room",
-      "targetNpcId": "npc_2",
+      "targetNpcId": "wei",
       "requirements": [],
       "mapGroup": "wei_visit"
     },
@@ -57,7 +57,7 @@
       "displayName": "窗台上的手表空痕",
       "summary": "窗台上有一圈灰尘，中间一个长方形空白，大小刚好是一只手表。有人最近拿走了窗台上的东西。",
       "locationId": "living_room",
-      "targetNpcId": "npc_3",
+      "targetNpcId": "zhang",
       "requirements": [],
       "mapGroup": "watch_line"
     },
@@ -87,7 +87,7 @@
       "displayName": "林秀华双臂淤青",
       "summary": "林秀华双臂有新旧叠加的淤青，形状规整，不像偶然碰撞。",
       "locationId": "kitchen",
-      "targetNpcId": "npc_1",
+      "targetNpcId": "lin",
       "requirements": [],
       "mapGroup": "abuse_line"
     },
@@ -117,7 +117,7 @@
       "displayName": "台灯不亮",
       "summary": "床头台灯不亮。林秀华声称早上发现尸体时灯是开着的。",
       "locationId": "bedroom",
-      "targetNpcId": "npc_1",
+      "targetNpcId": "lin",
       "requirements": [],
       "mapGroup": "lamp_line"
     },
@@ -127,7 +127,7 @@
       "displayName": "药瓶",
       "summary": "一瓶五年前购买的止痛药。标签显示的用途与安眠药一致。",
       "locationId": "bathroom",
-      "targetNpcId": "npc_1",
+      "targetNpcId": "lin",
       "requirements": [],
       "mapGroup": "abuse_line"
     },

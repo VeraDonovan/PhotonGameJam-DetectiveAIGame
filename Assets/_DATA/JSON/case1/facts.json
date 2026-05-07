@@ -66,7 +66,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_2"
+          "wei"
         ],
         "relatedLocationIds": [
           "living_room"
@@ -163,7 +163,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1"
+          "lin"
         ],
         "relatedLocationIds": [
           "living_room",
@@ -209,7 +209,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_3"
+          "zhang"
         ],
         "relatedLocationIds": [
           "living_room"
@@ -258,7 +258,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1"
+          "lin"
         ],
         "relatedLocationIds": [
           "kitchen",
@@ -310,7 +310,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1"
+          "lin"
         ],
         "relatedLocationIds": [
           "kitchen",
@@ -359,7 +359,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1"
+          "lin"
         ],
         "relatedLocationIds": [
           "bedroom"
@@ -409,9 +409,9 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1",
-          "npc_2",
-          "npc_3"
+          "lin",
+          "wei",
+          "zhang"
         ],
         "relatedLocationIds": [
           "bedroom"
@@ -462,7 +462,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_2"
+          "wei"
         ],
         "relatedLocationIds": [
           "living_room"
@@ -510,7 +510,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_2"
+          "wei"
         ],
         "relatedLocationIds": [
           "living_room",
@@ -560,7 +560,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_3"
+          "zhang"
         ],
         "relatedLocationIds": [
           "living_room",
@@ -605,8 +605,8 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_2",
-          "npc_3"
+          "wei",
+          "zhang"
         ],
         "relatedLocationIds": [
           "living_room",
@@ -629,12 +629,12 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "npc_1.layer_1"
+          "lin.layer_1"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [],
         "sourceDialogueIds": [
-          "npc_1.layer_1"
+          "lin.layer_1"
         ],
         "sourceFactIds": [
           "fact_2",
@@ -658,7 +658,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1"
+          "lin"
         ],
         "relatedLocationIds": [
           "living_room",
@@ -681,12 +681,12 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "npc_1.layer_2"
+          "lin.layer_2"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [],
         "sourceDialogueIds": [
-          "npc_1.layer_2"
+          "lin.layer_2"
         ],
         "sourceFactIds": [
           "fact_6",
@@ -709,7 +709,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_1"
+          "lin"
         ],
         "relatedLocationIds": [
           "living_room",
@@ -733,14 +733,14 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "npc_2.layer_2"
+          "wei.layer_2"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
           "A-12"
         ],
         "sourceDialogueIds": [
-          "npc_2.layer_2"
+          "wei.layer_2"
         ],
         "sourceFactIds": [
           "fact_8"
@@ -761,8 +761,8 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_2",
-          "npc_1"
+          "wei",
+          "lin"
         ],
         "relatedLocationIds": [
           "bedroom"
@@ -785,14 +785,14 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "npc_3.layer_2"
+          "zhang.layer_2"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
           "A-12"
         ],
         "sourceDialogueIds": [
-          "npc_3.layer_2"
+          "zhang.layer_2"
         ],
         "sourceFactIds": [
           "fact_8",
@@ -813,7 +813,7 @@
       },
       "scope": {
         "relatedNpcIds": [
-          "npc_3"
+          "zhang"
         ],
         "relatedLocationIds": [
           "bedroom"

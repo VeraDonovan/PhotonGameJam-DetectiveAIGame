@@ -1,7 +1,7 @@
 {
   "npcs": [
     {
-      "npc_id": "npc_1",
+      "npc_id": "lin",
       "name": "村民A",
       "appearance": {
         "head": "female_human_head_14",
@@ -10,7 +10,7 @@
       }
     },
     {
-      "npc_id": "npc_2",
+      "npc_id": "wei",
       "name": "村民B",
       "appearance": {
         "head": "male_human_head_07",
@@ -19,7 +19,7 @@
       }
     },
     {
-      "npc_id": "npc_3",
+      "npc_id": "zhang",
       "name": "村民C",
       "appearance": {
         "head": "female_human_head_05",

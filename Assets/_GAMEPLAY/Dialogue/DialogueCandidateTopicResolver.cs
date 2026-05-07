@@ -188,9 +188,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return;
             }
 
-            topic.Availability = topic.MissingRequirementIds.Count == 0
-                ? DialogueTopicAvailability.Available
-                : DialogueTopicAvailability.Locked;
+            topic.Availability = DialogueTopicAvailability.Available;
         }
 
         private static DialogueCandidateTopic GetOrCreateTopic(
