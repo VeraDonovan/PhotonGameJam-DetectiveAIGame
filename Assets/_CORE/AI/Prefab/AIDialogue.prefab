@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   apiUrl: https://api.deepseek.com/chat/completions
-  model: deepseek-chat
+  model: deepseek-v4-flash
   maxTokens: 300
   temperature: 0.7
   timeoutSeconds: 30

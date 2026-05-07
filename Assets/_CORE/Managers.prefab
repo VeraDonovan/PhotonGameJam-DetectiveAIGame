@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   apiUrl: https://api.deepseek.com/chat/completions
-  model: deepseek-chat
+  model: deepseek-v4-flash
   maxTokens: 300
   temperature: 0.7
   timeoutSeconds: 30
@@ -127,6 +127,10 @@ MonoBehaviour:
   statementsJson: {fileID: 4900000, guid: ab73b43079b0e8649af2ec9a9609882e, type: 3}
   truthJson: {fileID: 4900000, guid: aed0c98dd95f8ad4299b719121c17834, type: 3}
   endingJson: {fileID: 4900000, guid: d8b1277b06ecee541b7091d0945778a0, type: 3}
+  npcAiProfileJsons:
+  - {fileID: 4900000, guid: 5f23da91fae97e440b58332a38071ab9, type: 3}
+  - {fileID: 4900000, guid: 7a4feba351c7a68479c978e3b6af839b, type: 3}
+  - {fileID: 4900000, guid: bd298e8833560f84f87b14da178f630c, type: 3}
 --- !u!114 &3281633763390490498
 MonoBehaviour:
   m_ObjectHideFlags: 0

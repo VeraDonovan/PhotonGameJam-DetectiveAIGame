@@ -71,6 +71,7 @@ namespace DetectiveGame.Gameplay.Tests
             report.AppendLine($"Statement Topics: {databaseManager.StatementDatabase.TopicById.Count}");
             report.AppendLine($"Statements: {databaseManager.StatementDatabase.StatementById.Count}");
             report.AppendLine($"NPC Truths: {databaseManager.TruthDatabase.NpcTruthByNpcId.Count}");
+            report.AppendLine($"NPC AI Profiles: {databaseManager.NpcAiProfileDatabase.ProfileByNpcId.Count}");
             report.AppendLine($"Dialogue Triggers: {databaseManager.TruthDatabase.DialogueTriggerById.Count}");
             report.AppendLine($"Interrogation Layers: {databaseManager.TruthDatabase.InterrogationLayerById.Count}");
             report.AppendLine($"Endings: {databaseManager.EndingDatabase.EndingById.Count}");
@@ -85,6 +86,7 @@ namespace DetectiveGame.Gameplay.Tests
             ValidateFactReferences(errors, databaseManager);
             ValidateStatementReferences(errors, databaseManager);
             ValidateNpcTruthReferences(errors, databaseManager);
+            ValidateNpcAiReferences(errors, databaseManager);
             ValidateEndingReferences(errors, databaseManager);
 
             report.AppendLine();
@@ -267,6 +269,31 @@ namespace DetectiveGame.Gameplay.Tests
             }
         }
 
+        private static void ValidateNpcAiReferences(List<string> errors, DatabaseManager databaseManager)
+        {
+            foreach (var npc in databaseManager.NpcDatabase.NpcById.Values)
+            {
+                if (!databaseManager.NpcAiProfileDatabase.TryGetProfile(npc.npcId, out var profile) || profile == null)
+                {
+                    errors.Add($"Public NPC '{npc.npcId}' is missing an NPC AI profile.");
+                    continue;
+                }
+
+                if (!string.Equals(profile.npcId, npc.npcId, StringComparison.Ordinal))
+                {
+                    errors.Add($"NPC AI profile mismatch for public NPC '{npc.npcId}'.");
+                }
+            }
+
+            foreach (var profile in databaseManager.NpcAiProfileDatabase.ProfileByNpcId.Values)
+            {
+                if (!databaseManager.NpcDatabase.NpcById.ContainsKey(profile.npcId))
+                {
+                    errors.Add($"NPC AI profile '{profile.npcId}' has no matching public NPC.");
+                }
+            }
+        }
+
         private static void ValidateInterrogationLayerReferences(
             List<string> errors,
             DatabaseManager databaseManager,
@@ -410,6 +437,7 @@ namespace DetectiveGame.Gameplay.Tests
                 report.AppendLine($"- {npc.npcId} {npc.displayName}");
                 report.AppendLine($"  publicProfile: {ToYesNo(!string.IsNullOrWhiteSpace(npc.profileText))}");
                 report.AppendLine($"  truth: {ToYesNo(hasTruth)}");
+                report.AppendLine($"  aiProfile: {ToYesNo(databaseManager.NpcAiProfileDatabase.TryGetProfile(npc.npcId, out _))}");
                 report.AppendLine($"  statementTopics: {databaseManager.StatementDatabase.GetTopicsByNpc(npc.npcId).Count}");
                 report.AppendLine($"  interrogationLayers: {layerCount}");
 

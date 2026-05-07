@@ -13,6 +13,7 @@ namespace DetectiveGame.Core
         [SerializeField] private TextAsset statementsJson;
         [SerializeField] private TextAsset truthJson;
         [SerializeField] private TextAsset endingJson;
+        [SerializeField] private TextAsset[] npcAiProfileJsons;
 
         public CaseMetaData CaseMetaData { get; private set; }
         public EvidenceDatabase EvidenceDatabase { get; private set; }
@@ -21,6 +22,7 @@ namespace DetectiveGame.Core
         public StatementDatabase StatementDatabase { get; private set; }
         public TruthDatabase TruthDatabase { get; private set; }
         public EndingDatabase EndingDatabase { get; private set; }
+        public NpcAiProfileDatabase NpcAiProfileDatabase { get; private set; }
 
         public bool IsInitialized { get; private set; }
 
@@ -33,6 +35,7 @@ namespace DetectiveGame.Core
             StatementDatabase = StatementDatabaseBuilder.Build(ParseJson<StatementSetData>(statementsJson, nameof(statementsJson)));
             TruthDatabase = TruthDatabaseBuilder.Build(ParseJson<TruthData>(truthJson, nameof(truthJson)));
             EndingDatabase = EndingDatabaseBuilder.Build(ParseJson<EndingSetData>(endingJson, nameof(endingJson)));
+            NpcAiProfileDatabase = NpcAiProfileDatabaseBuilder.Build(ParseNpcAiProfiles());
             IsInitialized = true;
         }
 
@@ -51,6 +54,46 @@ namespace DetectiveGame.Core
             }
 
             return data;
+        }
+
+        private NpcAiProfileData[] ParseNpcAiProfiles()
+        {
+            if (npcAiProfileJsons == null || npcAiProfileJsons.Length == 0)
+            {
+                throw new InvalidOperationException("DatabaseManager requires at least one NPC AI profile JSON asset.");
+            }
+
+            var profiles = new NpcAiProfileData[npcAiProfileJsons.Length];
+            for (var i = 0; i < npcAiProfileJsons.Length; i++)
+            {
+                profiles[i] = ParseJson<NpcAiProfileData>(npcAiProfileJsons[i], $"{nameof(npcAiProfileJsons)}[{i}]");
+            }
+
+            ValidateNpcAiMetadataCoverage(profiles);
+            return profiles;
+        }
+
+        private void ValidateNpcAiMetadataCoverage(NpcAiProfileData[] profiles)
+        {
+            if (CaseMetaData?.linkedDataFiles?.npcAi == null)
+            {
+                return;
+            }
+
+            foreach (var profile in profiles)
+            {
+                if (profile == null || string.IsNullOrWhiteSpace(profile.npcId))
+                {
+                    continue;
+                }
+
+                var expectedFileName = CaseMetaData.linkedDataFiles.npcAi.GetFileNameForNpc(profile.npcId);
+                if (string.IsNullOrWhiteSpace(expectedFileName))
+                {
+                    throw new InvalidOperationException(
+                        $"CaseMetaData.linkedDataFiles.npcAi is missing an entry for npcId '{profile.npcId}'.");
+                }
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ public class DeepSeekDialogueClient : MonoBehaviour {
     public static DeepSeekDialogueClient Instance;
 
     [SerializeField] private string apiUrl = "https://api.deepseek.com/chat/completions";
-    [SerializeField] private string model = "deepseek-chat";
+    [SerializeField] private string model = "deepseek-v4-flash";
     [SerializeField] private int maxTokens = 300;
     [SerializeField] private float temperature = 0.7f;
     [SerializeField] private int timeoutSeconds = 30;
