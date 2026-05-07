@@ -1,319 +1,349 @@
-{
-  "templateVersion": "2.3",
-  "schemaType": "case_truth",
-  "language": {
-    "schema": "en",
-    "content": "zh-CN"
-  },
-  "caseId": "case1",
-  "caseTruth": {
-    "realKillerId": "npc_1",
-    "realMotive": "林秀华在长期家暴与当晚再次受辱后反击，用炉钩击中赵建民太阳穴。",
-    "coverUp": "林秀华在案发后清理了客厅和厨房痕迹，处理抹布与水槽，并伪造第二天才发现尸体的表象。",
-    "coreHiddenStory": "赵建民长期用账簿、债务和身世秘密操控林秀华、卫国强与张铁柱。"
-  },
-  "timeline": [
-    {
-      "sequence": 1,
-      "time": "约19:00",
-      "event": "卫国强来到赵家，索要记有自己旧账把柄的账簿。",
-      "participants": [
-        "npc_2",
-        "victim"
-      ]
-    },
-    {
-      "sequence": 2,
-      "time": "稍后",
-      "event": "张铁柱来到赵家讨债，与赵建民争执后离开，并拿走窗台上的手表。",
-      "participants": [
-        "npc_3",
-        "victim"
-      ]
-    },
-    {
-      "sequence": 3,
-      "time": "21:00-23:00",
-      "event": "赵建民醉酒后再次对林秀华施暴并羞辱她，林秀华用炉钩击中其太阳穴。",
-      "participants": [
-        "npc_1",
-        "victim"
-      ]
-    },
-    {
-      "sequence": 4,
-      "time": "深夜",
-      "event": "林秀华拖地、擦拭炉钩、冲洗抹布，并尝试用旧灯泡伪造第二天发现尸体的说法。",
-      "participants": [
-        "npc_1"
-      ]
-    },
-    {
-      "sequence": 5,
-      "time": "次日早晨",
-      "event": "林秀华报警，称自己早上才发现赵建民死亡。",
-      "participants": [
-        "npc_1"
-      ]
-    }
-  ],
-  "npcTruths": [
-    {
-      "npcId": "npc_1",
-      "actualRelationshipToVictim": "妻子",
-      "isKiller": true,
-      "backstory": "长期遭受赵建民家暴，并被其用失去的孩子折磨。",
-      "realMotive": "在长期压迫和当晚再次受辱后反击。",
-      "hiddenTruth": "她是直接击打者，也是现场清理与伪装的执行者。",
-      "knowledge": [
-        "知道自己击中了赵建民",
-        "知道自己处理过现场痕迹",
-        "知道赵建民长期对自己施暴"
-      ],
-      "personalTimeline": [
-        {
-          "sequence": 1,
-          "time": "昨晚两次来访期间",
-          "locationId": "kitchen",
-          "event": "听见两名男性先后来访。",
-          "whatThisNpcKnows": "知道有两名访客。",
-          "whatThisNpcClaims": "起初否认有人来过，之后才承认。",
-          "whatThisNpcHides": "不主动说明来访者与赵建民的真实关系。"
-        },
-        {
-          "sequence": 2,
-          "time": "21:00-23:00",
-          "locationId": "living_room",
-          "event": "反击并击中赵建民。",
-          "whatThisNpcKnows": "知道自己是直接击打者。",
-          "whatThisNpcClaims": "在完全崩溃前坚持只是后来发现尸体。",
-          "whatThisNpcHides": "隐瞒真实案发经过。"
-        },
-        {
-          "sequence": 3,
-          "time": "深夜",
-          "locationId": "living_room",
-          "event": "处理现场痕迹与灯泡。",
-          "whatThisNpcKnows": "知道自己参与全部清理。",
-          "whatThisNpcClaims": "第一轮只承认顺手擦过地。",
-          "whatThisNpcHides": "不主动把清理与杀人连成完整链条。"
-        }
-      ],
-      "dialogueTriggers": [],
-      "interrogationLayers": [
-        {
-          "layerId": "npc_1.layer_1",
-          "roundType": "shake",
-          "topic": "承认昨晚有访客并承认自己清理过现场",
-          "revealGoal": "得到林秀华第一轮突破：她撒谎并清理过现场。",
-          "requiredEvidenceIds": [
-            "A-11",
-            "A-1",
-            "B-7",
-            "A-4"
-          ],
-          "revealFactIds": [
-            "fact_5",
-            "fact_13"
-          ],
-          "relatedStatementTopicIds": [
-            "lin_discovery_time",
-            "lin_visitors",
-            "lin_cleanup"
-          ],
-          "aiGuidance": "",
-          "examplePhrasings": []
-        },
-        {
-          "layerId": "npc_1.layer_2",
-          "roundType": "collapse",
-          "topic": "承认长期家暴、击打行为和整套伪装",
-          "revealGoal": "形成林秀华完整定案供述。",
-          "requiredEvidenceIds": [
-            "B-10",
-            "B-14"
-          ],
-          "revealFactIds": [
-            "fact_14"
-          ],
-          "relatedStatementTopicIds": [
-            "lin_discovery_time",
-            "lin_abuse",
-            "lin_cleanup"
-          ],
-          "aiGuidance": "",
-          "examplePhrasings": []
-        }
-      ]
-    },
-    {
-      "npcId": "npc_2",
-      "actualRelationshipToVictim": "被赵建民用旧账控制的人；同时是林秀华被送走的亲生儿子",
-      "isKiller": false,
-      "backstory": "来赵家是为了账簿，不知道自己的真实身世。",
-      "realMotive": "夺回账簿，摆脱控制。",
-      "hiddenTruth": "林秀华是他的生母，但他在案发开始时并不知情。",
-      "knowledge": [
-        "知道账簿里记着自己的把柄",
-        "知道自己昨晚来过赵家",
-        "不知道林秀华和自己的血缘关系"
-      ],
-      "personalTimeline": [
-        {
-          "sequence": 1,
-          "time": "约19:00",
-          "locationId": "living_room",
-          "event": "到赵家索回账簿。",
-          "whatThisNpcKnows": "知道自己此行是为账簿。",
-          "whatThisNpcClaims": "最开始只说自己今天早上才来。",
-          "whatThisNpcHides": "不主动说明账簿具体内容。"
-        },
-        {
-          "sequence": 2,
-          "time": "争执后",
-          "locationId": "living_room",
-          "event": "离开赵家。",
-          "whatThisNpcKnows": "知道自己离开时赵建民还活着。",
-          "whatThisNpcClaims": "承认来过，但强调自己不是凶手。",
-          "whatThisNpcHides": "不主动承认自己叫了张铁柱来壮胆。"
-        }
-      ],
-      "dialogueTriggers": [],
-      "interrogationLayers": [
-        {
-          "layerId": "npc_2.layer_1",
-          "roundType": "shake",
-          "topic": "承认昨晚来过，并承认是为账簿而来",
-          "revealGoal": "确认卫国强是案发前来访者，且与账簿把柄直接相关。",
-          "requiredEvidenceIds": [
-            "A-1",
-            "A-2",
-            "A-12"
-          ],
-          "revealFactIds": [
-            "fact_9",
-            "fact_10"
-          ],
-          "relatedStatementTopicIds": [
-            "wei_visit",
-            "wei_purpose",
-            "wei_zhang_relation"
-          ],
-          "aiGuidance": "",
-          "examplePhrasings": []
-        },
-        {
-          "layerId": "npc_2.layer_2",
-          "roundType": "collapse",
-          "topic": "母子身世线崩溃",
-          "revealGoal": "揭开卫国强与林秀华的母子关系。",
-          "requiredEvidenceIds": [
-            "A-12"
-          ],
-          "revealFactIds": [
-            "fact_15"
-          ],
-          "relatedStatementTopicIds": [
-            "wei_identity"
-          ],
-          "aiGuidance": "",
-          "examplePhrasings": []
-        }
-      ]
-    },
-    {
-      "npcId": "npc_3",
-      "actualRelationshipToVictim": "前来讨债的人；同时是赵建民的亲生儿子",
-      "isKiller": false,
-      "backstory": "为病中的母亲筹钱来讨债，拿走了手表，但不是凶手。",
-      "realMotive": "讨回旧债并拿回母亲的手表。",
-      "hiddenTruth": "赵建民是他的生父，但他直到第二轮审讯才真正明白。",
-      "knowledge": [
-        "知道母亲与赵建民有旧债",
-        "知道自己拿走了手表",
-        "不知道赵建民临终羞辱话语的真实含义"
-      ],
-      "personalTimeline": [
-        {
-          "sequence": 1,
-          "time": "昨晚稍后",
-          "locationId": "living_room",
-          "event": "来到赵家讨债。",
-          "whatThisNpcKnows": "知道自己来是为了讨债。",
-          "whatThisNpcClaims": "起初只说自己不认识赵家人。",
-          "whatThisNpcHides": "隐瞒讨债与拿表行为。"
-        },
-        {
-          "sequence": 2,
-          "time": "争执后",
-          "locationId": "living_room",
-          "event": "拿走手表后离开。",
-          "whatThisNpcKnows": "知道那是母亲的手表。",
-          "whatThisNpcClaims": "第一轮才承认自己拿了表。",
-          "whatThisNpcHides": "不主动讲清母亲旧事。"
-        }
-      ],
-      "dialogueTriggers": [],
-      "interrogationLayers": [
-        {
-          "layerId": "npc_3.layer_1",
-          "roundType": "shake",
-          "topic": "承认昨晚来过、承认讨债、承认拿走手表",
-          "revealGoal": "把张铁柱推进到“讨债且拿表，但并非凶手”的位置。",
-          "requiredEvidenceIds": [
-            "A-5"
-          ],
-          "revealFactIds": [
-            "fact_11"
-          ],
-          "relatedStatementTopicIds": [
-            "zhang_house",
-            "zhang_watch"
-          ],
-          "aiGuidance": "",
-          "examplePhrasings": []
-        },
-        {
-          "layerId": "npc_3.layer_2",
-          "roundType": "collapse",
-          "topic": "得知自己其实是赵建民的儿子",
-          "revealGoal": "揭开张铁柱的身世真相。",
-          "requiredEvidenceIds": [
-            "A-12"
-          ],
-          "revealFactIds": [
-            "fact_16"
-          ],
-          "relatedStatementTopicIds": [
-            "zhang_identity"
-          ],
-          "aiGuidance": "",
-          "examplePhrasings": []
-        }
-      ]
-    }
-  ],
-  "deductionTruths": [
-    {
-      "truthId": "truth_main_case",
-      "displayName": "林秀华是真凶",
-      "requiresFactIds": [
-        "fact_14"
-      ]
-    },
-    {
-      "truthId": "truth_wei_identity",
-      "displayName": "卫国强是林秀华失散多年的儿子",
-      "requiresFactIds": [
-        "fact_15"
-      ]
-    },
-    {
-      "truthId": "truth_zhang_identity",
-      "displayName": "张铁柱是赵建民的亲生儿子",
-      "requiresFactIds": [
-        "fact_16"
-      ]
-    }
-  ]
+﻿{
+    "templateVersion":  "2.3",
+    "schemaType":  "case_truth",
+    "language":  {
+                     "schema":  "en",
+                     "content":  "zh-CN"
+                 },
+    "caseId":  "case1",
+    "caseTruth":  {
+                      "realKillerId":  "npc_1",
+                      "realMotive":  "林秀华在长期家暴和当晚再次受辱后反击，用炉钩击中赵建民太阳穴。",
+                      "coverUp":  "林秀华在案发后拖地、擦拭炉钩子、清洗抹布并更换旧灯泡，试图伪造第二天早上才发现尸体的表象。",
+                      "coreHiddenStory":  "赵建民长期用一本账簿、债务和身世秘密控制林秀华、卫国强与张铁柱，三名嫌疑人都被他压在同一套控制系统里。"
+                  },
+    "timeline":  [
+                     {
+                         "sequence":  1,
+                         "time":  "约19:00",
+                         "event":  "卫国强来到赵家，索要记有自己旧账把柄的账簿。",
+                         "participants":  [
+                                              "npc_2",
+                                              "victim"
+                                          ]
+                     },
+                     {
+                         "sequence":  2,
+                         "time":  "稍后",
+                         "event":  "张铁柱来到赵家替母亲讨债，与赵建民争执后离开，并拿走窗台上刻有母亲名字的手表。",
+                         "participants":  [
+                                              "npc_3",
+                                              "victim"
+                                          ]
+                     },
+                     {
+                         "sequence":  3,
+                         "time":  "21:00-23:00",
+                         "event":  "赵建民醉酒后再次对林秀华施暴，并用孩子与身世秘密羞辱她；林秀华在激愤中用炉钩击中其太阳穴。",
+                         "participants":  [
+                                              "npc_1",
+                                              "victim"
+                                          ]
+                     },
+                     {
+                         "sequence":  4,
+                         "time":  "深夜",
+                         "event":  "林秀华拖地、擦拭炉钩子、清洗抹布，并从储藏室翻出旧灯泡，试图伪造第二天早上才发现尸体的说法。",
+                         "participants":  [
+                                              "npc_1"
+                                          ]
+                     },
+                     {
+                         "sequence":  5,
+                         "time":  "次日早晨",
+                         "event":  "林秀华报警，称自己早上才发现赵建民死亡。",
+                         "participants":  [
+                                              "npc_1"
+                                          ]
+                     }
+                 ],
+    "npcTruths":  [
+                      {
+                          "npcId":  "npc_1",
+                          "actualRelationshipToVictim":  "妻子",
+                          "isKiller":  true,
+                          "backstory":  "长期遭受赵建民家暴，并被其用失去的孩子和身世秘密折磨。",
+                          "realMotive":  "在长期压迫和当晚再次被羞辱后反击。",
+                          "hiddenTruth":  "她是直接击打者，也是拖地、擦炉钩子、洗抹布、换灯泡等现场清理与伪装的执行者。",
+                          "knowledge":  [
+                                            "知道自己击中了赵建民",
+                                            "知道自己处理过现场痕迹",
+                                            "知道赵建民长期对自己施暴"
+                                        ],
+                          "personalTimeline":  [
+                                                   {
+                                                       "sequence":  1,
+                                                       "time":  "昨晚两次来访期间",
+                                                       "locationId":  "kitchen",
+                                                       "event":  "听见两名男性先后来访。",
+                                                       "whatThisNpcKnows":  "知道有两名访客。",
+                                                       "whatThisNpcClaims":  "起初否认有人来过，之后才承认。",
+                                                       "whatThisNpcHides":  "不主动说明来访者与赵建民的真实关系。"
+                                                   },
+                                                   {
+                                                       "sequence":  2,
+                                                       "time":  "21:00-23:00",
+                                                       "locationId":  "living_room",
+                                                       "event":  "反击并击中赵建民。",
+                                                       "whatThisNpcKnows":  "知道自己是直接击打者。",
+                                                       "whatThisNpcClaims":  "在完全崩溃前坚持只是后来发现尸体。",
+                                                       "whatThisNpcHides":  "隐瞒真实案发经过。"
+                                                   },
+                                                   {
+                                                       "sequence":  3,
+                                                       "time":  "深夜",
+                                                       "locationId":  "living_room",
+                                                       "event":  "处理现场痕迹与灯泡。",
+                                                       "whatThisNpcKnows":  "知道自己参与全部清理。",
+                                                       "whatThisNpcClaims":  "第一轮只承认顺手擦过地。",
+                                                       "whatThisNpcHides":  "不主动把清理与杀人连成完整链条。"
+                                                   }
+                                               ],
+                          "dialogueTriggers":  [
+
+                                               ],
+                          "interrogationLayers":  [
+                                                      {
+                                                          "layerId":  "npc_1.layer_1",
+                                                          "roundType":  "shake",
+                                                          "topic":  "承认昨晚有访客并承认自己清理过现场",
+                                                          "revealGoal":  "得到林秀华第一轮突破：她撒谎并清理过现场。",
+                                                          "requiredEvidenceIds":  [
+                                                                                      "A-11",
+                                                                                      "A-1",
+                                                                                      "B-7",
+                                                                                      "A-4"
+                                                                                  ],
+                                                          "revealFactIds":  [
+                                                                                "fact_5",
+                                                                                "fact_13"
+                                                                            ],
+                                                          "relatedStatementTopicIds":  [
+                                                                                           "lin_discovery_time",
+                                                                                           "lin_visitors",
+                                                                                           "lin_cleanup"
+                                                                                       ],
+                                                          "aiGuidance":  "第一轮只突破到承认访客、撒谎和清理现场。林秀华仍要坚持赵建民在访客离开时还活着，不应在本层完整认罪。",
+                                                          "examplePhrasings":  [
+                                                                                   "昨晚来了两个人，卫国强和张铁柱。",
+                                                                                   "他们走后，建民把气全撒在我身上。",
+                                                                                   "我擦了地，也擦了炉钩子，但我真的没有杀他。"
+                                                                               ]
+                                                      },
+                                                      {
+                                                          "layerId":  "npc_1.layer_2",
+                                                          "roundType":  "collapse",
+                                                          "topic":  "承认长期家暴、击打行为、换灯泡和整套伪装",
+                                                          "revealGoal":  "形成林秀华完整定案供述：击打、清理、洗抹布、换灯泡、次日报警。",
+                                                          "requiredEvidenceIds":  [
+                                                                                      "B-10",
+                                                                                      "B-14"
+                                                                                  ],
+                                                          "revealFactIds":  [
+                                                                                "fact_14"
+                                                                            ],
+                                                          "relatedStatementTopicIds":  [
+                                                                                           "lin_discovery_time",
+                                                                                           "lin_abuse",
+                                                                                           "lin_cleanup"
+                                                                                       ],
+                                                          "aiGuidance":  "第二轮允许完整认罪。重点是长期家暴、孩子被夺走、当晚羞辱触发反击，以及伪造发现时间的失败细节。",
+                                                          "examplePhrasings":  [
+                                                                                   "是我换的。那天晚上打了他之后，他倒了，血从太阳穴流出来。",
+                                                                                   "我想如果灯开着，邻居会以为我们一宿没睡，就能说得通为什么我早上才发现。",
+                                                                                   "不是早上才发现的，是我。是我杀的。炉钩子我拿的。"
+                                                                               ]
+                                                      }
+                                                  ]
+                      },
+                      {
+                          "npcId":  "npc_2",
+                          "actualRelationshipToVictim":  "被赵建民用旧账控制的人；同时是林秀华被送走的亲生儿子",
+                          "isKiller":  false,
+                          "backstory":  "来赵家是为了账簿，不知道自己正是林秀华被迫送走的亲生儿子。",
+                          "realMotive":  "夺回账簿，摆脱控制。",
+                          "hiddenTruth":  "林秀华是他的生母；赵建民知道却一直隐瞒，并利用卫国强替自己做假账。",
+                          "knowledge":  [
+                                            "知道账簿里记着自己的把柄",
+                                            "知道自己昨晚来过赵家",
+                                            "不知道林秀华和自己的血缘关系"
+                                        ],
+                          "personalTimeline":  [
+                                                   {
+                                                       "sequence":  1,
+                                                       "time":  "约19:00",
+                                                       "locationId":  "living_room",
+                                                       "event":  "到赵家索回账簿。",
+                                                       "whatThisNpcKnows":  "知道自己此行是为账簿。",
+                                                       "whatThisNpcClaims":  "最开始只说自己今天早上才来。",
+                                                       "whatThisNpcHides":  "不主动说明账簿具体内容。"
+                                                   },
+                                                   {
+                                                       "sequence":  2,
+                                                       "time":  "争执后",
+                                                       "locationId":  "living_room",
+                                                       "event":  "离开赵家。",
+                                                       "whatThisNpcKnows":  "知道自己离开时赵建民还活着。",
+                                                       "whatThisNpcClaims":  "承认来过，但强调自己不是凶手。",
+                                                       "whatThisNpcHides":  "不主动承认自己叫了张铁柱来壮胆。"
+                                                   }
+                                               ],
+                          "dialogueTriggers":  [
+
+                                               ],
+                          "interrogationLayers":  [
+                                                      {
+                                                          "layerId":  "npc_2.layer_1",
+                                                          "roundType":  "shake",
+                                                          "topic":  "承认昨晚来过，并承认是为账簿而来",
+                                                          "revealGoal":  "确认卫国强是案发前来访者，且与账簿把柄直接相关。",
+                                                          "requiredEvidenceIds":  [
+                                                                                      "A-1",
+                                                                                      "A-2",
+                                                                                      "A-12"
+                                                                                  ],
+                                                          "revealFactIds":  [
+                                                                                "fact_9",
+                                                                                "fact_10"
+                                                                            ],
+                                                          "relatedStatementTopicIds":  [
+                                                                                           "wei_visit",
+                                                                                           "wei_purpose",
+                                                                                           "wei_zhang_relation"
+                                                                                       ],
+                                                          "aiGuidance":  "第一轮让卫国强承认昨晚来过、来要账簿，并承认叫张铁柱来壮胆。仍保持控场和自保。",
+                                                          "examplePhrasings":  [
+                                                                                   "我昨晚去过赵家，要账本，抽了烟，吵了架，这些我全认。",
+                                                                                   "我来是为了把账本夺回来，不是为了杀他。",
+                                                                                   "张铁柱是我叫来的，但我没让他碰赵建民一下。"
+                                                                               ]
+                                                      },
+                                                      {
+                                                          "layerId":  "npc_2.layer_2",
+                                                          "roundType":  "collapse",
+                                                          "topic":  "母子身世线崩溃",
+                                                          "revealGoal":  "揭开卫国强与林秀华的母子关系。",
+                                                          "requiredEvidenceIds":  [
+                                                                                      "A-12"
+                                                                                  ],
+                                                          "revealFactIds":  [
+                                                                                "fact_15"
+                                                                            ],
+                                                          "relatedStatementTopicIds":  [
+                                                                                           "wei_identity"
+                                                                                       ],
+                                                          "aiGuidance":  "第二轮身世真相击穿控场能力。卫国强应先否认和压制情绪，再崩溃到请求见林秀华。",
+                                                          "examplePhrasings":  [
+                                                                                   "她的事跟我有什么关系？我又不是她什么人。",
+                                                                                   "赵建民知道我才是她儿子，不告诉我们任何人。",
+                                                                                   "我能不能……我可以见她吗？求你了。"
+                                                                               ]
+                                                      }
+                                                  ]
+                      },
+                      {
+                          "npcId":  "npc_3",
+                          "actualRelationshipToVictim":  "前来讨债的人；同时是赵建民的亲生儿子",
+                          "isKiller":  false,
+                          "backstory":  "为病中的母亲筹钱来讨债，拿走刻有母亲名字的手表，但不是凶手。",
+                          "realMotive":  "讨回旧债并拿回母亲的手表。",
+                          "hiddenTruth":  "赵建民是他的生父；他直到第二轮审讯才明白赵建民临死前的羞辱不是疯话。",
+                          "knowledge":  [
+                                            "知道母亲与赵建民有旧债",
+                                            "知道自己拿走了手表",
+                                            "不知道赵建民临终羞辱话语的真实含义"
+                                        ],
+                          "personalTimeline":  [
+                                                   {
+                                                       "sequence":  1,
+                                                       "time":  "昨晚稍后",
+                                                       "locationId":  "living_room",
+                                                       "event":  "来到赵家讨债。",
+                                                       "whatThisNpcKnows":  "知道自己来是为了讨债。",
+                                                       "whatThisNpcClaims":  "起初只说自己不认识赵家人。",
+                                                       "whatThisNpcHides":  "隐瞒讨债与拿表行为。"
+                                                   },
+                                                   {
+                                                       "sequence":  2,
+                                                       "time":  "争执后",
+                                                       "locationId":  "living_room",
+                                                       "event":  "拿走手表后离开。",
+                                                       "whatThisNpcKnows":  "知道那是母亲的手表。",
+                                                       "whatThisNpcClaims":  "第一轮才承认自己拿了表。",
+                                                       "whatThisNpcHides":  "不主动讲清母亲旧事。"
+                                                   }
+                                               ],
+                          "dialogueTriggers":  [
+
+                                               ],
+                          "interrogationLayers":  [
+                                                      {
+                                                          "layerId":  "npc_3.layer_1",
+                                                          "roundType":  "shake",
+                                                          "topic":  "承认昨晚来过、承认讨债、承认拿走手表",
+                                                          "revealGoal":  "把张铁柱推进到“讨债且拿表，但并非凶手”的位置。",
+                                                          "requiredEvidenceIds":  [
+                                                                                      "A-5"
+                                                                                  ],
+                                                          "revealFactIds":  [
+                                                                                "fact_11"
+                                                                            ],
+                                                          "relatedStatementTopicIds":  [
+                                                                                           "zhang_house",
+                                                                                           "zhang_watch"
+                                                                                       ],
+                                                          "aiGuidance":  "第一轮让张铁柱承认来过、讨债和拿表。重点是他保护母亲、怕被当成凶手，不能把手表说成普通赃物。",
+                                                          "examplePhrasings":  [
+                                                                                   "这是我妈的表，表背刻着她的名字。",
+                                                                                   "我来是替我妈讨债，不是杀人。",
+                                                                                   "我走的时候，赵建民还活着在喝酒。"
+                                                                               ]
+                                                      },
+                                                      {
+                                                          "layerId":  "npc_3.layer_2",
+                                                          "roundType":  "collapse",
+                                                          "topic":  "得知自己其实是赵建民的儿子",
+                                                          "revealGoal":  "揭开张铁柱的身世真相。",
+                                                          "requiredEvidenceIds":  [
+                                                                                      "A-12"
+                                                                                  ],
+                                                          "revealFactIds":  [
+                                                                                "fact_16"
+                                                                            ],
+                                                          "relatedStatementTopicIds":  [
+                                                                                           "zhang_identity"
+                                                                                       ],
+                                                          "aiGuidance":  "第二轮揭开生父真相。张铁柱先不信，再意识到赵建民说过的话不是疯话，最后把旧表作为提醒自己不要变成赵建民的象征。",
+                                                          "examplePhrasings":  [
+                                                                                   "他说过。他说我是你爹。我以为他是疯子。",
+                                                                                   "所以他不是嘲笑我妈，是嘲笑我们两个被他毁了的人。",
+                                                                                   "这块旧表我自己戴，提醒不能变成他这种人。"
+                                                                               ]
+                                                      }
+                                                  ]
+                      }
+                  ],
+    "deductionTruths":  [
+                            {
+                                "truthId":  "truth_main_case",
+                                "displayName":  "林秀华是真凶",
+                                "requiresFactIds":  [
+                                                        "fact_14"
+                                                    ]
+                            },
+                            {
+                                "truthId":  "truth_wei_identity",
+                                "displayName":  "卫国强是林秀华失散多年的儿子",
+                                "requiresFactIds":  [
+                                                        "fact_15"
+                                                    ]
+                            },
+                            {
+                                "truthId":  "truth_zhang_identity",
+                                "displayName":  "张铁柱是赵建民的亲生儿子",
+                                "requiresFactIds":  [
+                                                        "fact_16"
+                                                    ]
+                            }
+                        ]
 }

@@ -24,6 +24,26 @@
     "chanceOfGivingInUnderPressure": 79,
     "selfControl": 43
   },
+  "deceptionModel": {
+    "primaryLiePattern": "先用受惊、服药、记不清和家务磕碰解释异常；被证据压住后承认局部事实，但继续切断清理现场与杀人行为的关系。",
+    "lieTendencyByTopic": {
+      "lin_discovery_time": "high",
+      "lin_visitors": "high",
+      "lin_cleanup": "high_then_partial_truth",
+      "lin_abuse": "deflect_then_truth"
+    },
+    "breakSignals": [
+      "沉默时间变长",
+      "手指或手帕动作收紧",
+      "把手藏到袖口后面",
+      "从生活化解释转为短句承认"
+    ],
+    "doNotRevealBeforeAllowed": [
+      "完整击打经过",
+      "换灯泡伪造发现时间",
+      "孩子身世刺激是最后爆发点"
+    ]
+  },
   "identity": {
     "publicRole": "死者妻子",
     "privateRole": "长期家暴受害者与真实凶手",

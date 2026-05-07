@@ -24,6 +24,25 @@
     "chanceOfGivingInUnderPressure": 68,
     "selfControl": 36
   },
+  "deceptionModel": {
+    "primaryLiePattern": "不是复杂撒谎型，而是本能防御型。先否认认识赵家和口袋物品，压力上来后很快承认来过、讨债、拿表，但坚持自己不是凶手。",
+    "lieTendencyByTopic": {
+      "zhang_house": "medium",
+      "zhang_watch": "medium_high",
+      "zhang_identity": "does_not_know_until_revealed"
+    },
+    "breakSignals": [
+      "手反复按口袋",
+      "低头不敢看尸体或玩家",
+      "被当成凶手时立刻反弹",
+      "提到母亲和手表时语速变快、情绪变硬"
+    ],
+    "doNotRevealBeforeAllowed": [
+      "口袋里是母亲手表",
+      "昨晚来赵家讨债",
+      "赵建民是自己的生父"
+    ]
+  },
   "identity": {
     "publicRole": "被叫来帮忙的外来青年",
     "privateRole": "来讨债、拿回母亲手表的人，也是赵建民的亲生儿子",

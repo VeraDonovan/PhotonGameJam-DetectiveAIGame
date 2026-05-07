@@ -33,7 +33,7 @@
     {
       "factId": "fact_1",
       "displayName": "客厅昨晚有访客停留",
-      "summary": "客厅烟灰缸和茶几上的痕迹表明，昨晚有人在这里坐下并停留过一段时间。",
+      "summary": "客厅烟灰缸里的大前门烟蒂和茶几上的使用痕迹表明，昨晚有人在这里停留过，不是匆匆路过。",
       "category": "crime_scene",
       "truth": {
         "truthClass": "surface_true",
@@ -79,7 +79,7 @@
     {
       "factId": "fact_2",
       "displayName": "客厅存在击打后清理痕迹",
-      "summary": "客厅炉边残留和擦拭痕迹说明，这里曾发生过击打并被人事后处理。",
+      "summary": "炉钩子暗色擦痕与地板缝隙中未擦净的血迹相互对应，说明客厅曾发生过击打并被人事后处理。",
       "category": "crime_scene",
       "truth": {
         "truthClass": "surface_true",
@@ -125,7 +125,7 @@
     {
       "factId": "fact_3",
       "displayName": "清理路线从客厅延伸到厨房",
-      "summary": "客厅地板、水槽边缘和抹布血检结果前后对应，说明有人把客厅痕迹带到厨房处理。",
+      "summary": "客厅地板血迹、厨房水槽异常清洗痕迹和抹布血迹报告前后对应，说明有人把客厅痕迹带到厨房处理。",
       "category": "crime_scene",
       "truth": {
         "truthClass": "surface_true",
@@ -178,7 +178,7 @@
     {
       "factId": "fact_4",
       "displayName": "窗台原有一只手表失踪",
-      "summary": "窗台灰层中留有刚被挪走的长方形空痕，大小与手表相近。",
+      "summary": "窗台灰尘中留有刚被拿走的长方形空白，大小刚好像一只手表。",
       "category": "observation",
       "truth": {
         "truthClass": "surface_true",
@@ -223,7 +223,7 @@
     {
       "factId": "fact_5",
       "displayName": "林秀华的发现时间说法与尸检不符",
-      "summary": "林秀华说自己早上七点才发现尸体，但尸检显示死亡时间在前一晚21点到23点之间。",
+      "summary": "林秀华称早上七点发现尸体且灯还亮着，但法医报告显示赵建民死亡时间约为前一晚21:00-23:00。",
       "category": "contradiction",
       "truth": {
         "truthClass": "surface_true",
@@ -273,7 +273,7 @@
     {
       "factId": "fact_6",
       "displayName": "林秀华身上存在长期受暴痕迹",
-      "summary": "双臂淤青、旧伤复核与多年药物使用记录共同表明，林秀华长期遭受外力伤害。",
+      "summary": "林秀华身上的新旧淤青、长期外力伤确认和五年前购买的药瓶共同表明，她长期遭受身体伤害。",
       "category": "forensic",
       "truth": {
         "truthClass": "surface_true",
@@ -325,7 +325,7 @@
     {
       "factId": "fact_7",
       "displayName": "床头灯不可能整夜亮着",
-      "summary": "床头灯使用停产已久的坏灯泡，不具备整夜点亮的可能。",
+      "summary": "床头台灯灯泡为1970年停产型号，灯丝已烧断，在全屋新式灯具中独一无二，不可能在案发当晚亮着。",
       "category": "forensic",
       "truth": {
         "truthClass": "surface_true",
@@ -373,7 +373,7 @@
     {
       "factId": "fact_8",
       "displayName": "账簿记录了卫张林三人",
-      "summary": "床头账簿把卫、张、林三人的名字放在同一页记录，说明三人都在死者控制范围内。",
+      "summary": "账簿末页记有卫（1994.3.12，3100）、张（1991.6.5，2500）、林（1974.9.20，0），说明三人都在赵建民的控制范围内。",
       "category": "document",
       "truth": {
         "truthClass": "surface_true",
@@ -524,7 +524,7 @@
     {
       "factId": "fact_11",
       "displayName": "张铁柱持有刻着其母名字的手表",
-      "summary": "张铁柱交出的手表与窗台失踪物件一致，表背刻着他母亲的名字。",
+      "summary": "张铁柱交出的手表与窗台失踪物件一致，表背刻着其母亲的名字；他称这是替母亲拿回来的东西。",
       "category": "document",
       "truth": {
         "truthClass": "surface_true",
@@ -620,7 +620,7 @@
     {
       "factId": "fact_13",
       "displayName": "林秀华承认自己清理过现场",
-      "summary": "在证据施压下，林秀华承认自己在案发后处理过客厅和厨房的血迹痕迹。",
+      "summary": "在地板血迹、炉钩痕迹和抹布血迹报告施压下，林秀华承认自己擦过地、擦过炉钩子，并在厨房清洗过抹布。",
       "category": "statement_record",
       "truth": {
         "truthClass": "hidden_true",
@@ -672,7 +672,7 @@
     {
       "factId": "fact_14",
       "displayName": "林秀华承认击打赵建民并伪造发现时间",
-      "summary": "林秀华最终承认自己用炉钩击中赵建民，并在深夜清理现场、处理灯泡、次日报警。",
+      "summary": "林秀华最终承认自己用炉钩击中赵建民，并在深夜拖地、擦炉钩子、洗抹布、换灯泡，伪造次日早上才发现尸体的假象。",
       "category": "culprit_record",
       "truth": {
         "truthClass": "culprit_truth",
@@ -724,7 +724,7 @@
     {
       "factId": "fact_15",
       "displayName": "账簿与时间线指向卫国强的身世真相",
-      "summary": "账簿中的“林”项、卫国强的收养背景与林秀华失子的时间线对上，说明卫国强正是她被送走的儿子。",
+      "summary": "账簿中的“林，1974.9.20，0”、卫国强的孤儿院背景与林秀华失子的时间线对上，说明卫国强正是她被送走的儿子。",
       "category": "identity_truth",
       "truth": {
         "truthClass": "hidden_true",
@@ -776,7 +776,7 @@
     {
       "factId": "fact_16",
       "displayName": "赵建民与张铁柱之间存在血缘秘密",
-      "summary": "张铁柱的手表线索、账簿记录和赵建民临终羞辱共同指向：张铁柱其实是赵建民的亲生儿子。",
+      "summary": "张铁柱的手表线索、账簿中“张，1991.6.5，2500”的记录和赵建民对其母亲的羞辱共同指向：张铁柱其实是赵建民的亲生儿子。",
       "category": "identity_truth",
       "truth": {
         "truthClass": "hidden_true",
@@ -827,7 +827,7 @@
     {
       "factId": "fact_17",
       "displayName": "死者颈部旧伤与本次死因无关",
-      "summary": "法医补充报告确认死者颈部细痕属于旧伤，不是本案致死方式。",
+      "summary": "死者颈部细痕经法医鉴定为陈旧伤，与本次死亡无关，不是本案致死方式。",
       "category": "forensic",
       "truth": {
         "truthClass": "misdirection",

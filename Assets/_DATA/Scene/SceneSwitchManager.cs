@@ -1,3 +1,4 @@
+/*
 using DetectiveGame.Core;
 using System;
 using System.Collections;
@@ -25,11 +26,11 @@ public class SceneSwitchManager : MonoBehaviour
 
     private void Awake()
     {
-        // ±£³Ö¹ÜÀíÆ÷³Ö¾Ã»¯
+        // ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Ã»ï¿½
         DontDestroyOnLoad(gameObject);
 
 
-        // »ñÈ¡ÊÂ¼þ¹ÜÀíÆ÷
+        // ï¿½ï¿½È¡ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         _eventManager = GetComponent<EventManager>();
         if (_eventManager == null)
         {
@@ -42,7 +43,7 @@ public class SceneSwitchManager : MonoBehaviour
         _currentSaveData = new GameSaveData();
         _currentSaveData.CurrentSceneName = _currentSceneName;
 
-        // ¶©ÔÄ³¡¾°ÇÐ»»ÇëÇó
+        // ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½
         _eventManager.Subscribe<SceneSwitchEvent>(OnSceneSwitchRequest);
 
     }
@@ -79,3 +80,4 @@ public class SceneSwitchManager : MonoBehaviour
         yield return evt;
     }
 }
+*/

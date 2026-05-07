@@ -24,6 +24,26 @@
     "chanceOfGivingInUnderPressure": 56,
     "selfControl": 82
   },
+  "deceptionModel": {
+    "primaryLiePattern": "主动配合和控场，用“早上路过”“没说全”“只是旧账”降低危险性；证据明确后迅速修补说法，而不是正面认输。",
+    "lieTendencyByTopic": {
+      "wei_visit": "high",
+      "wei_purpose": "medium_high",
+      "wei_zhang_relation": "high",
+      "wei_identity": "denial_then_collapse"
+    },
+    "breakSignals": [
+      "过度主动解释",
+      "把谎话改口成没说全",
+      "停顿时摸脸、敲桌面或擦眼镜",
+      "身份线被击中后动作突然静止"
+    ],
+    "doNotRevealBeforeAllowed": [
+      "昨晚到访的完整目的",
+      "叫张铁柱来壮胆",
+      "林秀华是自己生母"
+    ]
+  },
   "identity": {
     "publicRole": "做生意的熟人",
     "privateRole": "被账簿控制的受害者，也是林秀华失散多年的儿子",

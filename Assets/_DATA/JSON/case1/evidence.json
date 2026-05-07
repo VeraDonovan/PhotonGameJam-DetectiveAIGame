@@ -14,8 +14,8 @@
     {
       "evidenceId": "A-1",
       "tier": "A",
-      "displayName": "烟灰缸里的大前门烟蒂",
-      "summary": "客厅烟灰缸里有两枚大前门烟蒂，死者平时并不抽这一牌子。",
+      "displayName": "大前门烟蒂",
+      "summary": "烟灰缸里有几支大前门烟蒂，抽到了过滤嘴。赵建民的妻子说他平时抽别的牌子。",
       "locationId": "living_room",
       "targetNpcId": "npc_2",
       "requirements": [],
@@ -34,8 +34,8 @@
     {
       "evidenceId": "A-3",
       "tier": "A",
-      "displayName": "方向异常的炉钩子",
-      "summary": "工具架上的炉钩子摆放方向与其他工具不同，末端留有深色擦痕。",
+      "displayName": "炉钩子",
+      "summary": "炉具工具架上有一个挂钩方向放反了，与整齐的架子格格不入。炉钩子末端有暗色擦痕，颜色不像是酱油或铁锈。",
       "locationId": "living_room",
       "targetNpcId": null,
       "requirements": [],
@@ -44,8 +44,8 @@
     {
       "evidenceId": "A-4",
       "tier": "A",
-      "displayName": "被擦拭过的地板污迹",
-      "summary": "炉边地板有一小块深色污迹已被擦拭，缝隙里留有残留物。",
+      "displayName": "地板血迹",
+      "summary": "地板缝隙中有未擦净的血迹，拖痕从客厅向厨房方向延伸。",
       "locationId": "living_room",
       "targetNpcId": null,
       "requirements": [],
@@ -55,7 +55,7 @@
       "evidenceId": "A-5",
       "tier": "A",
       "displayName": "窗台上的手表空痕",
-      "summary": "窗台灰层中间有一块长方形空白，大小像一只刚被拿走的手表。",
+      "summary": "窗台上有一圈灰尘，中间一个长方形空白，大小刚好是一只手表。有人最近拿走了窗台上的东西。",
       "locationId": "living_room",
       "targetNpcId": "npc_3",
       "requirements": [],
@@ -64,8 +64,8 @@
     {
       "evidenceId": "A-7",
       "tier": "A",
-      "displayName": "水槽边缘的异常残留",
-      "summary": "厨房水槽边有铁锈色残留，和普通洗碗留下的水痕不一致。",
+      "displayName": "水槽",
+      "summary": "厨房水槽被洗得非常干净，但垃圾桶里的抹布还在。",
       "locationId": "kitchen",
       "targetNpcId": null,
       "requirements": [],
@@ -74,8 +74,8 @@
     {
       "evidenceId": "A-8",
       "tier": "A",
-      "displayName": "变色抹布",
-      "summary": "垃圾桶里有一块用过的抹布，局部颜色明显发暗。",
+      "displayName": "抹布",
+      "summary": "垃圾桶里有一条褐色抹布，有铁锈味，不像是擦灰弄脏的。",
       "locationId": "kitchen",
       "targetNpcId": null,
       "requirements": [],
@@ -94,8 +94,8 @@
     {
       "evidenceId": "A-11",
       "tier": "A",
-      "displayName": "初步尸检结果",
-      "summary": "死者太阳穴受钝器击打致死，死亡时间估计为21:00到23:00之间，身上带酒气。",
+      "displayName": "法医报告（死因）",
+      "summary": "赵建民太阳穴有钝器伤，一击精准、快速。死亡时间约21:00-23:00。",
       "locationId": "bedroom",
       "targetNpcId": null,
       "requirements": [],
@@ -104,8 +104,8 @@
     {
       "evidenceId": "A-12",
       "tier": "A",
-      "displayName": "床头账簿",
-      "summary": "床头柜里有一本账簿，末页写着“卫、张、林”三列数字记录。",
+      "displayName": "账簿",
+      "summary": "一本账簿，末页记有三个名字：卫（1994.3.12，3100）、张（1991.6.5，2500）、林（1974.9.20，0）。",
       "locationId": "bedroom",
       "targetNpcId": null,
       "requirements": [],
@@ -114,8 +114,8 @@
     {
       "evidenceId": "A-13",
       "tier": "A",
-      "displayName": "损坏的床头灯",
-      "summary": "床头灯无法点亮，与林秀华声称“早上发现时灯还亮着”的说法不符。",
+      "displayName": "台灯不亮",
+      "summary": "床头台灯不亮。林秀华声称早上发现尸体时灯是开着的。",
       "locationId": "bedroom",
       "targetNpcId": "npc_1",
       "requirements": [],
@@ -124,8 +124,8 @@
     {
       "evidenceId": "A-16",
       "tier": "A",
-      "displayName": "跌打损伤药",
-      "summary": "厕所镜柜里有多瓶跌打损伤药，其中一瓶已经快用完。",
+      "displayName": "药瓶",
+      "summary": "一瓶五年前购买的止痛药。标签显示的用途与安眠药一致。",
       "locationId": "bathroom",
       "targetNpcId": "npc_1",
       "requirements": [],
@@ -147,8 +147,8 @@
     {
       "evidenceId": "B-7",
       "tier": "B",
-      "displayName": "抹布血检结果",
-      "summary": "抹布上的血迹与死者血型一致。",
+      "displayName": "抹布血迹报告",
+      "summary": "法医检验确认：厨房垃圾桶中抹布上的血迹属于死者赵建民。",
       "locationId": "kitchen",
       "targetNpcId": null,
       "requirements": [
@@ -159,8 +159,8 @@
     {
       "evidenceId": "B-10",
       "tier": "B",
-      "displayName": "长期外力伤复核",
-      "summary": "法医确认林秀华身上至少有三处不同时期形成的旧伤，符合长期受暴特征。",
+      "displayName": "长期淤青法医报告",
+      "summary": "法医报告确认：相关淤青为长期、反复外力作用所致，时间跨度至少数年。",
       "locationId": "kitchen",
       "targetNpcId": null,
       "requirements": [
@@ -171,8 +171,8 @@
     {
       "evidenceId": "B-14",
       "tier": "B",
-      "displayName": "旧式灯泡鉴定",
-      "summary": "床头灯灯泡为早已停产的旧型号，且灯丝已断，不可能整夜亮着。",
+      "displayName": "旧款灯泡鉴定报告",
+      "summary": "床头台灯灯泡为1970年停产型号，灯丝已烧断。在全屋新式灯具中独一无二。不可能在案发当晚亮着。",
       "locationId": "bedroom",
       "targetNpcId": null,
       "requirements": [
@@ -183,8 +183,8 @@
     {
       "evidenceId": "B-15",
       "tier": "B",
-      "displayName": "颈部旧伤补充报告",
-      "summary": "死者颈部细痕属于旧伤，与本次死亡无直接关系，可排除勒死判断。",
+      "displayName": "颈部旧痕",
+      "summary": "死者颈部有细痕，法医鉴定为陈旧伤，与本次死亡无关。",
       "locationId": "bedroom",
       "targetNpcId": null,
       "requirements": [
@@ -195,8 +195,8 @@
     {
       "evidenceId": "B-17",
       "tier": "B",
-      "displayName": "药瓶日期追溯",
-      "summary": "镜柜里最早一瓶跌打损伤药的购入日期可以追溯到五年前。",
+      "displayName": "药瓶购买日期确认",
+      "summary": "药瓶标签显示购买于五年前。与林秀华的长期身体伤痛时间吻合。",
       "locationId": "bathroom",
       "targetNpcId": null,
       "requirements": [
