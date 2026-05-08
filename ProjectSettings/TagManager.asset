@@ -68,3 +68,6 @@ TagManager:
   - name: Collisions
     uniqueID: 279903309
     locked: 0
+  - name: icon
+    uniqueID: 1529095913
+    locked: 0
