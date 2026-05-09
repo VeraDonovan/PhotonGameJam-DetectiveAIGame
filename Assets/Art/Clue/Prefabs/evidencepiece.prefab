@@ -136,8 +136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueText: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0"
   interactDistance: 1.5
-  hintCanvas: {fileID: 0}
-  hintText: {fileID: 0}
+  hintCanvas: {fileID: 8985690970497748019}
+  hintText: {fileID: 9191742581099597203}
 --- !u!1 &4216758274717039514
 GameObject:
   m_ObjectHideFlags: 0
