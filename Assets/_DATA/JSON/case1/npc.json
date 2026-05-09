@@ -16,7 +16,7 @@
       "occupation": "家属区住户",
       "locationId": "kitchen",
       "relationshipToVictim": "妻子",
-      "profileText": "赵建民之妻。性格隐忍寡言，案发时一直待在厨房附近。"
+      "profileText": "女，44岁，死者赵建民之妻，婚龄二十余年，无业，随夫居于厂区家属楼。"
     },
     {
       "npcId": "wei",
@@ -27,7 +27,7 @@
       "occupation": "个体经营者",
       "locationId": "living_room",
       "relationshipToVictim": "生意往来者",
-      "profileText": "做倒买倒卖生意，说话圆滑，与赵建民有账目往来。"
+      "profileText": "男，35岁，厂外倒卖生意人，与死者有账目往来，据称当晚因私事登门。"
     },
     {
       "npcId": "zhang",
@@ -38,7 +38,7 @@
       "occupation": "待业青年",
       "locationId": "bedroom",
       "relationshipToVictim": "讨债人",
-      "profileText": "从城郊来讨债的年轻人，拮据、紧张、嘴硬，进屋后一直不敢看尸体。"
+      "profileText": "男，27岁，外地来的待业青年，与死者有债务纠纷，案发当晚在场。"
     },
     {
       "npcId": "npc_4",

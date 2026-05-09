@@ -1,11 +1,14 @@
-using UnityEngine;
+using DetectiveGame.Core;
 using TMPro;
+using UnityEngine;
 
 public class InteractableScript : MonoBehaviour
 {
     public string dialogueText = "这是物品的描述";
+    public string evidenceId = string.Empty;
     public float interactDistance = 1.5f;
 
+    private AppRoot appRoot;
     private Transform player;
     private bool isPlayerNear = false;
 
@@ -14,6 +17,7 @@ public class InteractableScript : MonoBehaviour
 
     void Start()
     {
+        appRoot = AppRoot.Instance;
         player = GameObject.FindWithTag("Player").transform;
         hintCanvas.gameObject.SetActive(false);
     }
@@ -34,6 +38,11 @@ public class InteractableScript : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F))
             {
                 InteractionUI.Instance.ShowDialogue(dialogueText);
+
+                if (!string.IsNullOrWhiteSpace(evidenceId))
+                {
+                    appRoot.ProgressManager.AddEvidence(evidenceId);
+                }
             }
         }
         else

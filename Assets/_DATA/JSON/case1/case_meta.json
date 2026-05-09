@@ -48,7 +48,7 @@
     ]
   },
   "caseBackground": {
-    "briefBackground": "1994年冬夜，钢铁厂会计赵建民死于家中。现场有人为清理痕迹，屋内留下三名主要嫌疑人：其妻林秀华、做倒卖生意的卫国强，以及前来讨债的张铁柱。玩家先完成现场搜索与对话，再通过搭档选择两名嫌疑人进入不可逆的审讯阶段。"
+    "briefBackground": "1994年11月，某国营钢铁厂家属楼。\n赵建民，男，52岁，厂会计，死于卧室，初步判断为钝器伤。其妻林秀华于当日早晨报警，称发现丈夫时已无生命体征。现场另有两名男性：卫国强与张铁柱，均自称系当晚到访，事发时已离开。\n死亡经过不明，现场存在疑点，案件移交调查。\n"
   },
   "caseTruth": {
     "realKillerId": "lin",
@@ -64,7 +64,7 @@
       "locationId": "kitchen",
       "relationshipToVictim": "妻子",
       "archetype": "死者家属",
-      "summary": "女，44岁，赵建民之妻，平时几乎只在家属区活动，案发时一直待在厨房附近。",
+      "summary": "女，44岁，死者赵建民之妻，婚龄二十余年，无业，随夫居于厂区家属楼。\n",
       "motiveSummary": "",
       "hiddenTruthSummary": ""
     },
@@ -75,7 +75,7 @@
       "locationId": "living_room",
       "relationshipToVictim": "生意往来者",
       "archetype": "熟人访客",
-      "summary": "男，35岁，做倒买倒卖生意，与赵建民有旧账往来，案发后主动留在客厅配合调查。",
+      "summary": "男，35岁，厂外倒卖生意人，与死者有账目往来，据称当晚因私事登门。\n",
       "motiveSummary": "",
       "hiddenTruthSummary": ""
     },
@@ -86,7 +86,7 @@
       "locationId": "bedroom",
       "relationshipToVictim": "讨债人",
       "archetype": "外来青年",
-      "summary": "男，27岁，无固定职业，自称是被卫国强叫来帮忙的人，实际与死者有债务纠纷。",
+      "summary": "男，27岁，外地来的待业青年，与死者有债务纠纷，案发当晚在场。\n",
       "motiveSummary": "",
       "hiddenTruthSummary": ""
     }
