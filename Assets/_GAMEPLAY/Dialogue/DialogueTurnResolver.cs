@@ -261,6 +261,13 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return result;
             }
 
+            if (matchedTopic.IsSafeRoleplayTopic)
+            {
+                result.ResolutionType = DialogueResolutionType.NoProgress;
+                ValidateSafeRoleplayResponseUsage(interpretedAction, result);
+                return result;
+            }
+
             if (npcState.ResolvedTopicIds.Contains(interpretedAction.MatchedTopicId))
             {
                 ApplyAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId, "resolved_topic_repeated");
@@ -284,6 +291,26 @@ namespace DetectiveGame.Gameplay.Dialogue
             result.ResolutionType = DialogueResolutionType.NoProgress;
             ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
             return result;
+        }
+
+        private static void ValidateSafeRoleplayResponseUsage(
+            InterpretedDialogueAction interpretedAction,
+            DialogueResolutionResult result)
+        {
+            if (!string.IsNullOrWhiteSpace(interpretedAction.UsedStatementId))
+            {
+                RejectAiResponse(result, "safe_roleplay_used_statement");
+                return;
+            }
+
+            foreach (var revealId in interpretedAction.UsedRevealIds ?? Array.Empty<string>())
+            {
+                if (!string.IsNullOrWhiteSpace(revealId))
+                {
+                    RejectAiResponse(result, "safe_roleplay_used_reveal");
+                    return;
+                }
+            }
         }
 
         private static void ResolveExplorationProgress(

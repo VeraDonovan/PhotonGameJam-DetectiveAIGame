@@ -132,6 +132,8 @@ namespace DetectiveGame.Gameplay.Dialogue
                 builder.Append("- topicId: ");
                 builder.AppendLine(EscapeLine(topic.TopicId));
                 AppendKeyValue(builder, "  displayName", topic.DisplayName);
+                AppendKeyValue(builder, "  safeRoleplayTopic", topic.IsSafeRoleplayTopic.ToString());
+                AppendStringList(builder, "  matchHints", topic.MatchHints);
                 AppendKeyValue(builder, "  searchPhaseTopic", topic.IsSearchPhaseTopic.ToString());
                 AppendKeyValue(builder, "  interrogationPhaseTopic", topic.IsInterrogationPhaseTopic.ToString());
                 AppendStringList(builder, "  requiredEvidenceIds", topic.RequiredEvidenceIds);
@@ -299,7 +301,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             builder.AppendLine("    \"isIrrelevant\": false");
             builder.AppendLine("  },");
             builder.AppendLine("  \"response\": {");
-            builder.AppendLine("    \"prose\": \"short in-character NPC response\",");
+            builder.AppendLine("    \"prose\": \"short in-character Chinese NPC response\",");
             builder.AppendLine("    \"usedStatementId\": \"\",");
             builder.AppendLine("    \"usedRevealIds\": []");
             builder.AppendLine("  }");

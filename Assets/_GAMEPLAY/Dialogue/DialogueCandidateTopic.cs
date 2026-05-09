@@ -9,10 +9,12 @@ namespace DetectiveGame.Gameplay.Dialogue
         public string DisplayName { get; set; } = string.Empty;
         public int SortOrder { get; set; }
         public bool IsSynthetic { get; set; }
+        public bool IsSafeRoleplayTopic { get; set; }
         public bool IsSearchPhaseTopic { get; set; }
         public bool IsInterrogationPhaseTopic { get; set; }
         public bool HasUnlockedStatementVersion { get; set; }
         public DialogueTopicAvailability Availability { get; set; } = DialogueTopicAvailability.Unknown;
+        public List<string> MatchHints { get; } = new List<string>();
         public List<string> RelatedStatementIds { get; } = new List<string>();
         public List<DialogueStatementEntryContext> RelatedStatements { get; } =
             new List<DialogueStatementEntryContext>();

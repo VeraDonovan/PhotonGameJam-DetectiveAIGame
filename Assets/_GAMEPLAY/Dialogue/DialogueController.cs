@@ -58,18 +58,12 @@ public class DialogueController : MonoBehaviour {
             return;
         }
 
-        if (currentNPC != null && !string.IsNullOrWhiteSpace(currentNPC.initialStatement)) {
-            DialogueManager.Instance?.ShowDialogue(currentNPC.initialStatement);
+        if (DialogueManager.Instance == null) {
+            Debug.LogError("DialogueManager is not available. Opening dialogue cannot continue.");
             return;
         }
 
-        var appRoot = AppRoot.Instance;
-        if (appRoot != null &&
-            appRoot.DatabaseManager != null &&
-            appRoot.DatabaseManager.NpcDatabase.TryGetNpc(currentNpcId, out var npcProfile) &&
-            npcProfile != null) {
-            DialogueManager.Instance?.ShowDialogue(npcProfile.profileText);
-        }
+        DialogueManager.Instance.RequestAiOpeningDialogue(currentNpcId, GetCurrentPhase());
     }
 
     public void SetCurrentNPC(NPCData npc) {

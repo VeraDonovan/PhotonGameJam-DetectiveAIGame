@@ -119,9 +119,26 @@ public class DeepSeekDialogueClient : MonoBehaviour {
                 yield break;
             }
 
-            DeepSeekDialogueTurnResponse dialogueResponse = JsonUtility.FromJson<DeepSeekDialogueTurnResponse>(response.choices[0].message.content);
+            string rawDialogueContent = response.choices[0].message.content ?? string.Empty;
+            Debug.Log("[DeepSeekDialogueClient] Raw structured dialogue response:\n" + rawDialogueContent, this);
+
+            DeepSeekDialogueTurnResponse dialogueResponse;
+            try {
+                dialogueResponse = JsonUtility.FromJson<DeepSeekDialogueTurnResponse>(rawDialogueContent);
+            } catch (ArgumentException exception) {
+                onError?.Invoke(
+                    "DeepSeek dialogue JSON parse failed: " +
+                    exception.Message +
+                    "\nRaw response:\n" +
+                    rawDialogueContent);
+                yield break;
+            }
+
             if (dialogueResponse == null || dialogueResponse.interpretation == null || dialogueResponse.response == null || string.IsNullOrWhiteSpace(dialogueResponse.response.prose)) {
-                onError?.Invoke("DeepSeek dialogue message did not match the structured dialogue schema.");
+                onError?.Invoke(
+                    "DeepSeek dialogue message did not match the structured dialogue schema." +
+                    "\nRaw response:\n" +
+                    rawDialogueContent);
                 yield break;
             }
 
