@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 1484061178804972508}
   - component: {fileID: 1088000655487035549}
   - component: {fileID: 4499986794099058428}
+  - component: {fileID: 3637187731312893247}
   m_Layer: 0
   m_Name: Npc
   m_TagString: Untagged
@@ -315,6 +316,19 @@ MonoBehaviour:
   interactDistance: 2.5
   player: {fileID: 0}
   fPrompt: {fileID: 4302663935352087168}
+--- !u!114 &3637187731312893247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175610512545216953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dadfd63bea400514d9379dcc93b2afe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcId: lin
 --- !u!1 &4302663935352087168
 GameObject:
   m_ObjectHideFlags: 0
