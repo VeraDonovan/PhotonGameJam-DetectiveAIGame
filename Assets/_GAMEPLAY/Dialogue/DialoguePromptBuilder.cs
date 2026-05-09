@@ -133,6 +133,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 builder.AppendLine(EscapeLine(topic.TopicId));
                 AppendKeyValue(builder, "  displayName", topic.DisplayName);
                 AppendKeyValue(builder, "  safeRoleplayTopic", topic.IsSafeRoleplayTopic.ToString());
+                AppendKeyValue(builder, "  openFallbackTopic", topic.IsOpenFallbackTopic.ToString());
                 AppendStringList(builder, "  matchHints", topic.MatchHints);
                 AppendKeyValue(builder, "  searchPhaseTopic", topic.IsSearchPhaseTopic.ToString());
                 AppendKeyValue(builder, "  interrogationPhaseTopic", topic.IsInterrogationPhaseTopic.ToString());
@@ -142,6 +143,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 AppendStringList(builder, "  requiredLayerIds", topic.RequiredInterrogationLayerIds);
                 AppendStringList(builder, "  requiredTokenIds", topic.RequiredTokenIds);
                 AppendStatementGuidance(builder, topic.RelatedStatements);
+                AppendBeatGuidance(builder, topic.RelatedBeatNodes);
             }
 
             if (!wroteTopic)
@@ -182,12 +184,52 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
         }
 
+        private static void AppendBeatGuidance(
+            StringBuilder builder,
+            IReadOnlyList<DialogueBeatNodeContext> beatNodes)
+        {
+            if (beatNodes == null || beatNodes.Count == 0)
+            {
+                return;
+            }
+
+            builder.AppendLine("  beatGuidance:");
+            foreach (var beat in beatNodes)
+            {
+                if (beat == null)
+                {
+                    continue;
+                }
+
+                builder.Append("  - nodeId: ");
+                builder.AppendLine(EscapeLine(beat.NodeId));
+                AppendKeyValue(builder, "    availabilityType", beat.AvailabilityType);
+                AppendKeyValue(builder, "    truthStatus", beat.TruthStatus);
+                AppendKeyValue(builder, "    triggerType", beat.TriggerType);
+                AppendKeyValue(builder, "    triggerId", beat.TriggerId);
+                AppendKeyValue(builder, "    triggerIntent", beat.TriggerIntent);
+                AppendKeyValue(builder, "    triggerPromptLabel", beat.TriggerPromptLabel);
+                AppendKeyValue(builder, "    text", beat.Text);
+                AppendKeyValue(builder, "    watsonNote", beat.WatsonNote);
+                AppendKeyValue(builder, "    unlockStatementId", beat.UnlockStatementId);
+                AppendKeyValue(builder, "    caughtLieId", beat.CaughtLieId);
+                AppendKeyValue(builder, "    isLie", beat.IsLie.ToString());
+                AppendKeyValue(builder, "    isVisited", beat.IsVisited.ToString());
+                AppendKeyValue(builder, "    isUnlockable", beat.IsUnlockable.ToString());
+                AppendStringList(builder, "    behavior", beat.Behavior);
+                AppendStringList(builder, "    requiredIds", beat.RequiredIds);
+                AppendStringList(builder, "    nextSuggestedNodeIds", beat.NextSuggestedNodeIds);
+            }
+        }
+
         private static void AppendUnlockedState(StringBuilder builder, DialogueTurnContext context)
         {
             builder.AppendLine("RUNTIME UNLOCKED STATE");
             AppendStringList(builder, "unlockedFactIds", context.RelevantUnlockedFactIds);
             AppendStringList(builder, "unlockedStatementIds", context.RelevantUnlockedStatementIds);
             AppendStringList(builder, "unlockedLayerIds", context.RelevantUnlockedLayerIds);
+            AppendStringList(builder, "visitedBeatIds", context.RelevantVisitedBeatIds);
+            AppendStringList(builder, "caughtLieIds", context.RelevantCaughtLieIds);
             AppendStringList(builder, "allowedRevealIds", context.AllowedRevealIds);
             AppendStringList(builder, "mustWithholdIds", context.MustWithholdIds);
             builder.AppendLine();
@@ -302,6 +344,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             builder.AppendLine("  },");
             builder.AppendLine("  \"response\": {");
             builder.AppendLine("    \"prose\": \"short in-character Chinese NPC response\",");
+            builder.AppendLine("    \"usedBeatId\": \"\",");
             builder.AppendLine("    \"usedStatementId\": \"\",");
             builder.AppendLine("    \"usedRevealIds\": []");
             builder.AppendLine("  }");

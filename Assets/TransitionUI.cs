@@ -1,10 +1,10 @@
+using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections;
-using DetectiveGame.Core; // 引入 GameStateManager 所在命名空间
 
-public class TransitionUI : MonoBehaviour
+public sealed class TransitionUI : MonoBehaviour
 {
     public Image blackScreen;
     public TextMeshProUGUI dialogueText;
@@ -12,41 +12,57 @@ public class TransitionUI : MonoBehaviour
     public float charDelay = 0.05f;
     [TextArea] public string[] texts;
 
-    public void StartTransition()
+    private Coroutine transitionCoroutine;
+    private Action onTransitionFinished;
+
+    public void StartTransition(Action onFinished)
     {
-        StartCoroutine(PlayTransition());
+        onTransitionFinished = onFinished;
+
+        if (transitionCoroutine != null)
+        {
+            StopCoroutine(transitionCoroutine);
+        }
+
+        transitionCoroutine = StartCoroutine(PlayTransition());
     }
 
     private IEnumerator PlayTransition()
     {
-        // 黑屏淡入
-        float t = 0;
-        Color c = blackScreen.color;
-        while (t < fadeDuration)
+        var color = blackScreen.color;
+        color.a = 0f;
+        blackScreen.color = color;
+
+        dialogueText.text = string.Empty;
+        dialogueText.gameObject.SetActive(false);
+
+        var time = 0f;
+        while (time < fadeDuration)
         {
-            t += Time.deltaTime;
-            c.a = Mathf.Lerp(0, 1, t / fadeDuration);
-            blackScreen.color = c;
+            time += Time.deltaTime;
+            color.a = Mathf.Lerp(0f, 1f, time / fadeDuration);
+            blackScreen.color = color;
             yield return null;
         }
 
-        // 打字机效果
-        Debug.Log("开始打字机效果");
         dialogueText.gameObject.SetActive(true);
-        foreach (string line in texts)
+
+        foreach (var line in texts)
         {
-            dialogueText.text = "";
-            foreach (char ch in line)
-        {
-            dialogueText.text += ch;
-            Debug.Log("当前文字: " + dialogueText.text);
-            yield return new WaitForSeconds(charDelay);
-        }
-        yield return new WaitForSeconds(1f);
+            dialogueText.text = string.Empty;
+
+            foreach (var character in line)
+            {
+                dialogueText.text += character;
+                yield return new WaitForSeconds(charDelay);
+            }
+
+            yield return new WaitForSeconds(1f);
         }
 
-        Debug.Log("打字机效果结束，尝试开始游戏");
-      
-        
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+
+        transitionCoroutine = null;
+        onTransitionFinished?.Invoke();
     }
 }

@@ -24,9 +24,7 @@
                                                     "status":  "claimed",
                                                     "phase":  "exploration",
                                                     "text":  "早上七点，灯还亮着，我发现他……就报警了。我没碰他。我不敢碰他。",
-                                                    "unlockRequirements":  [
-                                                                               "talk_lin_intro"
-                                                                           ],
+                                                    "unlockRequirements":  [],
                                                     "replacesStatementId":  "",
                                                     "aiUsage":  "基础口供。用于搜索阶段和第一次追问。",
                                                     "dialogueSamples":  [
@@ -101,9 +99,7 @@
                                                     "status":  "claimed",
                                                     "phase":  "exploration",
                                                     "text":  "没有。昨晚一直很安静。只有他喝酒的声音。电视开着，但他不看。",
-                                                    "unlockRequirements":  [
-                                                                               "talk_lin_intro"
-                                                                           ],
+                                                    "unlockRequirements":  [],
                                                     "replacesStatementId":  "",
                                                     "aiUsage":  "初始回避说法。",
                                                     "dialogueSamples":  [
@@ -282,9 +278,7 @@
                                                     "status":  "claimed",
                                                     "phase":  "exploration",
                                                     "text":  "我叫卫国强，做生意的。跟赵会计认识好几年了，今天早上听说出了事，路过过来看看。该怎么配合怎么配合。",
-                                                    "unlockRequirements":  [
-                                                                               "talk_wei_intro"
-                                                                           ],
+                                                    "unlockRequirements":  [],
                                                     "replacesStatementId":  "",
                                                     "aiUsage":  "初始口供。",
                                                     "dialogueSamples":  [
@@ -336,9 +330,7 @@
                                                     "status":  "claimed",
                                                     "phase":  "exploration",
                                                     "text":  "老相识。我做点儿小买卖，他管厂里账，帮我走个小账。利益朋友——不算兄弟不算仇人，就是互相用得上的关系。",
-                                                    "unlockRequirements":  [
-                                                                               "talk_wei_intro"
-                                                                           ],
+                                                    "unlockRequirements":  [],
                                                     "replacesStatementId":  "",
                                                     "aiUsage":  "模糊化来访目的。",
                                                     "dialogueSamples":  [
@@ -473,9 +465,7 @@
                                                     "status":  "claimed",
                                                     "phase":  "exploration",
                                                     "text":  "（不抬头，语气生硬）我不认识这家人。是他叫我来的。你们有问题去问他，我什么都不知道。",
-                                                    "unlockRequirements":  [
-                                                                               "talk_zhang_intro"
-                                                                           ],
+                                                    "unlockRequirements":  [],
                                                     "replacesStatementId":  "",
                                                     "aiUsage":  "初始撇清关系口供。",
                                                     "dialogueSamples":  [
@@ -568,6 +558,76 @@
                                                     "responseIntent":  "承认拿走手表，并强调那是母亲的东西，不是偷。",
                                                     "avoidSaying":  [
                                                                         "不要把手表说成普通赃物。"
+                                                                    ]
+                                                }
+                                            ]
+                            },
+                            {
+                                "topicId":  "lin_discovery_context",
+                                "npcId":  "lin",
+                                "displayName":  "发现尸体前后的说法",
+                                "sortOrder":  15,
+                                "suspectDetailVisible":  true,
+                                "entries":  [
+                                                {
+                                                    "statementId":  "stmt_lin_discovery_context_01",
+                                                    "status":  "claimed",
+                                                    "phase":  "exploration",
+                                                    "text":  "林秀华称赵建民昨晚坐在桌边喝酒，她炒完菜后就没有再打扰他。",
+                                                    "unlockRequirements":  [],
+                                                    "replacesStatementId":  "",
+                                                    "aiUsage":  "默认可用的发现前情境说法。用于玩家第一次追问赵建民昨晚在做什么。",
+                                                    "dialogueSamples":  [
+                                                                            "坐在桌边喝酒。他每天晚上都这样。我给他炒了两个菜端过去，就没再打扰他。",
+                                                                            "我给他炒了两个菜端过去，就回厨房了。后来就没再过去。"
+                                                                        ],
+                                                    "responseIntent":  "先把昨晚的最后目击描述成普通晚饭后的日常状态。",
+                                                    "avoidSaying":  [
+                                                                        "不要主动承认后来又去过客厅。",
+                                                                        "不要主动承认看见来访者细节。"
+                                                                    ]
+                                                },
+                                                {
+                                                    "statementId":  "stmt_lin_discovery_context_02",
+                                                    "status":  "contradicted",
+                                                    "phase":  "exploration",
+                                                    "text":  "林秀华把“电视开着”改口成“收音机”，前后说法出现明显矛盾。",
+                                                    "unlockRequirements":  [],
+                                                    "replacesStatementId":  "stmt_lin_discovery_context_01",
+                                                    "aiUsage":  "谎言被拆穿后的即时修正摘要。用于记录玩家抓到的第一处明显口误。",
+                                                    "dialogueSamples":  [
+                                                                            "没有。我是说收音机。对不起，我有点乱。",
+                                                                            "我说错了。不是电视，是收音机。"
+                                                                        ],
+                                                    "responseIntent":  "保留慌乱改口的关键信号，作为后续追问的切入口。",
+                                                    "avoidSaying":  [
+                                                                        "不要把口误解释成正常记忆偏差。"
+                                                                    ]
+                                                }
+                                            ]
+                            },
+                            {
+                                "topicId":  "zhang_money_pressure",
+                                "npcId":  "zhang",
+                                "displayName":  "讨债原因",
+                                "sortOrder":  25,
+                                "suspectDetailVisible":  true,
+                                "entries":  [
+                                                {
+                                                    "statementId":  "stmt_zhang_money_01",
+                                                    "status":  "corrected",
+                                                    "phase":  "exploration",
+                                                    "text":  "张铁柱承认来赵家讨债，是因为母亲住院，医院催缴药费和治疗费。",
+                                                    "unlockRequirements":  [],
+                                                    "replacesStatementId":  "",
+                                                    "aiUsage":  "使用设计文档红字最终版，明确“医院”而不是“家里”。",
+                                                    "dialogueSamples":  [
+                                                                            "我娘在医院，钱再要不回来，药就断了。",
+                                                                            "医院又催了，我不能空着手回去。"
+                                                                        ],
+                                                    "responseIntent":  "把张铁柱的外部动机固定为医院药费压力。",
+                                                    "avoidSaying":  [
+                                                                        "不要把目的说成普通回家开销。"
                                                                     ]
                                                 }
                                             ]

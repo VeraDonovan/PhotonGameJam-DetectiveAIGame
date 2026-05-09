@@ -9,6 +9,18 @@ namespace DetectiveGame.UI
 {
     public sealed class SuspectPanelManager : MonoBehaviour
     {
+        private sealed class SuspectDetailCache
+        {
+            public string ProfileText;
+            public readonly List<CachedStatementLine> VisibleStatements = new List<CachedStatementLine>();
+        }
+
+        private sealed class CachedStatementLine
+        {
+            public string StatementId;
+            public string Text;
+        }
+
         [Header("Icon View")]
         [SerializeField] private Sprite defaultSuspectIcon;
         [SerializeField] private Transform iconContentRoot;
@@ -19,6 +31,7 @@ namespace DetectiveGame.UI
         [SerializeField] private string defaultDetailText = string.Empty;
 
         private readonly Dictionary<string, SuspectIconEntry> entriesByNpcId = new Dictionary<string, SuspectIconEntry>();
+        private readonly Dictionary<string, SuspectDetailCache> detailCacheByNpcId = new Dictionary<string, SuspectDetailCache>();
 
         private NpcDatabase npcDatabase;
         private StatementDatabase statementDatabase;
@@ -98,7 +111,9 @@ namespace DetectiveGame.UI
 
         private void RefreshFromRuntimeState()
         {
+            RebuildDetailCaches();
             EnsureSuspectEntries(npcDatabase.NpcById.Keys);
+            RefreshAllEntryDetails();
             RefreshSelectedDetail();
         }
 
@@ -121,12 +136,11 @@ namespace DetectiveGame.UI
                     continue;
                 }
 
-                var baseDetailText = BuildDetailText(npc.npcId);
                 var entry = Instantiate(iconEntryPrefab, iconContentRoot);
                 entry.Initialize(
                     npc.npcId,
                     npc.displayName,
-                    baseDetailText,
+                    BuildDetailText(npc.npcId),
                     defaultSuspectIcon,
                     HandleEntrySelected);
 
@@ -141,35 +155,52 @@ namespace DetectiveGame.UI
 
         private void HandleStatementUnlocked(StatementUnlockedEvent eventData)
         {
+            if (string.IsNullOrWhiteSpace(eventData.TopicId) ||
+                !statementDatabase.TryGetTopic(eventData.TopicId, out var topic) ||
+                topic == null ||
+                !topic.suspectDetailVisible)
+            {
+                return;
+            }
+
             if (!statementDatabase.TryGetStatement(eventData.StatementId, out var statement) || statement == null)
             {
                 return;
             }
 
-            foreach (var npc in npcDatabase.NpcById.Values)
+            if (!detailCacheByNpcId.TryGetValue(topic.npcId, out var cache))
             {
-                if (!entriesByNpcId.TryGetValue(npc.npcId, out var entry))
-                {
-                    continue;
-                }
-
-                entry.SetDetailText(BuildDetailText(npc.npcId));
+                cache = CreateDetailCache(topic.npcId);
+                detailCacheByNpcId[topic.npcId] = cache;
             }
 
-            RefreshSelectedDetail();
+            ApplyUnlockedStatement(cache, statement);
+
+            if (entriesByNpcId.TryGetValue(topic.npcId, out var entry))
+            {
+                entry.SetDetailText(BuildDetailText(topic.npcId));
+            }
+
+            if (selectedEntry != null && string.Equals(selectedEntry.NpcId, topic.npcId, StringComparison.Ordinal))
+            {
+                SetDetailText(BuildDetailText(topic.npcId));
+            }
         }
 
         private string BuildDetailText(string npcId)
         {
-            if (!npcDatabase.TryGetNpc(npcId, out var npc) || npc == null)
+            if (!detailCacheByNpcId.TryGetValue(npcId, out var cache))
             {
                 return string.Empty;
             }
 
             var lines = new List<string>();
+            AddIfNotBlank(lines, cache.ProfileText);
 
-            AddIfNotBlank(lines, npc.profileText);
-            AppendLatestUnlockedTopicStatements(lines, npcId);
+            for (var i = 0; i < cache.VisibleStatements.Count; i++)
+            {
+                AddIfNotBlank(lines, cache.VisibleStatements[i].Text);
+            }
 
             if (lines.Count == 0)
             {
@@ -191,40 +222,87 @@ namespace DetectiveGame.UI
             return builder.ToString();
         }
 
-        private void AppendLatestUnlockedTopicStatements(List<string> lines, string npcId)
+        private void RebuildDetailCaches()
         {
-            var topics = new List<StatementTopicData>(statementDatabase.GetTopicsByNpc(npcId));
-            topics.Sort((left, right) => left.sortOrder.CompareTo(right.sortOrder));
+            detailCacheByNpcId.Clear();
 
-            foreach (var topic in topics)
+            foreach (var npc in npcDatabase.NpcById.Values)
+            {
+                if (npc == null ||
+                    !string.Equals(npc.roleType, "suspect", StringComparison.OrdinalIgnoreCase) ||
+                    string.IsNullOrWhiteSpace(npc.npcId))
+                {
+                    continue;
+                }
+
+                detailCacheByNpcId[npc.npcId] = CreateDetailCache(npc.npcId);
+            }
+        }
+
+        private SuspectDetailCache CreateDetailCache(string npcId)
+        {
+            var cache = new SuspectDetailCache();
+
+            if (npcDatabase.TryGetNpc(npcId, out var npc) && npc != null)
+            {
+                cache.ProfileText = npc.profileText;
+            }
+
+            foreach (var topic in statementDatabase.GetTopicsByNpc(npcId))
             {
                 if (topic == null || !topic.suspectDetailVisible)
                 {
                     continue;
                 }
 
-                var latestEntry = GetLatestUnlockedStatement(topic.topicId);
-                if (latestEntry == null)
+                if (!progressManager.LatestStatementIdByTopic.TryGetValue(topic.topicId, out var statementId) ||
+                    string.IsNullOrWhiteSpace(statementId) ||
+                    !statementDatabase.TryGetStatement(statementId, out var statement) ||
+                    statement == null)
                 {
                     continue;
                 }
 
-                AddIfNotBlank(lines, latestEntry.text);
+                ApplyUnlockedStatement(cache, statement);
             }
+
+            return cache;
         }
 
-        private StatementEntryData GetLatestUnlockedStatement(string topicId)
+        private void ApplyUnlockedStatement(SuspectDetailCache cache, StatementEntryData statement)
         {
-            StatementEntryData latestEntry = null;
-            foreach (var entry in statementDatabase.GetStatementsByTopic(topicId))
+            if (cache == null || statement == null)
             {
-                if (entry != null && progressManager.IsStatementUnlocked(entry.statementId))
-                {
-                    latestEntry = entry;
-                }
+                return;
             }
 
-            return latestEntry;
+            if (!string.IsNullOrWhiteSpace(statement.replacesStatementId))
+            {
+                cache.VisibleStatements.RemoveAll(
+                    line => string.Equals(line.StatementId, statement.replacesStatementId, StringComparison.Ordinal));
+            }
+
+            if (string.IsNullOrWhiteSpace(statement.statementId) || string.IsNullOrWhiteSpace(statement.text))
+            {
+                return;
+            }
+
+            cache.VisibleStatements.RemoveAll(
+                line => string.Equals(line.StatementId, statement.statementId, StringComparison.Ordinal));
+
+            cache.VisibleStatements.Add(new CachedStatementLine
+            {
+                StatementId = statement.statementId,
+                Text = statement.text.Trim()
+            });
+        }
+
+        private void RefreshAllEntryDetails()
+        {
+            foreach (var pair in entriesByNpcId)
+            {
+                pair.Value.SetDetailText(BuildDetailText(pair.Key));
+            }
         }
 
         private static void AddIfNotBlank(List<string> lines, string value)
@@ -249,11 +327,6 @@ namespace DetectiveGame.UI
 
         private void RefreshSelectedDetail()
         {
-            foreach (var pair in entriesByNpcId)
-            {
-                pair.Value.SetDetailText(BuildDetailText(pair.Key));
-            }
-
             SetDetailText(selectedEntry != null ? selectedEntry.DetailText : defaultDetailText);
         }
 

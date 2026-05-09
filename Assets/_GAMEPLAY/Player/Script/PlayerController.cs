@@ -1,3 +1,4 @@
+using DetectiveGame.Core;
 using DetectiveGame.Gameplay.Npc;
 using UnityEngine;
 
@@ -7,8 +8,34 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode interactKey = KeyCode.F;
     [SerializeField] private float interactRadius = 2f;
 
+    private EventManager eventManager;
+    private bool isInputBlocked;
+
+    private void Start()
+    {
+        var appRoot = AppRoot.Instance;
+        if (appRoot == null)
+        {
+            return;
+        }
+
+        eventManager = appRoot.EventManager;
+        isInputBlocked = appRoot.UIManager != null && appRoot.UIManager.IsPlayerInputBlocked;
+        eventManager?.Subscribe<UiBlockStateChangedEvent>(HandleUiBlockStateChanged);
+    }
+
+    private void OnDestroy()
+    {
+        eventManager?.Unsubscribe<UiBlockStateChangedEvent>(HandleUiBlockStateChanged);
+    }
+
     private void Update()
     {
+        if (isInputBlocked)
+        {
+            return;
+        }
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 move = new Vector3(h, v, 0f);
@@ -43,5 +70,10 @@ public class PlayerController : MonoBehaviour
         }
 
         closestNpc?.Interact();
+    }
+
+    private void HandleUiBlockStateChanged(UiBlockStateChangedEvent eventData)
+    {
+        isInputBlocked = eventData.IsBlocked;
     }
 }

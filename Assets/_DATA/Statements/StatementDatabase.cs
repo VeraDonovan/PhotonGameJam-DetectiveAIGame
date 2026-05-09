@@ -17,6 +17,7 @@ namespace DetectiveGame.Core
         private readonly Dictionary<string, List<string>> statementIdsByNpcId;
         private readonly Dictionary<string, List<StatementEntryData>> statementsByTopicId;
         private readonly Dictionary<string, List<string>> unlockRequirementsByStatementId;
+        private readonly Dictionary<string, string> topicIdByStatementId;
 
         internal StatementDatabase(
             StatementSetData statementSetData,
@@ -26,7 +27,8 @@ namespace DetectiveGame.Core
             Dictionary<string, List<StatementTopicData>> topicsByNpcId,
             Dictionary<string, List<string>> statementIdsByNpcId,
             Dictionary<string, List<StatementEntryData>> statementsByTopicId,
-            Dictionary<string, List<string>> unlockRequirementsByStatementId)
+            Dictionary<string, List<string>> unlockRequirementsByStatementId,
+            Dictionary<string, string> topicIdByStatementId)
         {
             this.statementSetData = statementSetData;
             this.topicById = topicById ?? new Dictionary<string, StatementTopicData>(StringComparer.Ordinal);
@@ -37,6 +39,7 @@ namespace DetectiveGame.Core
             this.statementsByTopicId = statementsByTopicId ?? new Dictionary<string, List<StatementEntryData>>(StringComparer.Ordinal);
             this.unlockRequirementsByStatementId = unlockRequirementsByStatementId ??
                                                   new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            this.topicIdByStatementId = topicIdByStatementId ?? new Dictionary<string, string>(StringComparer.Ordinal);
         }
 
         public StatementSetData StatementSetData => statementSetData;
@@ -47,6 +50,7 @@ namespace DetectiveGame.Core
         public IReadOnlyDictionary<string, List<string>> StatementIdsByNpcId => statementIdsByNpcId;
         public IReadOnlyDictionary<string, List<StatementEntryData>> StatementsByTopicId => statementsByTopicId;
         public IReadOnlyDictionary<string, List<string>> UnlockRequirementsByStatementId => unlockRequirementsByStatementId;
+        public IReadOnlyDictionary<string, string> TopicIdByStatementId => topicIdByStatementId;
 
         public bool TryGetTopic(string topicId, out StatementTopicData topic)
         {
@@ -81,6 +85,14 @@ namespace DetectiveGame.Core
         public IReadOnlyList<string> GetUnlockRequirements(string statementId)
         {
             return TryGetList(unlockRequirementsByStatementId, statementId, EmptyIds);
+        }
+
+        public string GetTopicIdForStatement(string statementId)
+        {
+            return !string.IsNullOrWhiteSpace(statementId) &&
+                   topicIdByStatementId.TryGetValue(statementId, out var topicId)
+                ? topicId
+                : string.Empty;
         }
 
         private static IReadOnlyList<T> TryGetList<T>(

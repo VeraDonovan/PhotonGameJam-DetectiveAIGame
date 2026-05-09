@@ -156,6 +156,7 @@ namespace DetectiveGame.Gameplay.Dialogue
 
             PopulateRelevantFacts(context, databaseManager, progressManager);
             PopulateRelevantStatements(context, databaseManager, progressManager);
+            PopulateRelevantBeats(context, databaseManager, progressManager);
             PopulateAllowedInterrogationLayers(context, databaseManager, progressManager);
             PopulateMatchedTopicWithholdContext(context);
         }
@@ -191,6 +192,30 @@ namespace DetectiveGame.Gameplay.Dialogue
                     statement != null)
                 {
                     context.RelevantUnlockedStatements.Add(CreateStatementContext(statement, isUnlockable: true));
+                }
+            }
+        }
+
+        private static void PopulateRelevantBeats(
+            DialogueTurnContext context,
+            DatabaseManager databaseManager,
+            ProgressManager progressManager)
+        {
+            foreach (var node in databaseManager.DialogueBeatDatabase.GetNodesByNpc(context.NpcId))
+            {
+                if (node == null)
+                {
+                    continue;
+                }
+
+                if (progressManager.IsDialogueBeatVisited(node.nodeId))
+                {
+                    AddUnique(context.RelevantVisitedBeatIds, node.nodeId);
+                }
+
+                if (!string.IsNullOrWhiteSpace(node.caughtLieId) && progressManager.IsCaughtLie(node.caughtLieId))
+                {
+                    AddUnique(context.RelevantCaughtLieIds, node.caughtLieId);
                 }
             }
         }
@@ -261,16 +286,10 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return result;
             }
 
-            if (matchedTopic.IsSafeRoleplayTopic)
+            if (matchedTopic.IsSafeRoleplayTopic || matchedTopic.IsOpenFallbackTopic)
             {
                 result.ResolutionType = DialogueResolutionType.NoProgress;
-                ValidateSafeRoleplayResponseUsage(interpretedAction, result);
-                return result;
-            }
-
-            if (npcState.ResolvedTopicIds.Contains(interpretedAction.MatchedTopicId))
-            {
-                ApplyAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId, "resolved_topic_repeated");
+                ValidateNonProgressFallbackResponseUsage(interpretedAction, result);
                 return result;
             }
 
@@ -293,13 +312,19 @@ namespace DetectiveGame.Gameplay.Dialogue
             return result;
         }
 
-        private static void ValidateSafeRoleplayResponseUsage(
+        private static void ValidateNonProgressFallbackResponseUsage(
             InterpretedDialogueAction interpretedAction,
             DialogueResolutionResult result)
         {
+            if (!string.IsNullOrWhiteSpace(interpretedAction.UsedBeatId))
+            {
+                RejectAiResponse(result, "non_progress_fallback_used_beat");
+                return;
+            }
+
             if (!string.IsNullOrWhiteSpace(interpretedAction.UsedStatementId))
             {
-                RejectAiResponse(result, "safe_roleplay_used_statement");
+                RejectAiResponse(result, "non_progress_fallback_used_statement");
                 return;
             }
 
@@ -307,7 +332,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             {
                 if (!string.IsNullOrWhiteSpace(revealId))
                 {
-                    RejectAiResponse(result, "safe_roleplay_used_reveal");
+                    RejectAiResponse(result, "non_progress_fallback_used_reveal");
                     return;
                 }
             }
@@ -322,8 +347,9 @@ namespace DetectiveGame.Gameplay.Dialogue
             DialogueResolutionResult result)
         {
             var statement = FindNextUnlockableExplorationStatement(
-                interpretedAction.MatchedTopicId,
-                databaseManager.StatementDatabase,
+                interpretedAction,
+                matchedTopic,
+                databaseManager.DialogueBeatDatabase,
                 progressManager,
                 rawInput.PresentedEvidenceId);
 
@@ -334,84 +360,58 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return;
             }
 
+            var unlockedBeatsBefore = new HashSet<string>(progressManager.VisitedDialogueBeatIds);
+            var caughtLiesBefore = new HashSet<string>(progressManager.CaughtLieIds);
             var unlockedFactsBefore = new HashSet<string>(progressManager.UnlockedFactIds);
             var unlockedStatementsBefore = new HashSet<string>(progressManager.UnlockedStatementIds);
 
-            if (!progressManager.UnlockStatement(statement.statementId))
+            if (!progressManager.VisitDialogueBeat(statement.nodeId))
             {
                 result.ResolutionType = DialogueResolutionType.NoProgress;
                 return;
             }
 
+            AddNewUnlockedIds(unlockedBeatsBefore, progressManager.VisitedDialogueBeatIds, result.VisitedBeatIds);
+            AddNewUnlockedIds(caughtLiesBefore, progressManager.CaughtLieIds, result.CaughtLieIds);
             AddNewUnlockedIds(unlockedStatementsBefore, progressManager.UnlockedStatementIds, result.UnlockedStatementIds);
             AddNewUnlockedIds(unlockedFactsBefore, progressManager.UnlockedFactIds, result.UnlockedFactIds);
             result.ResolutionType = result.UnlockedFactIds.Count > 0
                 ? DialogueResolutionType.CompositeProgress
-                : DialogueResolutionType.StatementUnlocked;
+                : result.UnlockedStatementIds.Count > 0
+                    ? DialogueResolutionType.StatementUnlocked
+                    : DialogueResolutionType.NoProgress;
 
             ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
         }
 
-        private static StatementEntryData FindNextUnlockableExplorationStatement(
-            string topicId,
-            StatementDatabase statementDatabase,
+        private static DialogueBeatNodeData FindNextUnlockableExplorationStatement(
+            InterpretedDialogueAction interpretedAction,
+            DialogueCandidateTopic matchedTopic,
+            DialogueBeatDatabase beatDatabase,
             ProgressManager progressManager,
             string presentedEvidenceId)
         {
-            foreach (var statement in statementDatabase.GetStatementsByTopic(topicId))
+            if (string.IsNullOrWhiteSpace(interpretedAction.UsedBeatId))
             {
-                if (statement == null ||
-                    !string.Equals(statement.phase, "exploration", StringComparison.OrdinalIgnoreCase) ||
-                    progressManager.IsStatementUnlocked(statement.statementId))
-                {
-                    continue;
-                }
-
-                if (AreStatementRequirementsSatisfied(
-                        statement.unlockRequirements,
-                        progressManager,
-                        presentedEvidenceId))
-                {
-                    return statement;
-                }
+                return null;
             }
 
-            return null;
-        }
-
-        private static bool AreStatementRequirementsSatisfied(
-            IReadOnlyList<string> requirementIds,
-            ProgressManager progressManager,
-            string presentedEvidenceId)
-        {
-            var hasEvidenceRequirement = false;
-            var presentedRequiredEvidence = false;
-
-            foreach (var requirementId in requirementIds ?? Array.Empty<string>())
+            if (!beatDatabase.TryGetNode(interpretedAction.UsedBeatId, out var node) ||
+                node == null ||
+                progressManager.IsDialogueBeatVisited(node.nodeId))
             {
-                if (progressManager.EvidenceCollectedById.ContainsKey(requirementId))
-                {
-                    hasEvidenceRequirement = true;
-                    if (!progressManager.IsEvidenceCollected(requirementId))
-                    {
-                        return false;
-                    }
-
-                    if (string.Equals(requirementId, presentedEvidenceId, StringComparison.Ordinal))
-                    {
-                        presentedRequiredEvidence = true;
-                    }
-
-                    continue;
-                }
-
-                if (!IsRequirementSatisfied(requirementId, progressManager))
-                {
-                    return false;
-                }
+                return null;
             }
 
-            return !hasEvidenceRequirement || presentedRequiredEvidence;
+            if (!string.Equals(node.phase, "exploration", StringComparison.OrdinalIgnoreCase) ||
+                !string.Equals(matchedTopic.TopicId, FindTopicIdForBeat(beatDatabase, node.nodeId), StringComparison.Ordinal))
+            {
+                return null;
+            }
+
+            return AreBeatRequirementsSatisfied(node, progressManager, presentedEvidenceId)
+                ? node
+                : null;
         }
 
         private static void ValidateAiResponseUsage(
@@ -426,10 +426,39 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return;
             }
 
+            if (!IsUsedBeatAllowed(interpretedAction.UsedBeatId, matchedTopic, result))
+            {
+                RejectAiResponse(result, "used_beat_not_allowed");
+                return;
+            }
+
             if (!AreUsedRevealsAllowed(interpretedAction.UsedRevealIds, progressManager, result))
             {
                 RejectAiResponse(result, "used_reveal_not_allowed");
             }
+        }
+
+        private static bool IsUsedBeatAllowed(
+            string usedBeatId,
+            DialogueCandidateTopic matchedTopic,
+            DialogueResolutionResult result)
+        {
+            if (string.IsNullOrWhiteSpace(usedBeatId))
+            {
+                return true;
+            }
+
+            foreach (var beat in matchedTopic.RelatedBeatNodes)
+            {
+                if (!string.Equals(beat.NodeId, usedBeatId, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                return beat.IsUnlockable || result.VisitedBeatIds.Contains(usedBeatId);
+            }
+
+            return false;
         }
 
         private static bool IsUsedStatementAllowed(
@@ -495,6 +524,83 @@ namespace DetectiveGame.Gameplay.Dialogue
                    progressManager.IsStatementUnlocked(requirementId) ||
                    progressManager.IsInterrogationLayerUnlocked(requirementId) ||
                    progressManager.IsProgressTokenUnlocked(requirementId);
+        }
+
+        private static bool AreBeatRequirementsSatisfied(
+            DialogueBeatNodeData node,
+            ProgressManager progressManager,
+            string presentedEvidenceId)
+        {
+            var hasPresentedEvidenceRequirement = node.requiredEvidenceIds != null && node.requiredEvidenceIds.Count > 0;
+            var presentedRequiredEvidence = !hasPresentedEvidenceRequirement;
+
+            foreach (var evidenceId in node.requiredEvidenceIds ?? new List<string>())
+            {
+                if (!progressManager.IsEvidenceCollected(evidenceId))
+                {
+                    return false;
+                }
+
+                if (string.Equals(evidenceId, presentedEvidenceId, StringComparison.Ordinal))
+                {
+                    presentedRequiredEvidence = true;
+                }
+            }
+
+            foreach (var factId in node.requiredFactIds ?? new List<string>())
+            {
+                if (!progressManager.IsFactUnlocked(factId))
+                {
+                    return false;
+                }
+            }
+
+            foreach (var statementId in node.requiredStatementIds ?? new List<string>())
+            {
+                if (!progressManager.IsStatementUnlocked(statementId))
+                {
+                    return false;
+                }
+            }
+
+            foreach (var layerId in node.requiredLayerIds ?? new List<string>())
+            {
+                if (!progressManager.IsInterrogationLayerUnlocked(layerId))
+                {
+                    return false;
+                }
+            }
+
+            foreach (var tokenId in node.requiredTokenIds ?? new List<string>())
+            {
+                if (!progressManager.IsProgressTokenUnlocked(tokenId))
+                {
+                    return false;
+                }
+            }
+
+            return presentedRequiredEvidence;
+        }
+
+        private static string FindTopicIdForBeat(DialogueBeatDatabase beatDatabase, string beatId)
+        {
+            foreach (var topic in beatDatabase.TopicById.Values)
+            {
+                if (topic == null)
+                {
+                    continue;
+                }
+
+                foreach (var node in topic.nodes ?? new List<DialogueBeatNodeData>())
+                {
+                    if (node != null && string.Equals(node.nodeId, beatId, StringComparison.Ordinal))
+                    {
+                        return topic.topicId ?? string.Empty;
+                    }
+                }
+            }
+
+            return string.Empty;
         }
 
         private static DialogueStatementEntryContext CreateStatementContext(

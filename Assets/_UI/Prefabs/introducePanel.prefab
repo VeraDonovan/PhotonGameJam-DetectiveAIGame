@@ -152,8 +152,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5207723239647109935}
   - {fileID: 1156169148513415773}
   - {fileID: 5854379379334785362}
+  - {fileID: 2653118155135691415}
   m_Father: {fileID: 24300355538947968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -335,9 +337,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8394202387431912814}
-  - {fileID: 5207723239647109935}
   - {fileID: 7211304359444232843}
-  - {fileID: 2653118155135691415}
   m_Father: {fileID: 3682755798205431840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1523,11 +1523,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9014663624297570337}
-  m_Father: {fileID: 24300355538947968}
+  m_Father: {fileID: 7211304359444232843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 540.0049, y: -260}
+  m_AnchoredPosition: {x: 512.42676, y: -231.59637}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2968063933925241505
@@ -1779,11 +1779,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 235234937028272574}
-  m_Father: {fileID: 24300355538947968}
+  m_Father: {fileID: 7211304359444232843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 540.0049, y: 250}
+  m_AnchoredPosition: {x: 512.42676, y: 278.40363}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2344138931821318104
@@ -1880,5 +1880,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a3403712bbf28488577cd15b674497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollbar: {fileID: 0}
-  step: 0.1
+  targetScrollRect: {fileID: 0}
+  scrollStep: 0.1

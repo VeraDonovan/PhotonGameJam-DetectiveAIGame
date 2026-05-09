@@ -15,6 +15,7 @@
     "evidence": "evidence.json",
     "facts": "facts.json",
     "statements": "statements.json",
+    "dialogueBeats": "dialogue_beats.json",
     "truth": "truth.json",
     "ending": "ending.json",
     "npcAi": {

@@ -9,4 +9,14 @@ namespace DetectiveGame.Core
 
         public GamePhase Phase { get; }
     }
+
+    public readonly struct UiBlockStateChangedEvent
+    {
+        public UiBlockStateChangedEvent(bool isBlocked)
+        {
+            IsBlocked = isBlocked;
+        }
+
+        public bool IsBlocked { get; }
+    }
 }

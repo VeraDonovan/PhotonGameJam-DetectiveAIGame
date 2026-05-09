@@ -22,11 +22,13 @@ namespace DetectiveGame.Core
 
     public readonly struct StatementUnlockedEvent
     {
-        public StatementUnlockedEvent(string statementId)
+        public StatementUnlockedEvent(string topicId, string statementId)
         {
+            TopicId = topicId;
             StatementId = statementId;
         }
 
+        public string TopicId { get; }
         public string StatementId { get; }
     }
 

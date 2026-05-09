@@ -13,6 +13,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             ProgressManager progressManager)
         {
             ValidateInputs(npcId, databaseManager, progressManager);
+            phase = NormalizeDialoguePhase(phase);
 
             var topicSet = new DialogueCandidateTopicSet
             {
@@ -24,6 +25,7 @@ namespace DetectiveGame.Gameplay.Dialogue
 
             AddSafeRoleplayTopics(npcId, phase, databaseManager.NpcDatabase, topicsById);
             BuildStatementTopics(npcId, phase, databaseManager.StatementDatabase, progressManager, topicsById);
+            BuildBeatTopics(npcId, phase, databaseManager.DialogueBeatDatabase, progressManager, topicsById);
             EnrichWithInterrogationLayers(npcId, phase, databaseManager.TruthDatabase, progressManager, topicsById);
 
             foreach (var topic in SortTopics(topicsById.Values))
@@ -32,6 +34,13 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
 
             return topicSet;
+        }
+
+        private static GamePhase NormalizeDialoguePhase(GamePhase phase)
+        {
+            return phase == GamePhase.Intro
+                ? GamePhase.Exploration
+                : phase;
         }
 
         private static void AddSafeRoleplayTopics(
@@ -45,6 +54,79 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return;
             }
 
+            AddSafeRoleplayTopic(
+                topicsById,
+                npcId,
+                phase,
+                "npc_open_roleplay",
+                "broad in-character roleplay that is relevant, natural, and not blocked by hidden truth",
+                -2,
+                "talk naturally",
+                "continue the conversation",
+                "respond in character",
+                "say something about yourself",
+                "what do you mean",
+                "你是什么意思",
+                "继续说",
+                "接着说",
+                "你刚才是什么意思");
+            AddOpenFallbackTopic(
+                topicsById,
+                npcId,
+                phase,
+                "npc_case_open",
+                "broad case-related dialogue that may answer with baseline non-hidden information when no narrower topic fits",
+                -1,
+                "what happened",
+                "where were you",
+                "when did you arrive",
+                "why were you here",
+                "what were you doing",
+                "tell me about last night",
+                "你昨晚在哪",
+                "你什么时候来的",
+                "你来这里做什么",
+                "昨晚发生了什么",
+                "你什么时候来要债");
+            AddOpenFallbackTopic(
+                topicsById,
+                npcId,
+                phase,
+                "npc_case_timeline_general",
+                "broad timeline and sequence questions when the player asks generally instead of targeting one authored statement topic",
+                1,
+                "walk me through your night",
+                "tell me the order of what happened",
+                "what happened before that",
+                "what happened after that",
+                "from the beginning",
+                "start from the beginning");
+            AddOpenFallbackTopic(
+                topicsById,
+                npcId,
+                phase,
+                "npc_case_people_general",
+                "broad questions about other people, visitors, and who was involved without forcing a specific locked detail",
+                2,
+                "who was here",
+                "who came by",
+                "who were you with",
+                "who are you talking about",
+                "tell me about the people involved",
+                "who else was around");
+            AddOpenFallbackTopic(
+                topicsById,
+                npcId,
+                phase,
+                "npc_case_scene_general",
+                "broad questions about the scene, environment, and what the npc noticed without forcing one exact statement topic",
+                3,
+                "what did you notice",
+                "what was the room like",
+                "what did the scene look like",
+                "did anything feel strange",
+                "tell me what you saw around you",
+                "what stood out to you");
             AddSafeRoleplayTopic(
                 topicsById,
                 npcId,
@@ -140,6 +222,30 @@ namespace DetectiveGame.Gameplay.Dialogue
             FinalizeAvailability(topic, phase);
         }
 
+        private static void AddOpenFallbackTopic(
+            Dictionary<string, DialogueCandidateTopic> topicsById,
+            string npcId,
+            GamePhase phase,
+            string topicId,
+            string displayName,
+            int sortOrderOffset,
+            params string[] matchHints)
+        {
+            var topic = GetOrCreateTopic(
+                topicsById,
+                topicId,
+                npcId,
+                displayName,
+                int.MinValue + sortOrderOffset,
+                isSynthetic: true);
+
+            topic.IsOpenFallbackTopic = true;
+            topic.IsSearchPhaseTopic = phase == GamePhase.Exploration;
+            topic.IsInterrogationPhaseTopic = phase == GamePhase.Interrogation;
+            AddRange(topic.MatchHints, matchHints);
+            FinalizeAvailability(topic, phase);
+        }
+
         private static void BuildStatementTopics(
             string npcId,
             GamePhase phase,
@@ -226,6 +332,139 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddRange(context.DialogueSamples, entry.dialogueSamples);
             AddRange(context.AvoidSaying, entry.avoidSaying);
             return context;
+        }
+
+        private static void BuildBeatTopics(
+            string npcId,
+            GamePhase phase,
+            DialogueBeatDatabase beatDatabase,
+            ProgressManager progressManager,
+            Dictionary<string, DialogueCandidateTopic> topicsById)
+        {
+            foreach (var beatTopic in beatDatabase.GetTopicsByNpc(npcId))
+            {
+                if (beatTopic == null || string.IsNullOrWhiteSpace(beatTopic.topicId))
+                {
+                    continue;
+                }
+
+                var candidateTopic = GetOrCreateTopic(
+                    topicsById,
+                    beatTopic.topicId,
+                    npcId,
+                    beatTopic.displayName,
+                    beatTopic.sortOrder,
+                    isSynthetic: false);
+
+                foreach (var node in beatTopic.nodes ?? new List<DialogueBeatNodeData>())
+                {
+                    if (node == null || string.IsNullOrWhiteSpace(node.nodeId) || !IsStatementEntryInPhase(node.phase, phase))
+                    {
+                        continue;
+                    }
+
+                    candidateTopic.RelatedBeatNodes.Add(CreateBeatContext(node, progressManager));
+
+                    if (string.Equals(node.phase, "exploration", StringComparison.OrdinalIgnoreCase))
+                    {
+                        candidateTopic.IsSearchPhaseTopic = true;
+                    }
+
+                    if (string.Equals(node.phase, "interrogation", StringComparison.OrdinalIgnoreCase))
+                    {
+                        candidateTopic.IsInterrogationPhaseTopic = true;
+                    }
+
+                    AddBeatRequirements(node, progressManager, candidateTopic);
+                }
+
+                FinalizeAvailability(candidateTopic, phase);
+            }
+        }
+
+        private static DialogueBeatNodeContext CreateBeatContext(
+            DialogueBeatNodeData node,
+            ProgressManager progressManager)
+        {
+            var context = new DialogueBeatNodeContext
+            {
+                NodeId = node.nodeId ?? string.Empty,
+                Phase = node.phase ?? string.Empty,
+                AvailabilityType = node.availabilityType ?? string.Empty,
+                TruthStatus = node.truthStatus ?? string.Empty,
+                TriggerType = node.trigger?.type ?? string.Empty,
+                TriggerId = node.trigger?.id ?? string.Empty,
+                TriggerIntent = node.trigger?.intent ?? string.Empty,
+                TriggerPromptLabel = node.trigger?.promptLabel ?? string.Empty,
+                Text = node.text ?? string.Empty,
+                WatsonNote = node.watsonNote ?? string.Empty,
+                UnlockStatementId = node.unlockStatementId ?? string.Empty,
+                CaughtLieId = node.caughtLieId ?? string.Empty,
+                IsLie = node.isLie,
+                IsVisited = progressManager.IsDialogueBeatVisited(node.nodeId),
+                IsUnlockable = AreBeatRequirementsSatisfied(node, progressManager),
+            };
+
+            AddRange(context.Behavior, node.behavior);
+            AddRange(context.RequiredIds, node.requiredEvidenceIds);
+            AddRange(context.RequiredIds, node.requiredFactIds);
+            AddRange(context.RequiredIds, node.requiredStatementIds);
+            AddRange(context.RequiredIds, node.requiredLayerIds);
+            AddRange(context.RequiredIds, node.requiredTokenIds);
+            AddRange(context.NextSuggestedNodeIds, node.nextSuggestedNodeIds);
+            return context;
+        }
+
+        private static void AddBeatRequirements(
+            DialogueBeatNodeData node,
+            ProgressManager progressManager,
+            DialogueCandidateTopic candidateTopic)
+        {
+            AddRequirements(
+                node.requiredEvidenceIds,
+                progressManager,
+                candidateTopic.RequiredEvidenceIds,
+                candidateTopic.RequiredFactIds,
+                candidateTopic.RequiredStatementIds,
+                candidateTopic.RequiredInterrogationLayerIds,
+                candidateTopic.RequiredTokenIds,
+                candidateTopic.MissingRequirementIds);
+            AddRequirements(
+                node.requiredFactIds,
+                progressManager,
+                candidateTopic.RequiredEvidenceIds,
+                candidateTopic.RequiredFactIds,
+                candidateTopic.RequiredStatementIds,
+                candidateTopic.RequiredInterrogationLayerIds,
+                candidateTopic.RequiredTokenIds,
+                candidateTopic.MissingRequirementIds);
+            AddRequirements(
+                node.requiredStatementIds,
+                progressManager,
+                candidateTopic.RequiredEvidenceIds,
+                candidateTopic.RequiredFactIds,
+                candidateTopic.RequiredStatementIds,
+                candidateTopic.RequiredInterrogationLayerIds,
+                candidateTopic.RequiredTokenIds,
+                candidateTopic.MissingRequirementIds);
+            AddRequirements(
+                node.requiredLayerIds,
+                progressManager,
+                candidateTopic.RequiredEvidenceIds,
+                candidateTopic.RequiredFactIds,
+                candidateTopic.RequiredStatementIds,
+                candidateTopic.RequiredInterrogationLayerIds,
+                candidateTopic.RequiredTokenIds,
+                candidateTopic.MissingRequirementIds);
+            AddRequirements(
+                node.requiredTokenIds,
+                progressManager,
+                candidateTopic.RequiredEvidenceIds,
+                candidateTopic.RequiredFactIds,
+                candidateTopic.RequiredStatementIds,
+                candidateTopic.RequiredInterrogationLayerIds,
+                candidateTopic.RequiredTokenIds,
+                candidateTopic.MissingRequirementIds);
         }
 
         private static void EnrichWithInterrogationLayers(
@@ -415,6 +654,8 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         private static bool IsStatementEntryInPhase(string entryPhase, GamePhase phase)
         {
+            phase = NormalizeDialoguePhase(phase);
+
             if (string.IsNullOrWhiteSpace(entryPhase))
             {
                 return false;
@@ -447,6 +688,17 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
 
             return true;
+        }
+
+        private static bool AreBeatRequirementsSatisfied(
+            DialogueBeatNodeData node,
+            ProgressManager progressManager)
+        {
+            return AreRequirementsSatisfied(node.requiredEvidenceIds, progressManager) &&
+                   AreRequirementsSatisfied(node.requiredFactIds, progressManager) &&
+                   AreRequirementsSatisfied(node.requiredStatementIds, progressManager) &&
+                   AreRequirementsSatisfied(node.requiredLayerIds, progressManager) &&
+                   AreRequirementsSatisfied(node.requiredTokenIds, progressManager);
         }
 
         private static bool IsRequirementSatisfied(string requirementId, ProgressManager progressManager)

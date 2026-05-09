@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using DetectiveGame.Core;
 using DetectiveGame.Gameplay.Dialogue;
 using TMPro;
@@ -128,7 +129,9 @@ public class DialogueManager : MonoBehaviour {
 
         if (!string.IsNullOrWhiteSpace(aiError)) {
             Debug.LogError($"[DialogueManager] AI dialogue request failed: {aiError}", this);
-            ShowDialogue("对话请求失败。");
+            string fallbackText = CreateAiFailureResponse();
+            conversationSession.AddExchange(playerText, fallbackText);
+            ShowDialogue(fallbackText);
             yield break;
         }
 
@@ -156,20 +159,23 @@ public class DialogueManager : MonoBehaviour {
             yield break;
         }
 
+        if (TryPlayAuthoredOpeningBeat(appRoot, npcId, phase, out var openingBeatText))
+        {
+            GetOrCreateConversationSession(npcId).AddExchange(string.Empty, openingBeatText);
+            ShowDialogue(openingBeatText);
+            yield break;
+        }
+
         DeepSeekDialogueClient dialogueClient = DeepSeekDialogueClient.Instance;
         if (dialogueClient == null) {
             Debug.LogError("[DialogueManager] AI opening dialogue requires DeepSeekDialogueClient.Instance.", this);
             yield break;
         }
 
-        if (!TryBuildPromptSections(out DialoguePromptSections promptSections)) {
-            yield break;
-        }
-
         RawDialogueInput rawInput = new RawDialogueInput {
             NpcId = npcId,
             Phase = phase,
-            RawPlayerText = "当前是这次对话的开场。玩家刚刚开始接触你，还没有输入具体问题。请根据当前阶段、已知状态和最近对话，自然地先说一句中文开场白。",
+            RawPlayerText = string.Empty,
             PresentedEvidenceId = string.Empty,
         };
 
@@ -181,23 +187,18 @@ public class DialogueManager : MonoBehaviour {
             appRoot.NpcRuntimeManager,
             conversationSession);
 
-        DialoguePromptMessages promptMessages = promptBuilder.Build(promptContext, promptSections);
-        string openingUserPrompt =
-            promptMessages.UserMessage +
-            "\n\n开场模式：\n" +
-            "这是NPC主动开口的第一句，玩家这一回合还没有输入具体问题。\n" +
-            "请根据当前阶段、当前可谈话题、已知状态和最近对话，用中文自然地先说一句开场白。\n" +
-            "不要输出JSON，不要解释规则，不要使用旁白。\n" +
-            "如果当前状态适合寒暄或试探，就先用符合角色的简短开场。";
+        string openingSystemPrompt = BuildOpeningSystemPrompt();
+        string openingUserPrompt = BuildOpeningUserPrompt(promptContext);
 
         string aiOpeningText = string.Empty;
         string aiError = string.Empty;
 
         yield return dialogueClient.SendDialogueRequest(
-            promptMessages.SystemMessage,
+            openingSystemPrompt,
             openingUserPrompt,
             response => aiOpeningText = response,
-            error => aiError = error);
+            error => aiError = error,
+            maxTokensOverride: 300);
 
         if (!string.IsNullOrWhiteSpace(aiError)) {
             Debug.LogError($"[DialogueManager] AI opening dialogue request failed: {aiError}", this);
@@ -206,7 +207,7 @@ public class DialogueManager : MonoBehaviour {
         }
 
         string npcText = !string.IsNullOrWhiteSpace(aiOpeningText)
-            ? aiOpeningText
+            ? NormalizeOpeningResponseText(aiOpeningText)
             : CreateOpeningFallbackText(appRoot, npcId);
 
         conversationSession.AddExchange(string.Empty, npcText);
@@ -240,6 +241,90 @@ public class DialogueManager : MonoBehaviour {
                (character >= '\uF900' && character <= '\uFAFF');
     }
 
+    private static string BuildOpeningSystemPrompt() {
+        return
+            "你在生成一款中文侦探游戏里的NPC开场白。\n" +
+            "玩家是来调查案件的警察，你是在对警察开口说第一句话。\n" +
+            "只返回一句简短的中文台词。\n" +
+            "不要输出JSON。\n" +
+            "不要解释规则。\n" +
+            "不要复述提示词。\n" +
+            "不要输出旁白、括号说明、系统信息或分析。\n" +
+            "只根据给定的公开资料、当前阶段和最近对话，用符合角色的方式先开口。";
+    }
+
+    private static string BuildOpeningUserPrompt(DialogueTurnContext context) {
+        var builder = new StringBuilder();
+        builder.AppendLine("当前是NPC主动开口的开场。");
+        builder.Append("阶段: ");
+        builder.AppendLine(context.Phase.ToString());
+        builder.AppendLine("玩家身份: 警察");
+        builder.AppendLine("场景: 你正在接受警方关于案件的问话。");
+
+        if (context.NpcPublicProfile != null) {
+            builder.Append("姓名: ");
+            builder.AppendLine(context.NpcPublicProfile.displayName ?? string.Empty);
+            builder.Append("身份: ");
+            builder.AppendLine(context.NpcPublicProfile.occupation ?? string.Empty);
+            builder.Append("与死者关系: ");
+            builder.AppendLine(context.NpcPublicProfile.relationshipToVictim ?? string.Empty);
+            builder.Append("公开简介: ");
+            builder.AppendLine(context.NpcPublicProfile.profileText ?? string.Empty);
+        }
+
+        builder.AppendLine("最近对话:");
+        if (context.RecentConversation == null || context.RecentConversation.Count == 0) {
+            builder.AppendLine("无");
+        } else {
+            int startIndex = context.RecentConversation.Count > 2
+                ? context.RecentConversation.Count - 2
+                : 0;
+            for (int i = startIndex; i < context.RecentConversation.Count; i++) {
+                var exchange = context.RecentConversation[i];
+                builder.Append("玩家: ");
+                builder.AppendLine(exchange.PlayerText ?? string.Empty);
+                builder.Append("NPC: ");
+                builder.AppendLine(exchange.NpcText ?? string.Empty);
+            }
+        }
+
+        builder.AppendLine("要求:");
+        builder.AppendLine("玩家刚刚开始接触你，这一回合还没有输入具体问题。");
+        builder.AppendLine("你要意识到对方是警察，因此开场语气要符合被警方询问时的反应。");
+        builder.AppendLine("请直接说一句自然的中文开场白。");
+        return builder.ToString();
+    }
+
+    private static string NormalizeOpeningResponseText(string rawText) {
+        string text = (rawText ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(text)) {
+            return string.Empty;
+        }
+
+        if (text.StartsWith("{") && text.EndsWith("}")) {
+            try {
+                DeepSeekDialogueTurnResponse structuredResponse =
+                    JsonUtility.FromJson<DeepSeekDialogueTurnResponse>(text);
+                if (structuredResponse != null &&
+                    structuredResponse.response != null &&
+                    !string.IsNullOrWhiteSpace(structuredResponse.response.prose)) {
+                    return structuredResponse.response.prose.Trim();
+                }
+            } catch {
+            }
+        }
+
+        if (text.Length >= 2 && text[0] == '"' && text[text.Length - 1] == '"') {
+            text = text.Substring(1, text.Length - 2)
+                .Replace("\\n", "\n")
+                .Replace("\\r", "\r")
+                .Replace("\\\"", "\"")
+                .Replace("\\\\", "\\");
+        }
+
+        return text.Trim();
+    }
+
     private static string CreateOpeningFallbackText(AppRoot appRoot, string npcId) {
         if (appRoot != null &&
             appRoot.DatabaseManager != null &&
@@ -250,6 +335,10 @@ public class DialogueManager : MonoBehaviour {
         }
 
         return "你想问什么？";
+    }
+
+    private static string CreateAiFailureResponse() {
+        return "这件事我现在不想说。";
     }
 
     private bool TryBuildPromptSections(out DialoguePromptSections promptSections) {
@@ -303,9 +392,44 @@ public class DialogueManager : MonoBehaviour {
             PresentedEvidenceId = rawInput.PresentedEvidenceId,
             Confidence = aiResponse.interpretation.confidence,
             IsIrrelevant = isIrrelevant,
+            UsedBeatId = aiResponse.response.usedBeatId ?? string.Empty,
             UsedStatementId = aiResponse.response.usedStatementId ?? string.Empty,
             UsedRevealIds = aiResponse.response.usedRevealIds ?? System.Array.Empty<string>(),
         };
+    }
+
+    private static bool TryPlayAuthoredOpeningBeat(AppRoot appRoot, string npcId, GamePhase phase, out string openingBeatText)
+    {
+        openingBeatText = string.Empty;
+        if (appRoot?.DatabaseManager?.DialogueBeatDatabase == null || appRoot.ProgressManager == null)
+        {
+            return false;
+        }
+
+        foreach (var topic in appRoot.DatabaseManager.DialogueBeatDatabase.GetTopicsByNpc(npcId))
+        {
+            foreach (var node in topic.nodes ?? new List<DialogueBeatNodeData>())
+            {
+                if (node == null ||
+                    !string.Equals(node.phase, phase.ToString(), System.StringComparison.OrdinalIgnoreCase) &&
+                    !(phase == GamePhase.Intro && string.Equals(node.phase, "exploration", System.StringComparison.OrdinalIgnoreCase)) ||
+                    !string.Equals(node.availabilityType, "auto_opening", System.StringComparison.OrdinalIgnoreCase) ||
+                    appRoot.ProgressManager.IsDialogueBeatVisited(node.nodeId))
+                {
+                    continue;
+                }
+
+                if (!appRoot.ProgressManager.VisitDialogueBeat(node.nodeId))
+                {
+                    continue;
+                }
+
+                openingBeatText = node.text ?? string.Empty;
+                return !string.IsNullOrWhiteSpace(openingBeatText);
+            }
+        }
+
+        return false;
     }
 
     private static string CreateRejectedResponse(string rejectReason) {

@@ -11,6 +11,7 @@ namespace DetectiveGame.Core
         [SerializeField] private TextAsset factsJson;
         [SerializeField] private TextAsset npcJson;
         [SerializeField] private TextAsset statementsJson;
+        [SerializeField] private TextAsset dialogueBeatsJson;
         [SerializeField] private TextAsset truthJson;
         [SerializeField] private TextAsset endingJson;
         [SerializeField] private TextAsset[] npcAiProfileJsons;
@@ -20,6 +21,7 @@ namespace DetectiveGame.Core
         public FactDatabase FactDatabase { get; private set; }
         public NpcDatabase NpcDatabase { get; private set; }
         public StatementDatabase StatementDatabase { get; private set; }
+        public DialogueBeatDatabase DialogueBeatDatabase { get; private set; }
         public TruthDatabase TruthDatabase { get; private set; }
         public EndingDatabase EndingDatabase { get; private set; }
         public NpcAiProfileDatabase NpcAiProfileDatabase { get; private set; }
@@ -33,6 +35,8 @@ namespace DetectiveGame.Core
             FactDatabase = FactDatabaseBuilder.Build(ParseJson<FactGraphData>(factsJson, nameof(factsJson)));
             NpcDatabase = NpcDatabaseBuilder.Build(ParseJson<NpcSetData>(npcJson, nameof(npcJson)));
             StatementDatabase = StatementDatabaseBuilder.Build(ParseJson<StatementSetData>(statementsJson, nameof(statementsJson)));
+            DialogueBeatDatabase = DialogueBeatDatabaseBuilder.Build(
+                ParseJson<DialogueBeatSetData>(dialogueBeatsJson, nameof(dialogueBeatsJson)));
             TruthDatabase = TruthDatabaseBuilder.Build(ParseJson<TruthData>(truthJson, nameof(truthJson)));
             EndingDatabase = EndingDatabaseBuilder.Build(ParseJson<EndingSetData>(endingJson, nameof(endingJson)));
             NpcAiProfileDatabase = NpcAiProfileDatabaseBuilder.Build(ParseNpcAiProfiles());

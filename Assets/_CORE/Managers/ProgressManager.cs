@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DetectiveGame.Core
@@ -14,10 +14,15 @@ namespace DetectiveGame.Core
         public IReadOnlyDictionary<string, bool> FactUnlockedById => RuntimeState.FactUnlockedById;
         public IReadOnlyDictionary<string, bool> StatementUnlockedById => RuntimeState.StatementUnlockedById;
         public IReadOnlyDictionary<string, bool> InterrogationLayerUnlockedById => RuntimeState.InterrogationLayerUnlockedById;
+        public IReadOnlyDictionary<string, bool> DialogueBeatVisitedById => RuntimeState.DialogueBeatVisitedById;
+        public IReadOnlyDictionary<string, bool> CaughtLieById => RuntimeState.CaughtLieById;
+        public IReadOnlyDictionary<string, string> LatestStatementIdByTopic => RuntimeState.LatestStatementIdByTopic;
         public IReadOnlyCollection<string> CollectedEvidenceIds => RuntimeState.CollectedEvidenceIds;
         public IReadOnlyCollection<string> UnlockedFactIds => RuntimeState.UnlockedFactIds;
         public IReadOnlyCollection<string> UnlockedStatementIds => RuntimeState.UnlockedStatementIds;
         public IReadOnlyCollection<string> UnlockedInterrogationLayerIds => RuntimeState.UnlockedInterrogationLayerIds;
+        public IReadOnlyCollection<string> VisitedDialogueBeatIds => RuntimeState.VisitedDialogueBeatIds;
+        public IReadOnlyCollection<string> CaughtLieIds => RuntimeState.CaughtLieIds;
         public IReadOnlyCollection<string> KnownSuspectIds => RuntimeState.KnownSuspectIds;
         public IReadOnlyCollection<string> SelectedSuspectIds => RuntimeState.SelectedSuspectIds;
         public string AccusationTargetId => RuntimeState.AccusationTargetId;
@@ -98,6 +103,52 @@ namespace DetectiveGame.Core
             return true;
         }
 
+        public bool VisitDialogueBeat(string nodeId)
+        {
+            if (string.IsNullOrWhiteSpace(nodeId) ||
+                !databaseManager.DialogueBeatDatabase.TryGetNode(nodeId, out var node) ||
+                node == null ||
+                !RuntimeState.VisitedDialogueBeatIds.Add(nodeId))
+            {
+                return false;
+            }
+
+            RuntimeState.DialogueBeatVisitedById[nodeId] = true;
+
+            if (!string.IsNullOrWhiteSpace(node.caughtLieId))
+            {
+                RuntimeState.CaughtLieIds.Add(node.caughtLieId);
+                RuntimeState.CaughtLieById[node.caughtLieId] = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(node.unlockStatementId))
+            {
+                TryUnlockStatement(node.unlockStatementId);
+            }
+
+            foreach (var factId in node.unlockFactIds ?? new List<string>())
+            {
+                TryUnlockFact(factId);
+            }
+
+            foreach (var layerId in node.unlockLayerIds ?? new List<string>())
+            {
+                TryUnlockInterrogationLayer(layerId);
+            }
+
+            foreach (var tokenId in node.unlockTokenIds ?? new List<string>())
+            {
+                if (!string.IsNullOrWhiteSpace(tokenId))
+                {
+                    RuntimeState.UnlockedProgressTokens.Add(tokenId);
+                    RuntimeState.ProgressTokenById[tokenId] = true;
+                }
+            }
+
+            ProcessProgressionUnlocks();
+            return true;
+        }
+
         public bool IsEvidenceCollected(string evidenceId)
         {
             return !string.IsNullOrWhiteSpace(evidenceId) &&
@@ -124,6 +175,20 @@ namespace DetectiveGame.Core
             return !string.IsNullOrWhiteSpace(layerId) &&
                    RuntimeState.InterrogationLayerUnlockedById.TryGetValue(layerId, out var isUnlocked) &&
                    isUnlocked;
+        }
+
+        public bool IsDialogueBeatVisited(string nodeId)
+        {
+            return !string.IsNullOrWhiteSpace(nodeId) &&
+                   RuntimeState.DialogueBeatVisitedById.TryGetValue(nodeId, out var isVisited) &&
+                   isVisited;
+        }
+
+        public bool IsCaughtLie(string lieId)
+        {
+            return !string.IsNullOrWhiteSpace(lieId) &&
+                   RuntimeState.CaughtLieById.TryGetValue(lieId, out var isCaught) &&
+                   isCaught;
         }
 
         public bool IsProgressTokenUnlocked(string tokenId)
@@ -160,6 +225,7 @@ namespace DetectiveGame.Core
             BuildFactProgressMap();
             BuildStatementProgressMap();
             BuildInterrogationLayerProgressMap();
+            BuildDialogueBeatProgressMap();
             SeedStartingEvidence();
             ProcessProgressionUnlocks();
         }
@@ -193,6 +259,14 @@ namespace DetectiveGame.Core
             foreach (var layerId in databaseManager.TruthDatabase.InterrogationLayerById.Keys)
             {
                 RuntimeState.InterrogationLayerUnlockedById[layerId] = false;
+            }
+        }
+
+        private void BuildDialogueBeatProgressMap()
+        {
+            foreach (var nodeId in databaseManager.DialogueBeatDatabase.NodeById.Keys)
+            {
+                RuntimeState.DialogueBeatVisitedById[nodeId] = false;
             }
         }
 
@@ -360,7 +434,13 @@ namespace DetectiveGame.Core
             }
 
             RuntimeState.StatementUnlockedById[statementId] = true;
-            eventManager?.Publish(new StatementUnlockedEvent(statementId));
+            var topicId = databaseManager.StatementDatabase.GetTopicIdForStatement(statementId);
+            if (!string.IsNullOrWhiteSpace(topicId))
+            {
+                RuntimeState.LatestStatementIdByTopic[topicId] = statementId;
+            }
+
+            eventManager?.Publish(new StatementUnlockedEvent(topicId, statementId));
             return true;
         }
 
@@ -410,6 +490,11 @@ namespace DetectiveGame.Core
             if (databaseManager.StatementDatabase == null)
             {
                 throw new InvalidOperationException("ProgressManager requires DatabaseManager.StatementDatabase during initialization.");
+            }
+
+            if (databaseManager.DialogueBeatDatabase == null)
+            {
+                throw new InvalidOperationException("ProgressManager requires DatabaseManager.DialogueBeatDatabase during initialization.");
             }
 
             if (databaseManager.TruthDatabase == null)

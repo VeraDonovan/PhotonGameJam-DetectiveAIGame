@@ -126,6 +126,7 @@ MonoBehaviour:
   factsJson: {fileID: 4900000, guid: 90060e06bb9ecc74995882dd1781e154, type: 3}
   npcJson: {fileID: 4900000, guid: 1990f5603e02c7149a471531efa89562, type: 3}
   statementsJson: {fileID: 4900000, guid: ab73b43079b0e8649af2ec9a9609882e, type: 3}
+  dialogueBeatsJson: {fileID: 4900000, guid: e1e0c3f0db6a48ef9d6f1a2a89c0f441, type: 3}
   truthJson: {fileID: 4900000, guid: aed0c98dd95f8ad4299b719121c17834, type: 3}
   endingJson: {fileID: 4900000, guid: d8b1277b06ecee541b7091d0945778a0, type: 3}
   npcAiProfileJsons:

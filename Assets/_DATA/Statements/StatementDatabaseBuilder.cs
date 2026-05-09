@@ -19,6 +19,7 @@ namespace DetectiveGame.Core
             var statementIdsByNpcId = new Dictionary<string, List<string>>(StringComparer.Ordinal);
             var statementsByTopicId = new Dictionary<string, List<StatementEntryData>>(StringComparer.Ordinal);
             var unlockRequirementsByStatementId = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            var topicIdByStatementId = new Dictionary<string, string>(StringComparer.Ordinal);
 
             foreach (var topic in statementSetData.statementTopics ?? new List<StatementTopicData>())
             {
@@ -55,6 +56,7 @@ namespace DetectiveGame.Core
                     statements.Add(entry);
                     unlockRequirementsByStatementId[entry.statementId] =
                         new List<string>(entry.unlockRequirements ?? new List<string>());
+                    topicIdByStatementId[entry.statementId] = topic.topicId;
 
                     if (!string.IsNullOrWhiteSpace(topic.npcId))
                     {
@@ -73,7 +75,8 @@ namespace DetectiveGame.Core
                 topicsByNpcId,
                 statementIdsByNpcId,
                 statementsByTopicId,
-                unlockRequirementsByStatementId);
+                unlockRequirementsByStatementId,
+                topicIdByStatementId);
         }
 
         private static void AddValue<T>(Dictionary<string, List<T>> source, string key, T value)

@@ -13,6 +13,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         public List<string> UnlockedStatementIds { get; } = new List<string>();
         public List<string> UnlockedLayerIds { get; } = new List<string>();
         public List<string> UnlockedTokenIds { get; } = new List<string>();
+        public List<string> VisitedBeatIds { get; } = new List<string>();
+        public List<string> CaughtLieIds { get; } = new List<string>();
         public string PunishReason { get; set; } = string.Empty;
         public bool AcceptAiResponse { get; set; } = true;
         public string ResponseRejectReason { get; set; } = string.Empty;

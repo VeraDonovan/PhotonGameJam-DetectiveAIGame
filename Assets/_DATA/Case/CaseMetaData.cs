@@ -22,6 +22,7 @@ namespace DetectiveGame.Core
         public string evidence;
         public string facts;
         public string statements;
+        public string dialogueBeats;
         public string truth;
         public string ending;
         public CaseNpcAiLinkedDataFiles npcAi;

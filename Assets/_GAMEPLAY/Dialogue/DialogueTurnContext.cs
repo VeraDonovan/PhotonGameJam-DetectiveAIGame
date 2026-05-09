@@ -22,6 +22,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         public List<string> RelevantUnlockedFactIds { get; } = new List<string>();
         public List<string> RelevantUnlockedStatementIds { get; } = new List<string>();
         public List<string> RelevantUnlockedLayerIds { get; } = new List<string>();
+        public List<string> RelevantVisitedBeatIds { get; } = new List<string>();
+        public List<string> RelevantCaughtLieIds { get; } = new List<string>();
         public List<DialogueStatementEntryContext> RelevantUnlockedStatements { get; } =
             new List<DialogueStatementEntryContext>();
         public List<TruthInterrogationLayerData> AllowedInterrogationLayers { get; } =
