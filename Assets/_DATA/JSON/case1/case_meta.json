@@ -7,6 +7,9 @@
   },
   "caseId": "case1",
   "title": "最后一班夜车",
+  "startingEvidenceIds": [
+    "A-1"
+  ],
   "linkedDataFiles": {
     "npc": "npc.json",
     "evidence": "evidence.json",

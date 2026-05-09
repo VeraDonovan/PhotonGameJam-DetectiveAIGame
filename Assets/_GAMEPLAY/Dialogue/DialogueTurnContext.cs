@@ -12,6 +12,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         public DialogueCandidateTopicSet CandidateTopics { get; set; } = new DialogueCandidateTopicSet();
         public InterpretedDialogueAction InterpretedAction { get; set; } = new InterpretedDialogueAction();
         public DialogueResolutionResult ResolutionResult { get; set; } = new DialogueResolutionResult();
+        public NpcData NpcPublicProfile { get; set; }
+        public string NpcAiProfileRawJson { get; set; } = string.Empty;
 
         public int Annoyance { get; set; }
         public int Pressure { get; set; }
@@ -20,6 +22,10 @@ namespace DetectiveGame.Gameplay.Dialogue
         public List<string> RelevantUnlockedFactIds { get; } = new List<string>();
         public List<string> RelevantUnlockedStatementIds { get; } = new List<string>();
         public List<string> RelevantUnlockedLayerIds { get; } = new List<string>();
+        public List<DialogueStatementEntryContext> RelevantUnlockedStatements { get; } =
+            new List<DialogueStatementEntryContext>();
+        public List<TruthInterrogationLayerData> AllowedInterrogationLayers { get; } =
+            new List<TruthInterrogationLayerData>();
 
         public List<string> AllowedRevealIds { get; } = new List<string>();
         public List<string> MustWithholdIds { get; } = new List<string>();

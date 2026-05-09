@@ -10,4 +10,3 @@ Dialogue rules:
 - If the player asks about information the NPC should not reveal, avoid, deny, deflect, or answer partially based on the NPC's personality.
 - Return only the NPC's spoken dialogue.
 - Do not include behavior descriptions, narration, stage directions, or parenthetical actions.
-- Do not write lines like "（紧张地低头）你说什么？"; write only "你说什么？".

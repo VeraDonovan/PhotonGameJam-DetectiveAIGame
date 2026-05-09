@@ -67,6 +67,7 @@ namespace DetectiveGame.Core
             for (var i = 0; i < npcAiProfileJsons.Length; i++)
             {
                 profiles[i] = ParseJson<NpcAiProfileData>(npcAiProfileJsons[i], $"{nameof(npcAiProfileJsons)}[{i}]");
+                profiles[i].rawJson = npcAiProfileJsons[i].text;
             }
 
             ValidateNpcAiMetadataCoverage(profiles);

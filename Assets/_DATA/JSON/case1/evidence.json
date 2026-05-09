@@ -14,6 +14,16 @@
     {
       "evidenceId": "A-1",
       "tier": "A",
+      "displayName": "法医报告",
+      "summary": "法医报告显示：赵建民死于太阳穴钝器击打，死亡时间约为21:00-23:00。死者手腕有新旧叠加的淤青，颈部细痕为陈旧伤，与本次死亡无关。",
+      "locationId": "bedroom",
+      "targetNpcId": null,
+      "requirements": [],
+      "mapGroup": "time_of_death"
+    },
+    {
+      "evidenceId": "A-2",
+      "tier": "A",
       "displayName": "大前门烟蒂",
       "summary": "烟灰缸里有几支大前门烟蒂，抽到了过滤嘴。赵建民的妻子说他平时抽别的牌子。",
       "locationId": "living_room",
@@ -22,7 +32,7 @@
       "mapGroup": "wei_visit"
     },
     {
-      "evidenceId": "A-2",
+      "evidenceId": "A-3",
       "tier": "A",
       "displayName": "两只用过的茶杯",
       "summary": "茶几上放着两只都使用过的茶杯，茶色很深，像是聊了不短时间。",
@@ -32,7 +42,7 @@
       "mapGroup": "wei_visit"
     },
     {
-      "evidenceId": "A-3",
+      "evidenceId": "A-4",
       "tier": "A",
       "displayName": "炉钩子",
       "summary": "炉具工具架上有一个挂钩方向放反了，与整齐的架子格格不入。炉钩子末端有暗色擦痕，颜色不像是酱油或铁锈。",
@@ -42,7 +52,7 @@
       "mapGroup": "cleanup_chain"
     },
     {
-      "evidenceId": "A-4",
+      "evidenceId": "A-5",
       "tier": "A",
       "displayName": "地板血迹",
       "summary": "地板缝隙中有未擦净的血迹，拖痕从客厅向厨房方向延伸。",
@@ -52,7 +62,7 @@
       "mapGroup": "cleanup_chain"
     },
     {
-      "evidenceId": "A-5",
+      "evidenceId": "A-6",
       "tier": "A",
       "displayName": "窗台上的手表空痕",
       "summary": "窗台上有一圈灰尘，中间一个长方形空白，大小刚好是一只手表。有人最近拿走了窗台上的东西。",
@@ -82,6 +92,18 @@
       "mapGroup": "cleanup_chain"
     },
     {
+      "evidenceId": "A-9",
+      "tier": "A",
+      "displayName": "旧款灯泡",
+      "summary": "灯泡是1970年代停产的旧型号，灯丝已烧断。全屋其他灯具均为新式灯泡。",
+      "locationId": "bedroom",
+      "targetNpcId": "lin",
+      "requirements": [
+        "A-13"
+      ],
+      "mapGroup": "lamp_line"
+    },
+    {
       "evidenceId": "A-10",
       "tier": "A",
       "displayName": "林秀华双臂淤青",
@@ -94,16 +116,6 @@
     {
       "evidenceId": "A-11",
       "tier": "A",
-      "displayName": "法医报告（死因）",
-      "summary": "赵建民太阳穴有钝器伤，一击精准、快速。死亡时间约21:00-23:00。",
-      "locationId": "bedroom",
-      "targetNpcId": null,
-      "requirements": [],
-      "mapGroup": "time_of_death"
-    },
-    {
-      "evidenceId": "A-12",
-      "tier": "A",
       "displayName": "账簿",
       "summary": "一本账簿，末页记有三个名字：卫（1994.3.12，3100）、张（1991.6.5，2500）、林（1974.9.20，0）。",
       "locationId": "bedroom",
@@ -112,7 +124,7 @@
       "mapGroup": "ledger_line"
     },
     {
-      "evidenceId": "A-13",
+      "evidenceId": "A-12",
       "tier": "A",
       "displayName": "台灯不亮",
       "summary": "床头台灯不亮。林秀华声称早上发现尸体时灯是开着的。",
@@ -122,30 +134,30 @@
       "mapGroup": "lamp_line"
     },
     {
-      "evidenceId": "A-16",
+      "evidenceId": "A-13",
       "tier": "A",
       "displayName": "药瓶",
-      "summary": "一瓶五年前购买的止痛药。标签显示的用途与安眠药一致。",
+      "summary": "一瓶止疼片，快空了。",
       "locationId": "bathroom",
       "targetNpcId": "lin",
       "requirements": [],
       "mapGroup": "abuse_line"
     },
     {
-      "evidenceId": "B-3",
+      "evidenceId": "B-1",
       "tier": "B",
       "displayName": "地板与炉钩残留比对",
       "summary": "炉钩末端残留与客厅地板缝隙中的残留在颜色和质地上高度一致。",
       "locationId": "living_room",
       "targetNpcId": null,
       "requirements": [
-        "A-3",
-        "A-4"
+        "A-4",
+        "A-5"
       ],
       "mapGroup": "cleanup_chain"
     },
     {
-      "evidenceId": "B-7",
+      "evidenceId": "B-2",
       "tier": "B",
       "displayName": "抹布血迹报告",
       "summary": "法医检验确认：厨房垃圾桶中抹布上的血迹属于死者赵建民。",
@@ -155,98 +167,26 @@
         "A-8"
       ],
       "mapGroup": "cleanup_chain"
-    },
-    {
-      "evidenceId": "B-10",
-      "tier": "B",
-      "displayName": "长期淤青法医报告",
-      "summary": "法医报告确认：相关淤青为长期、反复外力作用所致，时间跨度至少数年。",
-      "locationId": "kitchen",
-      "targetNpcId": null,
-      "requirements": [
-        "A-10"
-      ],
-      "mapGroup": "abuse_line"
-    },
-    {
-      "evidenceId": "B-14",
-      "tier": "B",
-      "displayName": "旧款灯泡鉴定报告",
-      "summary": "床头台灯灯泡为1970年停产型号，灯丝已烧断。在全屋新式灯具中独一无二。不可能在案发当晚亮着。",
-      "locationId": "bedroom",
-      "targetNpcId": null,
-      "requirements": [
-        "A-13"
-      ],
-      "mapGroup": "lamp_line"
-    },
-    {
-      "evidenceId": "B-15",
-      "tier": "B",
-      "displayName": "颈部旧痕",
-      "summary": "死者颈部有细痕，法医鉴定为陈旧伤，与本次死亡无关。",
-      "locationId": "bedroom",
-      "targetNpcId": null,
-      "requirements": [
-        "A-11"
-      ],
-      "mapGroup": "cause_of_death"
-    },
-    {
-      "evidenceId": "B-17",
-      "tier": "B",
-      "displayName": "药瓶购买日期确认",
-      "summary": "药瓶标签显示购买于五年前。与林秀华的长期身体伤痛时间吻合。",
-      "locationId": "bathroom",
-      "targetNpcId": null,
-      "requirements": [
-        "A-16"
-      ],
-      "mapGroup": "abuse_line"
     }
   ],
   "relationships": [
     {
-      "fromId": "A-3",
-      "toId": "B-3",
+      "fromId": "A-4",
+      "toId": "B-1",
       "relationshipType": "supports",
       "displayText": "炉钩末端残留可与地板残留比对。"
     },
     {
-      "fromId": "A-4",
-      "toId": "B-3",
+      "fromId": "A-5",
+      "toId": "B-1",
       "relationshipType": "supports",
       "displayText": "地板缝隙残留可进入比对。"
     },
     {
       "fromId": "A-8",
-      "toId": "B-7",
+      "toId": "B-2",
       "relationshipType": "supports",
       "displayText": "抹布可进行血迹检验。"
-    },
-    {
-      "fromId": "A-10",
-      "toId": "B-10",
-      "relationshipType": "supports",
-      "displayText": "双臂淤青进入法医复核。"
-    },
-    {
-      "fromId": "A-13",
-      "toId": "B-14",
-      "relationshipType": "supports",
-      "displayText": "床头灯可进行灯泡鉴定。"
-    },
-    {
-      "fromId": "A-11",
-      "toId": "B-15",
-      "relationshipType": "supports",
-      "displayText": "尸检结果可补充复核颈部旧伤。"
-    },
-    {
-      "fromId": "A-16",
-      "toId": "B-17",
-      "relationshipType": "supports",
-      "displayText": "药瓶可追溯最早使用日期。"
     }
   ]
 }

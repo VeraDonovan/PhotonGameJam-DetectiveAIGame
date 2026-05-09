@@ -14,6 +14,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         public bool HasUnlockedStatementVersion { get; set; }
         public DialogueTopicAvailability Availability { get; set; } = DialogueTopicAvailability.Unknown;
         public List<string> RelatedStatementIds { get; } = new List<string>();
+        public List<DialogueStatementEntryContext> RelatedStatements { get; } =
+            new List<DialogueStatementEntryContext>();
         public List<string> RelatedInterrogationLayerIds { get; } = new List<string>();
         public List<string> RequiredEvidenceIds { get; } = new List<string>();
         public List<string> RequiredFactIds { get; } = new List<string>();
@@ -21,5 +23,19 @@ namespace DetectiveGame.Gameplay.Dialogue
         public List<string> RequiredInterrogationLayerIds { get; } = new List<string>();
         public List<string> RequiredTokenIds { get; } = new List<string>();
         public List<string> MissingRequirementIds { get; } = new List<string>();
+    }
+
+    public sealed class DialogueStatementEntryContext
+    {
+        public string StatementId { get; set; } = string.Empty;
+        public string Phase { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+        public string AiUsage { get; set; } = string.Empty;
+        public string ResponseIntent { get; set; } = string.Empty;
+        public bool IsUnlocked { get; set; }
+        public bool IsUnlockable { get; set; }
+        public List<string> UnlockRequirements { get; } = new List<string>();
+        public List<string> DialogueSamples { get; } = new List<string>();
+        public List<string> AvoidSaying { get; } = new List<string>();
     }
 }
