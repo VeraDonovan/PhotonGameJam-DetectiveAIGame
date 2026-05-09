@@ -6913,6 +6913,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.53083336
       objectReference: {fileID: 0}
+    - target: {fileID: 1593089097593418099, guid: cb343f9679dc1cb428b17360bbc2a4d0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10.812012
+      objectReference: {fileID: 0}
     - target: {fileID: 5638235086182138260, guid: cb343f9679dc1cb428b17360bbc2a4d0, type: 3}
       propertyPath: m_Name
       value: DialoguePanel
