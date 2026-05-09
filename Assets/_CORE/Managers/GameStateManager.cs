@@ -42,7 +42,8 @@ namespace DetectiveGame.Core
         }
 
         public bool TrySetPhase(GamePhase nextPhase)
-        {
+        {   
+        
             if (CurrentPhase == nextPhase || !CanTransitionTo(nextPhase))
             {
                 return false;

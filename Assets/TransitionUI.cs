@@ -31,19 +31,22 @@ public class TransitionUI : MonoBehaviour
         }
 
         // 打字机效果
+        Debug.Log("开始打字机效果");
         dialogueText.gameObject.SetActive(true);
         foreach (string line in texts)
         {
             dialogueText.text = "";
             foreach (char ch in line)
-            {
-                dialogueText.text += ch;
-                yield return new WaitForSeconds(charDelay);
-            }
-            yield return new WaitForSeconds(1f);
+        {
+            dialogueText.text += ch;
+            Debug.Log("当前文字: " + dialogueText.text);
+            yield return new WaitForSeconds(charDelay);
+        }
+        yield return new WaitForSeconds(1f);
         }
 
-        // ✅ 转场结束后进入 Exploration 状态
-        AppRoot.Instance.GameStateManager.TryStartGame();
+        Debug.Log("打字机效果结束，尝试开始游戏");
+      
+        
     }
 }

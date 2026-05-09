@@ -15,6 +15,8 @@ namespace DetectiveGame.Core
         [SerializeField] private bool menuOpenOnStart = true;
         [SerializeField] private bool inventoryOpenOnStart;
 
+        [SerializeField] private TransitionUI transitionUI; 
+
         // [SerializeField] private GameObject introducePanelRoot;
         public bool IsMenuOpen => menuPanelRoot != null && menuPanelRoot.activeSelf;
         public bool IsInventoryOpen => inventoryRoot.activeSelf;
@@ -59,6 +61,17 @@ namespace DetectiveGame.Core
             }
         }
 
+         public void OnStartGameButton()
+        {
+        // 关闭菜单面板
+            SetMenuOpen(false);
+
+        // 打开过渡面板并开始动画
+            transitionUI.gameObject.SetActive(true);
+            transitionUI.StartTransition();
+            StartGame();
+           
+        }
         // public void SetIntroduceOpen(bool isOpen)
         // {   
         //     Debug.Log("SetIntroduceOpen: " + isOpen);
@@ -78,7 +91,8 @@ namespace DetectiveGame.Core
         // }
 
         public bool StartGame()
-        {
+        {   
+            Debug.Log("开始游戏界面转换");
             var appRoot = AppRoot.Instance;
             if (appRoot == null || !appRoot.GameStateManager.TryStartGame())
             {
