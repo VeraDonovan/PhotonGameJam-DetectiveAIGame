@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueText: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0"
+  evidenceId: 
   interactDistance: 1.5
   hintCanvas: {fileID: 8985690970497748019}
   hintText: {fileID: 9191742581099597203}
