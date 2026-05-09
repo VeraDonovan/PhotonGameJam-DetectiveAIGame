@@ -11,5 +11,7 @@ namespace DetectiveGame.Gameplay.Dialogue
         public string PresentedEvidenceId { get; set; } = string.Empty;
         public float Confidence { get; set; }
         public bool IsIrrelevant { get; set; }
+        public string UsedStatementId { get; set; } = string.Empty;
+        public string[] UsedRevealIds { get; set; } = System.Array.Empty<string>();
     }
 }

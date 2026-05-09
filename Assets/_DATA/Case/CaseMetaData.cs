@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace DetectiveGame.Core
 {
@@ -10,6 +11,7 @@ namespace DetectiveGame.Core
         public string caseId;
         public string title;
         public CaseLinkedDataFiles linkedDataFiles;
+        public List<string> startingEvidenceIds;
         public CaseBackgroundData caseBackground;
     }
 

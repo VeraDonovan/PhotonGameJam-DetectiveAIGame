@@ -42,13 +42,13 @@
       "unlock": {
         "unlockType": "evidence_only",
         "requirementsAll": [
-          "A-1",
-          "A-2"
+          "A-2",
+          "A-3"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-1",
-          "A-2"
+          "A-2",
+          "A-3"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []
@@ -88,13 +88,13 @@
       "unlock": {
         "unlockType": "evidence_only",
         "requirementsAll": [
-          "B-3"
+          "B-1"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-3",
           "A-4",
-          "B-3"
+          "A-5",
+          "B-1"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []
@@ -134,16 +134,16 @@
       "unlock": {
         "unlockType": "derived",
         "requirementsAll": [
-          "B-3",
+          "B-1",
           "A-7",
-          "B-7"
+          "B-2"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "B-3",
+          "B-1",
           "A-7",
           "A-8",
-          "B-7"
+          "B-2"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": [
@@ -187,11 +187,11 @@
       "unlock": {
         "unlockType": "evidence_only",
         "requirementsAll": [
-          "A-5"
+          "A-6"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-5"
+          "A-6"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []
@@ -232,12 +232,12 @@
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
         "requirementsAll": [
-          "A-11",
+          "A-1",
           "stmt_lin_discovery_01"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-11"
+          "A-1"
         ],
         "sourceDialogueIds": [
           "stmt_lin_discovery_01"
@@ -273,7 +273,7 @@
     {
       "factId": "fact_6",
       "displayName": "林秀华身上存在长期受暴痕迹",
-      "summary": "林秀华身上的新旧淤青、长期外力伤确认和五年前购买的药瓶共同表明，她长期遭受身体伤害。",
+      "summary": "林秀华身上的新旧淤青和长期服用的止疼片共同表明，她长期遭受身体伤害。",
       "category": "forensic",
       "truth": {
         "truthClass": "surface_true",
@@ -283,15 +283,12 @@
         "unlockType": "derived",
         "requirementsAll": [
           "A-10",
-          "B-10",
-          "B-17"
+          "A-13"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
           "A-10",
-          "A-16",
-          "B-10",
-          "B-17"
+          "A-13"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []
@@ -334,13 +331,13 @@
       "unlock": {
         "unlockType": "evidence_only",
         "requirementsAll": [
-          "A-13",
-          "B-14"
+          "A-12",
+          "A-9"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-13",
-          "B-14"
+          "A-12",
+          "A-9"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []
@@ -382,11 +379,11 @@
       "unlock": {
         "unlockType": "evidence_only",
         "requirementsAll": [
-          "A-12"
+          "A-11"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-12"
+          "A-11"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []
@@ -439,8 +436,8 @@
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-1",
-          "A-2"
+          "A-2",
+          "A-3"
         ],
         "sourceDialogueIds": [
           "stmt_wei_visit_02"
@@ -484,12 +481,12 @@
       "unlock": {
         "unlockType": "evidence_plus_dialogue",
         "requirementsAll": [
-          "A-12",
+          "A-11",
           "stmt_wei_purpose_02"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-12"
+          "A-11"
         ],
         "sourceDialogueIds": [
           "stmt_wei_purpose_02"
@@ -538,7 +535,7 @@
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-5"
+          "A-6"
         ],
         "sourceDialogueIds": [
           "stmt_zhang_watch_02"
@@ -681,7 +678,10 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "lin.layer_2"
+          "lin.layer_2",
+          "fact_6",
+          "fact_7",
+          "fact_13"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [],
@@ -733,11 +733,12 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "wei.layer_2"
+          "wei.layer_2",
+          "fact_8"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-12"
+          "A-11"
         ],
         "sourceDialogueIds": [
           "wei.layer_2"
@@ -785,11 +786,13 @@
       "unlock": {
         "unlockType": "dialogue_only",
         "requirementsAll": [
-          "zhang.layer_2"
+          "zhang.layer_2",
+          "fact_8",
+          "fact_11"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-12"
+          "A-11"
         ],
         "sourceDialogueIds": [
           "zhang.layer_2"
@@ -836,12 +839,11 @@
       "unlock": {
         "unlockType": "evidence_only",
         "requirementsAll": [
-          "B-15"
+          "A-1"
         ],
         "requirementsAny": [],
         "sourceEvidenceIds": [
-          "A-11",
-          "B-15"
+          "A-1"
         ],
         "sourceDialogueIds": [],
         "sourceFactIds": []

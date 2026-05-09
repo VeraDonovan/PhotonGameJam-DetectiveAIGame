@@ -68,6 +68,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                     }
 
                     AddUnique(candidateTopic.RelatedStatementIds, entry.statementId);
+                    candidateTopic.RelatedStatements.Add(CreateStatementContext(entry, progressManager));
 
                     if (string.Equals(entry.phase, "exploration", StringComparison.OrdinalIgnoreCase))
                     {
@@ -97,6 +98,27 @@ namespace DetectiveGame.Gameplay.Dialogue
 
                 FinalizeAvailability(candidateTopic, phase);
             }
+        }
+
+        private static DialogueStatementEntryContext CreateStatementContext(
+            StatementEntryData entry,
+            ProgressManager progressManager)
+        {
+            var context = new DialogueStatementEntryContext
+            {
+                StatementId = entry.statementId ?? string.Empty,
+                Phase = entry.phase ?? string.Empty,
+                Text = entry.text ?? string.Empty,
+                AiUsage = entry.aiUsage ?? string.Empty,
+                ResponseIntent = entry.responseIntent ?? string.Empty,
+                IsUnlocked = progressManager.IsStatementUnlocked(entry.statementId),
+                IsUnlockable = AreRequirementsSatisfied(entry.unlockRequirements, progressManager),
+            };
+
+            AddRange(context.UnlockRequirements, entry.unlockRequirements);
+            AddRange(context.DialogueSamples, entry.dialogueSamples);
+            AddRange(context.AvoidSaying, entry.avoidSaying);
+            return context;
         }
 
         private static void EnrichWithInterrogationLayers(
@@ -305,6 +327,30 @@ namespace DetectiveGame.Gameplay.Dialogue
             return false;
         }
 
+        private static bool AreRequirementsSatisfied(
+            IReadOnlyList<string> requirementIds,
+            ProgressManager progressManager)
+        {
+            foreach (var requirementId in requirementIds ?? Array.Empty<string>())
+            {
+                if (!IsRequirementSatisfied(requirementId, progressManager))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool IsRequirementSatisfied(string requirementId, ProgressManager progressManager)
+        {
+            return progressManager.IsEvidenceCollected(requirementId) ||
+                   progressManager.IsFactUnlocked(requirementId) ||
+                   progressManager.IsStatementUnlocked(requirementId) ||
+                   progressManager.IsInterrogationLayerUnlocked(requirementId) ||
+                   progressManager.IsProgressTokenUnlocked(requirementId);
+        }
+
         private static IEnumerable<DialogueCandidateTopic> SortTopics(IEnumerable<DialogueCandidateTopic> topics)
         {
             var topicList = new List<DialogueCandidateTopic>(topics);
@@ -331,6 +377,14 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
 
             values.Add(value);
+        }
+
+        private static void AddRange(List<string> destination, IReadOnlyList<string> source)
+        {
+            foreach (var value in source ?? Array.Empty<string>())
+            {
+                AddUnique(destination, value);
+            }
         }
 
         private static void ValidateInputs(

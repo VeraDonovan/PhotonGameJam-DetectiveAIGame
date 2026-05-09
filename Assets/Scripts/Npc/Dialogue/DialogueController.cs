@@ -13,6 +13,7 @@ public class DialogueController : MonoBehaviour {
     [SerializeField] private TextAsset npcContextRulesPrompt;
     [SerializeField] private TextAsset revealLogicRulesPrompt;
     [SerializeField] private KeyCode submitKey = KeyCode.Return;
+    private string currentNpcId = string.Empty;
     private int nextDialogueRequestId;
 
     void Awake() {
@@ -41,12 +42,41 @@ public class DialogueController : MonoBehaviour {
     }
 
     public void ProcessPlayerInput(string playerInput) {
-        SendDialogueRequest(playerInput);
+        if (string.IsNullOrWhiteSpace(currentNpcId)) {
+            Debug.LogError("Current NPC is not set. Dialogue cannot continue.");
+            return;
+        }
+
+        if (DialogueManager.Instance == null) {
+            Debug.LogError("DialogueManager is not available. Dialogue cannot continue.");
+            return;
+        }
+
+        DialogueManager.Instance.SubmitAiDialogueTurn(
+            currentNpcId,
+            GetCurrentPhase(),
+            playerInput,
+            string.Empty);
     }
 
     public void StartNpcOpeningDialogue() {
-        SendDialogueRequest(
-            "The player has approached you at the crime scene. You are already a suspect in this case. Speak first with a short in-character opening line based on your public profile, private context, and current game phase. Do not reveal hidden truth unless the allowed reveal context permits it.");
+        if (string.IsNullOrWhiteSpace(currentNpcId)) {
+            Debug.LogError("Current NPC is not set. Opening dialogue cannot start.");
+            return;
+        }
+
+        if (currentNPC != null && !string.IsNullOrWhiteSpace(currentNPC.initialStatement)) {
+            DialogueManager.Instance?.ShowDialogue(currentNPC.initialStatement);
+            return;
+        }
+
+        var appRoot = AppRoot.Instance;
+        if (appRoot != null &&
+            appRoot.DatabaseManager != null &&
+            appRoot.DatabaseManager.NpcDatabase.TryGetNpc(currentNpcId, out var npcProfile) &&
+            npcProfile != null) {
+            DialogueManager.Instance?.ShowDialogue(npcProfile.profileText);
+        }
     }
 
     private void SendDialogueRequest(string playerInput) {
@@ -95,7 +125,23 @@ public class DialogueController : MonoBehaviour {
 
     public void SetCurrentNPC(NPCData npc) {
         currentNPC = npc;
+        currentNpcId = npc != null ? npc.npcId : string.Empty;
         Debug.Log("Current dialogue NPC set to: " + npc.displayName);
+    }
+
+    public void SetCurrentNpcId(string npcId) {
+        currentNpcId = npcId ?? string.Empty;
+        currentNPC = null;
+        Debug.Log("Current dialogue NPC id set to: " + currentNpcId);
+    }
+
+    private static GamePhase GetCurrentPhase() {
+        var appRoot = AppRoot.Instance;
+        if (appRoot == null || appRoot.GameStateManager == null) {
+            return GamePhase.Exploration;
+        }
+
+        return appRoot.GameStateManager.CurrentPhase;
     }
 
     private string BuildSystemPrompt() {

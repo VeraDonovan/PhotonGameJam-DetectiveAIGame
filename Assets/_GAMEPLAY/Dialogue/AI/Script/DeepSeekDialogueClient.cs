@@ -72,6 +72,62 @@ public class DeepSeekDialogueClient : MonoBehaviour {
             onSuccess?.Invoke(response.choices[0].message.content);
         }
     }
+
+    public IEnumerator SendStructuredDialogueRequest(string systemPrompt, string userPrompt, Action<DeepSeekDialogueTurnResponse> onSuccess, Action<string> onError) {
+        string apiKey = Environment.GetEnvironmentVariable(ApiKeyEnvironmentVariable, EnvironmentVariableTarget.User);
+        if (string.IsNullOrWhiteSpace(apiKey)) {
+            onError?.Invoke("DeepSeek API key is missing. Set the DEEPSEEK_API_KEY environment variable.");
+            yield break;
+        }
+
+        DeepSeekChatRequest requestBody = new DeepSeekChatRequest {
+            model = model,
+            max_tokens = maxTokens,
+            temperature = temperature,
+            messages = new[] {
+                new DeepSeekMessage {
+                    role = "system",
+                    content = systemPrompt
+                },
+                new DeepSeekMessage {
+                    role = "user",
+                    content = userPrompt
+                }
+            }
+        };
+
+        string jsonBody = JsonUtility.ToJson(requestBody);
+        byte[] bodyBytes = Encoding.UTF8.GetBytes(jsonBody);
+
+        using (UnityWebRequest request = new UnityWebRequest(apiUrl, UnityWebRequest.kHttpVerbPOST)) {
+            request.uploadHandler = new UploadHandlerRaw(bodyBytes);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.timeout = timeoutSeconds;
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", "Bearer " + apiKey);
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success) {
+                onError?.Invoke(request.error);
+                yield break;
+            }
+
+            DeepSeekChatResponse response = JsonUtility.FromJson<DeepSeekChatResponse>(request.downloadHandler.text);
+            if (response == null || response.choices == null || response.choices.Length == 0 || response.choices[0].message == null) {
+                onError?.Invoke("DeepSeek response did not contain a dialogue message.");
+                yield break;
+            }
+
+            DeepSeekDialogueTurnResponse dialogueResponse = JsonUtility.FromJson<DeepSeekDialogueTurnResponse>(response.choices[0].message.content);
+            if (dialogueResponse == null || dialogueResponse.interpretation == null || dialogueResponse.response == null || string.IsNullOrWhiteSpace(dialogueResponse.response.prose)) {
+                onError?.Invoke("DeepSeek dialogue message did not match the structured dialogue schema.");
+                yield break;
+            }
+
+            onSuccess?.Invoke(dialogueResponse);
+        }
+    }
 }
 
 [Serializable]
@@ -96,4 +152,24 @@ public class DeepSeekChatResponse {
 [Serializable]
 public class DeepSeekChoice {
     public DeepSeekMessage message;
+}
+
+[Serializable]
+public class DeepSeekDialogueTurnResponse {
+    public DeepSeekDialogueInterpretation interpretation;
+    public DeepSeekDialogueResponse response;
+}
+
+[Serializable]
+public class DeepSeekDialogueInterpretation {
+    public string topicId;
+    public float confidence;
+    public bool isIrrelevant;
+}
+
+[Serializable]
+public class DeepSeekDialogueResponse {
+    public string prose;
+    public string usedStatementId;
+    public string[] usedRevealIds;
 }

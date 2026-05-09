@@ -160,6 +160,7 @@ namespace DetectiveGame.Core
             BuildFactProgressMap();
             BuildStatementProgressMap();
             BuildInterrogationLayerProgressMap();
+            SeedStartingEvidence();
             ProcessProgressionUnlocks();
         }
 
@@ -192,6 +193,21 @@ namespace DetectiveGame.Core
             foreach (var layerId in databaseManager.TruthDatabase.InterrogationLayerById.Keys)
             {
                 RuntimeState.InterrogationLayerUnlockedById[layerId] = false;
+            }
+        }
+
+        private void SeedStartingEvidence()
+        {
+            foreach (var evidenceId in databaseManager.CaseMetaData?.startingEvidenceIds ?? new List<string>())
+            {
+                if (string.IsNullOrWhiteSpace(evidenceId) ||
+                    !databaseManager.EvidenceDatabase.EvidenceById.ContainsKey(evidenceId))
+                {
+                    continue;
+                }
+
+                RuntimeState.CollectedEvidenceIds.Add(evidenceId);
+                RuntimeState.EvidenceCollectedById[evidenceId] = true;
             }
         }
 

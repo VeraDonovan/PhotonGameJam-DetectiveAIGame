@@ -273,6 +273,12 @@ namespace DetectiveGame.Gameplay.Tests
         {
             foreach (var npc in databaseManager.NpcDatabase.NpcById.Values)
             {
+                var expectedFileName = databaseManager.CaseMetaData?.linkedDataFiles?.npcAi?.GetFileNameForNpc(npc.npcId);
+                if (string.IsNullOrWhiteSpace(expectedFileName))
+                {
+                    continue;
+                }
+
                 if (!databaseManager.NpcAiProfileDatabase.TryGetProfile(npc.npcId, out var profile) || profile == null)
                 {
                     errors.Add($"Public NPC '{npc.npcId}' is missing an NPC AI profile.");

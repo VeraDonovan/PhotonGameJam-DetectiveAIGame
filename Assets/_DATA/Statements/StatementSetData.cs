@@ -43,5 +43,8 @@ namespace DetectiveGame.Core
         public List<string> unlockRequirements = new List<string>();
         public string replacesStatementId;
         public string aiUsage;
+        public List<string> dialogueSamples = new List<string>();
+        public string responseIntent;
+        public List<string> avoidSaying = new List<string>();
     }
 }
