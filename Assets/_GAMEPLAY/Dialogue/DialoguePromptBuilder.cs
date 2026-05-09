@@ -7,34 +7,44 @@ namespace DetectiveGame.Gameplay.Dialogue
 {
     public sealed class DialoguePromptBuilder
     {
-        public DialoguePromptMessages Build(DialogueTurnContext context)
+        public DialoguePromptMessages Build(DialogueTurnContext context, DialoguePromptSections promptSections)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
+            if (promptSections == null)
+            {
+                throw new ArgumentNullException(nameof(promptSections));
+            }
+
             return new DialoguePromptMessages
             {
-                SystemMessage = BuildSystemMessage(),
+                SystemMessage = BuildSystemMessage(promptSections),
                 UserMessage = BuildUserMessage(context),
             };
         }
 
-        private static string BuildSystemMessage()
+        private static string BuildSystemMessage(DialoguePromptSections promptSections)
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine("You are generating one NPC dialogue turn for a detective game.");
-            builder.AppendLine("Gameplay code owns truth, progression, unlocks, evidence validation, pressure, and annoyance.");
-            builder.AppendLine("You may only help classify the player's input against the supplied candidate topic ids and draft in-character NPC prose.");
-            builder.AppendLine("Choose topicId only from the supplied candidate topic ids, or use \"irrelevant\" when no supplied topic matches.");
-            builder.AppendLine("Do not invent evidence, facts, statements, reveals, unlocks, pressure changes, or hidden truth.");
-            builder.AppendLine("Use only the provided allowed reveal data. Locked truth is absent from this prompt and must stay absent from the response.");
-            builder.AppendLine("If evidence was not presented by runtime, treat evidence-gated claims as unsupported.");
-            builder.AppendLine("Return strict JSON only, with no markdown or commentary.");
+            AppendPromptSection(builder, promptSections.DialogueBasePrompt);
+            AppendPromptSection(builder, promptSections.NpcContextRulesPrompt);
+            AppendPromptSection(builder, promptSections.RevealLogicRulesPrompt);
 
             return builder.ToString();
+        }
+
+        private static void AppendPromptSection(StringBuilder builder, string sectionText)
+        {
+            if (builder.Length > 0)
+            {
+                builder.AppendLine();
+            }
+
+            builder.AppendLine(sectionText);
         }
 
         private static string BuildUserMessage(DialogueTurnContext context)
@@ -343,5 +353,12 @@ namespace DetectiveGame.Gameplay.Dialogue
     {
         public string SystemMessage { get; set; } = string.Empty;
         public string UserMessage { get; set; } = string.Empty;
+    }
+
+    public sealed class DialoguePromptSections
+    {
+        public string DialogueBasePrompt { get; set; } = string.Empty;
+        public string NpcContextRulesPrompt { get; set; } = string.Empty;
+        public string RevealLogicRulesPrompt { get; set; } = string.Empty;
     }
 }

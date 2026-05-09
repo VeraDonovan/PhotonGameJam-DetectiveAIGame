@@ -10,6 +10,11 @@ public class DialogueManager : MonoBehaviour {
     public TMP_Text dialogueText;
     public GameObject dialoguePanel;
 
+    [Header("AI Prompt Sections")]
+    [SerializeField] private TextAsset dialogueBasePrompt;
+    [SerializeField] private TextAsset npcContextRulesPrompt;
+    [SerializeField] private TextAsset revealLogicRulesPrompt;
+
     [SerializeField] private float typingSpeed = 0.03f;
     [SerializeField] private float punctuationDelay = 0.2f;
     [SerializeField] private bool enablePunctuationDelay = true;
@@ -69,6 +74,10 @@ public class DialogueManager : MonoBehaviour {
             yield break;
         }
 
+        if (!TryBuildPromptSections(out DialoguePromptSections promptSections)) {
+            yield break;
+        }
+
         RawDialogueInput rawInput = new RawDialogueInput {
             NpcId = npcId,
             Phase = phase,
@@ -84,7 +93,7 @@ public class DialogueManager : MonoBehaviour {
             appRoot.NpcRuntimeManager,
             conversationSession);
 
-        DialoguePromptMessages promptMessages = promptBuilder.Build(promptContext);
+        DialoguePromptMessages promptMessages = promptBuilder.Build(promptContext, promptSections);
         DeepSeekDialogueTurnResponse aiResponse = null;
         string aiError = string.Empty;
 
@@ -115,6 +124,33 @@ public class DialogueManager : MonoBehaviour {
 
         conversationSession.AddExchange(playerText, npcText);
         ShowDialogue(npcText);
+    }
+
+    private bool TryBuildPromptSections(out DialoguePromptSections promptSections) {
+        promptSections = null;
+
+        if (dialogueBasePrompt == null) {
+            Debug.LogError("[DialogueManager] Missing dialogue base prompt TextAsset.", this);
+            return false;
+        }
+
+        if (npcContextRulesPrompt == null) {
+            Debug.LogError("[DialogueManager] Missing NPC context rules prompt TextAsset.", this);
+            return false;
+        }
+
+        if (revealLogicRulesPrompt == null) {
+            Debug.LogError("[DialogueManager] Missing reveal logic rules prompt TextAsset.", this);
+            return false;
+        }
+
+        promptSections = new DialoguePromptSections {
+            DialogueBasePrompt = dialogueBasePrompt.text,
+            NpcContextRulesPrompt = npcContextRulesPrompt.text,
+            RevealLogicRulesPrompt = revealLogicRulesPrompt.text,
+        };
+
+        return true;
     }
 
     private DialogueConversationSession GetOrCreateConversationSession(string npcId) {

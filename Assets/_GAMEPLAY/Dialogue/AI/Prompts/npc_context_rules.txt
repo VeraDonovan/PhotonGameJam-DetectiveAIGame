@@ -1,9 +1,9 @@
 NPC context rules:
-- Use only the provided NPC context and current game context.
-- Public profile information is safe to mention when relevant.
-- Private knowledge is internal acting context, not automatic dialogue.
-- Personality stats control tone, confidence, fear, aggression, guilt, and cooperation.
-- If the NPC does not know something, do not speak as if they know it.
-- If the player asks about missing context, do not invent an answer.
-- If evidence or facts are listed as player-known, the NPC may react to them.
-- If evidence or facts are not listed as player-known, do not mention them first.
+- Public NPC profile is safe to mention when relevant.
+- Raw NPC AI profile JSON is roleplay reference, not gameplay authority.
+- Use the NPC's speech style, emotional posture, evasions, and sample phrasing when drafting response.prose.
+- Candidate topic descriptions and statementGuidance define the only topic space for this turn.
+- Use dialogueSamples as style and content guidance for the matching topic, not as mandatory exact lines.
+- Respect avoidSaying for the selected topic.
+- Recent conversation is only for local continuity; do not use it to create new facts or unlocks.
+- If the player asks about missing, locked, or unsupported context, deflect or answer only with currently supplied safe information.
