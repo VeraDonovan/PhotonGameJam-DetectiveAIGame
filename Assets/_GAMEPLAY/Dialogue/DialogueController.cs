@@ -69,12 +69,18 @@ public class DialogueController : MonoBehaviour {
     public void SetCurrentNPC(NPCData npc) {
         currentNPC = npc;
         currentNpcId = npc != null ? npc.npcId : string.Empty;
+        if (DialogueManager.Instance != null) {
+            DialogueManager.Instance.SetSpeakerName(npc != null ? npc.displayName : string.Empty);
+        }
         Debug.Log("Current dialogue NPC set to: " + (npc != null ? npc.displayName : string.Empty));
     }
 
     public void SetCurrentNpcId(string npcId) {
         currentNpcId = npcId ?? string.Empty;
         currentNPC = null;
+        if (DialogueManager.Instance != null) {
+            DialogueManager.Instance.SetSpeakerNameByNpcId(currentNpcId);
+        }
         Debug.Log("Current dialogue NPC id set to: " + currentNpcId);
     }
 

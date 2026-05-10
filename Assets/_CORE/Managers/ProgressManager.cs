@@ -292,19 +292,6 @@ namespace DetectiveGame.Core
             {
                 unlockedAnyProgress = false;
 
-                foreach (var statementId in databaseManager.StatementDatabase.StatementById.Keys)
-                {
-                    if (RuntimeState.UnlockedStatementIds.Contains(statementId) || !CanUnlockStatement(statementId))
-                    {
-                        continue;
-                    }
-
-                    if (TryUnlockStatement(statementId))
-                    {
-                        unlockedAnyProgress = true;
-                    }
-                }
-
                 foreach (var layerId in databaseManager.TruthDatabase.InterrogationLayerById.Keys)
                 {
                     if (RuntimeState.UnlockedInterrogationLayerIds.Contains(layerId) || !CanUnlockInterrogationLayer(layerId))
@@ -331,24 +318,6 @@ namespace DetectiveGame.Core
                     }
                 }
             }
-        }
-
-        private bool CanUnlockStatement(string statementId)
-        {
-            if (string.IsNullOrWhiteSpace(statementId) || RuntimeState.UnlockedStatementIds.Contains(statementId))
-            {
-                return false;
-            }
-
-            foreach (var requirementId in databaseManager.StatementDatabase.GetUnlockRequirements(statementId))
-            {
-                if (!IsRequirementSatisfied(requirementId))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         private bool CanUnlockFact(string factId)

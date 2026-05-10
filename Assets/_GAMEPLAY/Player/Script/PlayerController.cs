@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleUiBlockStateChanged(UiBlockStateChangedEvent eventData)
     {
+        Debug.Log($"[PlayerController] Received UiBlockStateChangedEvent IsBlocked={eventData.IsBlocked}", this);
         isInputBlocked = eventData.IsBlocked;
     }
 }

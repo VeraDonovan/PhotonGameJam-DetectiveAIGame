@@ -322,15 +322,11 @@ namespace DetectiveGame.Gameplay.Dialogue
                 StatementId = entry.statementId ?? string.Empty,
                 Phase = entry.phase ?? string.Empty,
                 Text = entry.text ?? string.Empty,
-                AiUsage = entry.aiUsage ?? string.Empty,
-                ResponseIntent = entry.responseIntent ?? string.Empty,
                 IsUnlocked = progressManager.IsStatementUnlocked(entry.statementId),
                 IsUnlockable = AreRequirementsSatisfied(entry.unlockRequirements, progressManager),
             };
 
             AddRange(context.UnlockRequirements, entry.unlockRequirements);
-            AddRange(context.DialogueSamples, entry.dialogueSamples);
-            AddRange(context.AvoidSaying, entry.avoidSaying);
             return context;
         }
 
@@ -394,10 +390,10 @@ namespace DetectiveGame.Gameplay.Dialogue
                 TruthStatus = node.truthStatus ?? string.Empty,
                 TriggerType = node.trigger?.type ?? string.Empty,
                 TriggerId = node.trigger?.id ?? string.Empty,
+                TriggerParentId = node.trigger?.parentId ?? string.Empty,
                 TriggerIntent = node.trigger?.intent ?? string.Empty,
                 TriggerPromptLabel = node.trigger?.promptLabel ?? string.Empty,
                 Text = node.text ?? string.Empty,
-                WatsonNote = node.watsonNote ?? string.Empty,
                 UnlockStatementId = node.unlockStatementId ?? string.Empty,
                 CaughtLieId = node.caughtLieId ?? string.Empty,
                 IsLie = node.isLie,

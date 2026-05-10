@@ -9,7 +9,10 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour {
     public static DialogueManager Instance;
     public TMP_Text dialogueText;
+    [SerializeField] private TMP_Text speakerNameText;
     public GameObject dialoguePanel;
+    private bool isDialoguePanelActive;
+    private bool hasWarnedExternalPanelToggle;
 
     [Header("AI Prompt Sections")]
     [SerializeField] private TextAsset dialogueBasePrompt;
@@ -39,6 +42,8 @@ public class DialogueManager : MonoBehaviour {
         if (dialoguePanel != null) {
             dialoguePanel.SetActive(false);
         }
+        isDialoguePanelActive = false;
+        hasWarnedExternalPanelToggle = false;
 
         if (dialogueText != null) {
             typeWriter = new TMPTypeWriter(dialogueText, typingSpeed, punctuationDelay, enablePunctuationDelay);
@@ -47,9 +52,7 @@ public class DialogueManager : MonoBehaviour {
     }
 
     public void ShowDialogue(string text) {
-        if (dialoguePanel != null) {
-            dialoguePanel.SetActive(true);
-        }
+        SetDialoguePanelActive(true);
 
         if (typeWriter != null) {
             typeWriter.StartTyping(text);
@@ -58,10 +61,31 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    private void ShowWaitingDialoguePanel() {
-        if (dialoguePanel != null) {
-            dialoguePanel.SetActive(true);
+    public void SetSpeakerName(string speakerName) {
+        if (speakerNameText != null) {
+            speakerNameText.text = speakerName ?? string.Empty;
         }
+    }
+
+    public void SetSpeakerNameByNpcId(string npcId) {
+        if (string.IsNullOrWhiteSpace(npcId)) {
+            SetSpeakerName(string.Empty);
+            return;
+        }
+
+        AppRoot appRoot = AppRoot.Instance;
+        if (appRoot?.DatabaseManager?.NpcDatabase != null &&
+            appRoot.DatabaseManager.NpcDatabase.TryGetNpc(npcId, out var npc) &&
+            npc != null) {
+            SetSpeakerName(npc.displayName);
+            return;
+        }
+
+        SetSpeakerName(npcId);
+    }
+
+    private void ShowWaitingDialoguePanel() {
+        SetDialoguePanelActive(true);
 
         if (dialogueText != null) {
             dialogueText.text = "……";
@@ -69,11 +93,13 @@ public class DialogueManager : MonoBehaviour {
     }
 
     public void SubmitAiDialogueTurn(string npcId, GamePhase phase, string playerText, string presentedEvidenceId) {
+        SetSpeakerNameByNpcId(npcId);
         ShowWaitingDialoguePanel();
         StartCoroutine(RunAiDialogueTurn(npcId, phase, playerText, presentedEvidenceId));
     }
 
     public void RequestAiOpeningDialogue(string npcId, GamePhase phase) {
+        SetSpeakerNameByNpcId(npcId);
         ShowWaitingDialoguePanel();
         StartCoroutine(RunAiOpeningDialogue(npcId, phase));
     }
@@ -453,9 +479,31 @@ public class DialogueManager : MonoBehaviour {
     }
 
     public void HideDialogue() {
-        if (dialoguePanel != null) {
-            dialoguePanel.SetActive(false);
+        SetDialoguePanelActive(false);
+    }
+
+    public void OnCloseButtonClick() {
+        HideDialogue();
+    }
+
+    private void SetDialoguePanelActive(bool isActive) {
+        if (!hasWarnedExternalPanelToggle && dialoguePanel != null && dialoguePanel.activeSelf != isDialoguePanelActive) {
+            hasWarnedExternalPanelToggle = true;
+            Debug.LogWarning("[DialogueManager] dialoguePanel active state was changed outside DialogueManager. Use DialogueManager.ShowDialogue/HideDialogue to keep UI-block events consistent.", this);
         }
+
+        if (dialoguePanel != null) {
+            dialoguePanel.SetActive(isActive);
+        }
+
+        if (isDialoguePanelActive == isActive) {
+            return;
+        }
+
+        isDialoguePanelActive = isActive;
+        AppRoot appRoot = AppRoot.Instance;
+        Debug.Log($"[DialogueManager] Publishing UiBlockStateChangedEvent IsBlocked={isActive}", this);
+        appRoot?.EventManager?.Publish(new UiBlockStateChangedEvent(isActive));
     }
 
     private void ShowNextOrderedDialogue() {

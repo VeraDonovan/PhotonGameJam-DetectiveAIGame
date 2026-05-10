@@ -96,6 +96,12 @@ public class DeepSeekDialogueClient : MonoBehaviour {
             model = model,
             max_tokens = structuredMaxTokens,
             temperature = structuredTemperature,
+            thinking = new DeepSeekThinkingOptions {
+                type = "disabled"
+            },
+            response_format = new DeepSeekResponseFormat {
+                type = "json_object"
+            },
             messages = new[] {
                 new DeepSeekMessage {
                     role = "system",
@@ -137,6 +143,7 @@ public class DeepSeekDialogueClient : MonoBehaviour {
                 rawDialogueContent = TryExtractMessageContent(rawHttpResponse);
             }
 
+            string reasoningContent = response.choices[0].message.reasoning_content ?? string.Empty;
             rawDialogueContent = NormalizeStructuredPayload(rawDialogueContent);
             Debug.Log("[DeepSeekDialogueClient] Raw structured dialogue response:\n" + rawDialogueContent, this);
 
@@ -157,6 +164,9 @@ public class DeepSeekDialogueClient : MonoBehaviour {
             if (dialogueResponse == null || dialogueResponse.interpretation == null || dialogueResponse.response == null || string.IsNullOrWhiteSpace(dialogueResponse.response.prose)) {
                 onError?.Invoke(
                     "DeepSeek dialogue message did not match the structured dialogue schema." +
+                    (string.IsNullOrWhiteSpace(rawDialogueContent) && !string.IsNullOrWhiteSpace(reasoningContent)
+                        ? "\nProvider returned reasoning_content but no final message.content."
+                        : string.Empty) +
                     "\nFull HTTP response:\n" +
                     rawHttpResponse +
                     "\nRaw response:\n" +
@@ -261,12 +271,25 @@ public class DeepSeekChatRequest {
     public DeepSeekMessage[] messages;
     public int max_tokens;
     public float temperature;
+    public DeepSeekThinkingOptions thinking;
+    public DeepSeekResponseFormat response_format;
 }
 
 [Serializable]
 public class DeepSeekMessage {
     public string role;
     public string content;
+    public string reasoning_content;
+}
+
+[Serializable]
+public class DeepSeekThinkingOptions {
+    public string type;
+}
+
+[Serializable]
+public class DeepSeekResponseFormat {
+    public string type;
 }
 
 [Serializable]

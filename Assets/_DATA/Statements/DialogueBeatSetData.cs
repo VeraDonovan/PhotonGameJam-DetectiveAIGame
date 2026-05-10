@@ -33,7 +33,6 @@ namespace DetectiveGame.Core
         public bool isLie;
         public DialogueBeatTriggerData trigger;
         public string text;
-        public string watsonNote;
         public List<string> behavior = new List<string>();
         public List<string> requiredEvidenceIds = new List<string>();
         public List<string> requiredFactIds = new List<string>();

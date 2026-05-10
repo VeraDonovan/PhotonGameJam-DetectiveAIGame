@@ -35,13 +35,9 @@ namespace DetectiveGame.Gameplay.Dialogue
         public string StatementId { get; set; } = string.Empty;
         public string Phase { get; set; } = string.Empty;
         public string Text { get; set; } = string.Empty;
-        public string AiUsage { get; set; } = string.Empty;
-        public string ResponseIntent { get; set; } = string.Empty;
         public bool IsUnlocked { get; set; }
         public bool IsUnlockable { get; set; }
         public List<string> UnlockRequirements { get; } = new List<string>();
-        public List<string> DialogueSamples { get; } = new List<string>();
-        public List<string> AvoidSaying { get; } = new List<string>();
     }
 
     public sealed class DialogueBeatNodeContext
@@ -52,10 +48,10 @@ namespace DetectiveGame.Gameplay.Dialogue
         public string TruthStatus { get; set; } = string.Empty;
         public string TriggerType { get; set; } = string.Empty;
         public string TriggerId { get; set; } = string.Empty;
+        public string TriggerParentId { get; set; } = string.Empty;
         public string TriggerIntent { get; set; } = string.Empty;
         public string TriggerPromptLabel { get; set; } = string.Empty;
         public string Text { get; set; } = string.Empty;
-        public string WatsonNote { get; set; } = string.Empty;
         public string UnlockStatementId { get; set; } = string.Empty;
         public string CaughtLieId { get; set; } = string.Empty;
         public bool IsLie { get; set; }

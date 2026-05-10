@@ -206,6 +206,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &110799314 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1228674655495907466, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 3923593149776117265}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &164310382 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6019149033580733624, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 3923593149776117265}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &312006264
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,6 +928,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcId: lin
+--- !u!114 &792763693 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5844712802128595180, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 3923593149776117265}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938a91239204eed4a871e5833430aa11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1100550695
 GameObject:
   m_ObjectHideFlags: 0
@@ -1292,6 +1313,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcId: zhang
+--- !u!114 &1563413656 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7391228603379514880, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 3923593149776117265}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1681700078 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6572875403382511549, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 3923593149776117265}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1735801654 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2183122837336443741, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 3923593149776117265}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3923593149776117265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1794,6 +1848,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1351471048}
     - target: {fileID: 5318369757710524522, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: speakerNameText
+      value: 
+      objectReference: {fileID: 1563413656}
+    - target: {fileID: 5318369757710524522, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
       propertyPath: dialogueBasePrompt
       value: 
       objectReference: {fileID: 4900000, guid: b17d71a64b7f44f69f0e28adcf818af0, type: 3}
@@ -1806,13 +1864,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4900000, guid: 7a9f79d12e4e4e40b8bb2e603544a811, type: 3}
     - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: transitionUI
+      value: 
+      objectReference: {fileID: 792763693}
+    - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
       propertyPath: inventoryRoot
       value: 
       objectReference: {fileID: 419614386}
     - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: menuPanelRoot
+      value: 
+      objectReference: {fileID: 110799314}
+    - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: menuOpenOnStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: unlockPopupRoot
+      value: 
+      objectReference: {fileID: 164310382}
+    - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: unlockPopupText
+      value: 
+      objectReference: {fileID: 1681700078}
+    - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
       propertyPath: inventoryPanelManager
       value: 
       objectReference: {fileID: 419614390}
+    - target: {fileID: 8080679792617941368, guid: 95df45018493f2a4195b80e37fdc5e4d, type: 3}
+      propertyPath: unlockPopupCloseButton
+      value: 
+      objectReference: {fileID: 1735801654}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
