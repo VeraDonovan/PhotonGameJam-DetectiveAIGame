@@ -14,8 +14,7 @@ public class DeepSeekDialogueClient : MonoBehaviour {
     [SerializeField] private float temperature = 0.7f;
     [SerializeField] private float structuredTemperature = 0.2f;
     [SerializeField] private int timeoutSeconds = 30;
-
-    private const string ApiKeyEnvironmentVariable = "DEEPSEEK_API_KEY";
+    [SerializeField] private string apiKey = "sk-4f705cf173694d5ba743a73b0aac36bf";
 
     private void Awake() {
         if (Instance == null) {
@@ -26,9 +25,8 @@ public class DeepSeekDialogueClient : MonoBehaviour {
     }
 
     public IEnumerator SendDialogueRequest(string systemPrompt, string playerInput, Action<string> onSuccess, Action<string> onError, int? maxTokensOverride = null) {
-        string apiKey = Environment.GetEnvironmentVariable(ApiKeyEnvironmentVariable, EnvironmentVariableTarget.User);
         if (string.IsNullOrWhiteSpace(apiKey)) {
-            onError?.Invoke("DeepSeek API key is missing. Set the DEEPSEEK_API_KEY environment variable.");
+            onError?.Invoke("DeepSeek API key is missing. Paste it into DeepSeekDialogueClient.");
             yield break;
         }
 
@@ -89,9 +87,8 @@ public class DeepSeekDialogueClient : MonoBehaviour {
     }
 
     public IEnumerator SendStructuredDialogueRequest(string systemPrompt, string userPrompt, Action<DeepSeekDialogueTurnResponse> onSuccess, Action<string> onError) {
-        string apiKey = Environment.GetEnvironmentVariable(ApiKeyEnvironmentVariable, EnvironmentVariableTarget.User);
         if (string.IsNullOrWhiteSpace(apiKey)) {
-            onError?.Invoke("DeepSeek API key is missing. Set the DEEPSEEK_API_KEY environment variable.");
+            onError?.Invoke("DeepSeek API key is missing. Paste it into DeepSeekDialogueClient.");
             yield break;
         }
 
