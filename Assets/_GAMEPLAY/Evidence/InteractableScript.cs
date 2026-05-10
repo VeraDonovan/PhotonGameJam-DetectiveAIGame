@@ -37,11 +37,11 @@ public class InteractableScript : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.F))
             {
-                InteractionUI.Instance.ShowDialogue(dialogueText);
+                // InteractionUI.Instance.ShowDialogue(dialogueText);
 
                 if (!string.IsNullOrWhiteSpace(evidenceId))
                 {
-                    appRoot.ProgressManager.AddEvidence(evidenceId);
+                    appRoot.EventManager.Publish(new EvidenceAddedEvent(evidenceId));
                 }
             }
         }
