@@ -7,6 +7,7 @@ namespace DetectiveGame.Gameplay.Dialogue
     public sealed class DialogueTurnResolver
     {
         public const int DefaultAnnoyanceGain = 20;
+        public const int DefaultInterrogationPressureGain = 20;
         public const int RepeatTopicRefusalAnnoyanceThreshold = 80;
 
         private readonly DialogueCandidateTopicResolver candidateTopicResolver;
@@ -31,13 +32,14 @@ namespace DetectiveGame.Gameplay.Dialogue
         {
             ValidatePromptInputs(rawInput, databaseManager, progressManager, npcRuntimeManager);
 
+            var npcState = npcRuntimeManager.GetOrCreateDialogueState(rawInput.NpcId);
             var candidateTopics = candidateTopicResolver.Resolve(
                 rawInput.NpcId,
                 rawInput.Phase,
                 databaseManager,
-                progressManager);
+                progressManager,
+                npcRuntimeManager);
 
-            var npcState = npcRuntimeManager.GetOrCreateDialogueState(rawInput.NpcId);
             var context = CreateContext(
                 rawInput,
                 new InterpretedDialogueAction
@@ -49,8 +51,8 @@ namespace DetectiveGame.Gameplay.Dialogue
                 candidateTopics,
                 new DialogueResolutionResult
                 {
-                    NewAnnoyance = npcState.Annoyance,
-                    NewPressure = npcState.Pressure,
+                    NewAnnoyance = rawInput.Phase == GamePhase.Exploration ? npcState.Annoyance : 0,
+                    NewPressure = rawInput.Phase == GamePhase.Interrogation ? npcState.Pressure : 0,
                 },
                 npcState,
                 databaseManager,
@@ -70,13 +72,14 @@ namespace DetectiveGame.Gameplay.Dialogue
         {
             ValidateInputs(rawInput, interpretedAction, databaseManager, progressManager, npcRuntimeManager);
 
+            var npcState = npcRuntimeManager.GetOrCreateDialogueState(rawInput.NpcId);
             var candidateTopics = candidateTopicResolver.Resolve(
                 rawInput.NpcId,
                 rawInput.Phase,
                 databaseManager,
-                progressManager);
+                progressManager,
+                npcRuntimeManager);
 
-            var npcState = npcRuntimeManager.GetOrCreateDialogueState(rawInput.NpcId);
             var result = ResolveGameplayShell(
                 rawInput,
                 interpretedAction,
@@ -115,8 +118,11 @@ namespace DetectiveGame.Gameplay.Dialogue
                 CandidateTopics = candidateTopics,
                 InterpretedAction = interpretedAction,
                 ResolutionResult = result,
-                Annoyance = npcState.Annoyance,
+                Annoyance = rawInput.Phase == GamePhase.Exploration ? npcState.Annoyance : 0,
                 Pressure = rawInput.Phase == GamePhase.Interrogation ? npcState.Pressure : 0,
+                CurrentInterrogationLevel = rawInput.Phase == GamePhase.Interrogation
+                    ? npcState.CurrentInterrogationLevel
+                    : 0,
                 CurrentInterrogationLayerId = rawInput.Phase == GamePhase.Interrogation
                     ? npcState.CurrentInterrogationLayerId
                     : string.Empty,
@@ -264,26 +270,44 @@ namespace DetectiveGame.Gameplay.Dialogue
         {
             var result = new DialogueResolutionResult
             {
-                NewAnnoyance = npcState.Annoyance,
-                NewPressure = npcState.Pressure,
+                NewAnnoyance = interpretedAction.Phase == GamePhase.Exploration ? npcState.Annoyance : 0,
+                NewPressure = interpretedAction.Phase == GamePhase.Interrogation ? npcState.Pressure : 0,
             };
 
             if (interpretedAction.IsIrrelevant || string.IsNullOrWhiteSpace(interpretedAction.MatchedTopicId))
             {
-                ApplyAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId, "irrelevant_input");
+                ApplyInvalidInputPenalty(
+                    result,
+                    interpretedAction.Phase,
+                    npcState,
+                    npcRuntimeManager,
+                    interpretedAction.NpcId,
+                    "irrelevant_input");
                 return result;
             }
 
             var matchedTopic = FindTopic(candidateTopics, interpretedAction.MatchedTopicId);
             if (matchedTopic == null)
             {
-                ApplyAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId, "topic_outside_candidate_set");
+                ApplyInvalidInputPenalty(
+                    result,
+                    interpretedAction.Phase,
+                    npcState,
+                    npcRuntimeManager,
+                    interpretedAction.NpcId,
+                    "topic_outside_candidate_set");
                 return result;
             }
 
             if (matchedTopic.Availability != DialogueTopicAvailability.Available)
             {
-                ApplyAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId, "topic_not_available");
+                ApplyInvalidInputPenalty(
+                    result,
+                    interpretedAction.Phase,
+                    npcState,
+                    npcRuntimeManager,
+                    interpretedAction.NpcId,
+                    "topic_not_available");
                 return result;
             }
 
@@ -299,7 +323,12 @@ namespace DetectiveGame.Gameplay.Dialogue
 
                 if (IsRepeatedResolvedTopic(matchedTopic, npcState))
                 {
-                    ApplyRepeatedTopicAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId);
+                    ApplyRepeatedTopicPenalty(
+                        result,
+                        interpretedAction.Phase,
+                        npcState,
+                        npcRuntimeManager,
+                        interpretedAction.NpcId);
                     return result;
                 }
 
@@ -372,6 +401,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 matchedTopic,
                 databaseManager.DialogueBeatDatabase,
                 progressManager,
+                npcState.CurrentInterrogationLayerId,
                 rawInput.PresentedEvidenceId);
 
             if (beatNode == null)
@@ -386,7 +416,12 @@ namespace DetectiveGame.Gameplay.Dialogue
 
                 if (IsRepeatedResolvedTopic(matchedTopic, npcState))
                 {
-                    ApplyRepeatedTopicAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId);
+                    ApplyRepeatedTopicPenalty(
+                        result,
+                        interpretedAction.Phase,
+                        npcState,
+                        npcRuntimeManager,
+                        interpretedAction.NpcId);
                     return;
                 }
 
@@ -413,6 +448,20 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddNewUnlockedIds(unlockedFactsBefore, progressManager.UnlockedFactIds, result.UnlockedFactIds);
             AddNewUnlockedIds(unlockedLayersBefore, progressManager.UnlockedInterrogationLayerIds, result.UnlockedLayerIds);
             AddNewUnlockedIds(unlockedTokensBefore, progressManager.RuntimeState.UnlockedProgressTokens, result.UnlockedTokenIds);
+
+            ApplyInterrogationPressureForValidatedBeat(
+                interpretedAction.Phase,
+                interpretedAction.NpcId,
+                npcState,
+                npcRuntimeManager,
+                result);
+            ApplyCurrentInterrogationLayer(
+                interpretedAction.Phase,
+                interpretedAction.NpcId,
+                databaseManager.TruthDatabase,
+                npcRuntimeManager,
+                result);
+
             result.ResolutionType = DetermineProgressResolutionType(result);
 
             ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
@@ -462,6 +511,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             DialogueCandidateTopic matchedTopic,
             DialogueBeatDatabase beatDatabase,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             string presentedEvidenceId)
         {
             if (string.IsNullOrWhiteSpace(interpretedAction.UsedBeatId))
@@ -476,9 +526,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return null;
             }
 
-            var phaseMatches = string.Equals(node.phase, interpretedAction.Phase.ToString(), StringComparison.OrdinalIgnoreCase) ||
-                               (interpretedAction.Phase == GamePhase.Intro &&
-                                string.Equals(node.phase, "exploration", StringComparison.OrdinalIgnoreCase));
+            var phaseMatches = string.Equals(node.phase, interpretedAction.Phase.ToString(), StringComparison.OrdinalIgnoreCase);
 
             if (!phaseMatches ||
                 !string.Equals(matchedTopic.TopicId, FindTopicIdForBeat(beatDatabase, node.nodeId), StringComparison.Ordinal))
@@ -486,7 +534,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return null;
             }
 
-            return AreBeatRequirementsSatisfied(node, progressManager, presentedEvidenceId)
+            return AreBeatRequirementsSatisfied(node, progressManager, currentInterrogationLayerId, presentedEvidenceId)
                 ? node
                 : null;
         }
@@ -606,6 +654,7 @@ namespace DetectiveGame.Gameplay.Dialogue
         private static bool AreBeatRequirementsSatisfied(
             DialogueBeatNodeData node,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             string presentedEvidenceId)
         {
             var hasPresentedEvidenceRequirement = node.requiredEvidenceIds != null && node.requiredEvidenceIds.Count > 0;
@@ -642,7 +691,7 @@ namespace DetectiveGame.Gameplay.Dialogue
 
             foreach (var layerId in node.requiredLayerIds ?? new List<string>())
             {
-                if (!progressManager.IsInterrogationLayerUnlocked(layerId))
+                if (!IsInterrogationLayerRequirementSatisfied(layerId, progressManager, currentInterrogationLayerId))
                 {
                     return false;
                 }
@@ -657,6 +706,15 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
 
             return presentedRequiredEvidence;
+        }
+
+        private static bool IsInterrogationLayerRequirementSatisfied(
+            string layerId,
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
+        {
+            return progressManager.IsInterrogationLayerUnlocked(layerId) ||
+                   string.Equals(layerId, currentInterrogationLayerId, StringComparison.Ordinal);
         }
 
         private static string FindTopicIdForBeat(DialogueBeatDatabase beatDatabase, string beatId)
@@ -734,6 +792,11 @@ namespace DetectiveGame.Gameplay.Dialogue
                 progressBucketCount++;
             }
 
+            if (result.PressureDelta != 0)
+            {
+                progressBucketCount++;
+            }
+
             if (result.VisitedBeatIds.Count > 0 && progressBucketCount == 0)
             {
                 return DialogueResolutionType.NoProgress;
@@ -762,6 +825,11 @@ namespace DetectiveGame.Gameplay.Dialogue
             if (result.UnlockedTokenIds.Count > 0)
             {
                 return DialogueResolutionType.TokenUnlocked;
+            }
+
+            if (result.PressureDelta != 0)
+            {
+                return DialogueResolutionType.PressureChanged;
             }
 
             return DialogueResolutionType.NoProgress;
@@ -800,13 +868,25 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
         }
 
-        private static void ApplyAnnoyance(
+        private static void ApplyInvalidInputPenalty(
             DialogueResolutionResult result,
+            GamePhase phase,
             NpcDialogueRuntimeState npcState,
             NpcRuntimeManager npcRuntimeManager,
             string npcId,
             string punishReason)
         {
+            if (phase != GamePhase.Exploration)
+            {
+                result.ResolutionType = DialogueResolutionType.Punished;
+                result.AcceptAiResponse = false;
+                result.ResponseRejectReason = punishReason;
+                result.NewAnnoyance = 0;
+                result.NewPressure = phase == GamePhase.Interrogation ? npcState.Pressure : 0;
+                result.PunishReason = punishReason;
+                return;
+            }
+
             var oldAnnoyance = npcState.Annoyance;
             var newAnnoyance = npcRuntimeManager.AddAnnoyance(npcId, DefaultAnnoyanceGain);
 
@@ -815,22 +895,32 @@ namespace DetectiveGame.Gameplay.Dialogue
             result.ResponseRejectReason = punishReason;
             result.AnnoyanceDelta = newAnnoyance - oldAnnoyance;
             result.NewAnnoyance = newAnnoyance;
-            result.NewPressure = npcState.Pressure;
+            result.NewPressure = 0;
             result.PunishReason = punishReason;
         }
 
-        private static void ApplyRepeatedTopicAnnoyance(
+        private static void ApplyRepeatedTopicPenalty(
             DialogueResolutionResult result,
+            GamePhase phase,
             NpcDialogueRuntimeState npcState,
             NpcRuntimeManager npcRuntimeManager,
             string npcId)
         {
+            if (phase != GamePhase.Exploration)
+            {
+                result.ResolutionType = DialogueResolutionType.NoProgress;
+                result.NewAnnoyance = 0;
+                result.NewPressure = phase == GamePhase.Interrogation ? npcState.Pressure : 0;
+                result.PunishReason = "resolved_topic_repeated";
+                return;
+            }
+
             var oldAnnoyance = npcState.Annoyance;
             var newAnnoyance = npcRuntimeManager.AddAnnoyance(npcId, DefaultAnnoyanceGain);
 
             result.AnnoyanceDelta = newAnnoyance - oldAnnoyance;
             result.NewAnnoyance = newAnnoyance;
-            result.NewPressure = npcState.Pressure;
+            result.NewPressure = 0;
             result.PunishReason = "resolved_topic_repeated";
 
             if (newAnnoyance >= RepeatTopicRefusalAnnoyanceThreshold)
@@ -842,6 +932,64 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
 
             result.ResolutionType = DialogueResolutionType.NoProgress;
+        }
+
+        private static void ApplyInterrogationPressureForValidatedBeat(
+            GamePhase phase,
+            string npcId,
+            NpcDialogueRuntimeState npcState,
+            NpcRuntimeManager npcRuntimeManager,
+            DialogueResolutionResult result)
+        {
+            if (phase != GamePhase.Interrogation)
+            {
+                return;
+            }
+
+            var oldPressure = npcState.Pressure;
+            var newPressure = npcRuntimeManager.AddInterrogationPressure(npcId, DefaultInterrogationPressureGain);
+            result.PressureDelta = newPressure - oldPressure;
+            result.NewPressure = newPressure;
+            result.NewAnnoyance = 0;
+        }
+
+        private static void ApplyCurrentInterrogationLayer(
+            GamePhase phase,
+            string npcId,
+            TruthDatabase truthDatabase,
+            NpcRuntimeManager npcRuntimeManager,
+            DialogueResolutionResult result)
+        {
+            if (phase != GamePhase.Interrogation)
+            {
+                return;
+            }
+
+            foreach (var layerId in result.UnlockedLayerIds)
+            {
+                npcRuntimeManager.SetCurrentInterrogationLayer(
+                    npcId,
+                    layerId,
+                    GetInterrogationLayerLevel(npcId, layerId, truthDatabase));
+            }
+        }
+
+        private static int GetInterrogationLayerLevel(
+            string npcId,
+            string layerId,
+            TruthDatabase truthDatabase)
+        {
+            var level = 0;
+            foreach (var layer in truthDatabase.GetInterrogationLayersByNpc(npcId))
+            {
+                level++;
+                if (layer != null && string.Equals(layer.layerId, layerId, StringComparison.Ordinal))
+                {
+                    return level;
+                }
+            }
+
+            return 0;
         }
 
         private static void ValidateInputs(

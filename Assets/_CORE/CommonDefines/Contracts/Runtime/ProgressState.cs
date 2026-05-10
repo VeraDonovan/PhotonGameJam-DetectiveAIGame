@@ -22,6 +22,7 @@ namespace DetectiveGame.Core
         public HashSet<string> KnownSuspectIds { get; } = new HashSet<string>();
         public HashSet<string> SelectedSuspectIds { get; } = new HashSet<string>();
 
+        public string CurrentInterrogationTargetId { get; set; } = string.Empty;
         public string AccusationTargetId { get; set; } = string.Empty;
     }
 }

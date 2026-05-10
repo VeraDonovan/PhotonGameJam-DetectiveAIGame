@@ -125,9 +125,6 @@ public class DialogueController : MonoBehaviour {
             return GamePhase.Exploration;
         }
 
-        GamePhase currentPhase = appRoot.GameStateManager.CurrentPhase;
-        return currentPhase == GamePhase.Intro
-            ? GamePhase.Exploration
-            : currentPhase;
+        return appRoot.GameStateManager.CurrentPhase;
     }
 }

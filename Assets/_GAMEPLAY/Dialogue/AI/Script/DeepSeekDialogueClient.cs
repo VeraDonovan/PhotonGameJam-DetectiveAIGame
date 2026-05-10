@@ -14,7 +14,7 @@ public class DeepSeekDialogueClient : MonoBehaviour {
     [SerializeField] private float temperature = 0.7f;
     [SerializeField] private float structuredTemperature = 0.2f;
     [SerializeField] private int timeoutSeconds = 30;
-    [SerializeField] private string apiKey = "sk-4f705cf173694d5ba743a73b0aac36bf";
+    private string apiKey = "sk-4f705cf173694d5ba743a73b0aac36bf";
 
     private void Awake() {
         if (Instance == null) {

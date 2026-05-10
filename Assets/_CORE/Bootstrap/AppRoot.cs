@@ -56,7 +56,7 @@ namespace DetectiveGame.Core
             databaseManager.Initialize();
             progressManager.Initialize(eventManager, databaseManager);
             gameStateManager.Initialize(eventManager, progressManager);
-            npcRuntimeManager.Initialize(eventManager);
+            npcRuntimeManager.Initialize(eventManager, databaseManager);
             uiManager.Initialize();
         }
 

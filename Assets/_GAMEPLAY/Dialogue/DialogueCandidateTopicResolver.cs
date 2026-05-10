@@ -10,10 +10,11 @@ namespace DetectiveGame.Gameplay.Dialogue
             string npcId,
             GamePhase phase,
             DatabaseManager databaseManager,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            NpcRuntimeManager npcRuntimeManager)
         {
-            ValidateInputs(npcId, databaseManager, progressManager);
-            phase = NormalizeDialoguePhase(phase);
+            ValidateInputs(npcId, databaseManager, progressManager, npcRuntimeManager);
+            var currentInterrogationLayerId = GetCurrentInterrogationLayerId(npcId, phase, npcRuntimeManager);
 
             var topicSet = new DialogueCandidateTopicSet
             {
@@ -24,9 +25,9 @@ namespace DetectiveGame.Gameplay.Dialogue
             var topicsById = new Dictionary<string, DialogueCandidateTopic>(StringComparer.Ordinal);
 
             AddSafeRoleplayTopics(npcId, phase, databaseManager.NpcDatabase, topicsById);
-            BuildStatementTopics(npcId, phase, databaseManager.StatementDatabase, progressManager, topicsById);
-            BuildBeatTopics(npcId, phase, databaseManager.DialogueBeatDatabase, progressManager, topicsById);
-            EnrichWithInterrogationLayers(npcId, phase, databaseManager.TruthDatabase, progressManager, topicsById);
+            BuildStatementTopics(npcId, phase, databaseManager.StatementDatabase, progressManager, currentInterrogationLayerId, topicsById);
+            BuildBeatTopics(npcId, phase, databaseManager.DialogueBeatDatabase, progressManager, currentInterrogationLayerId, topicsById);
+            EnrichWithInterrogationLayers(npcId, phase, databaseManager.TruthDatabase, progressManager, currentInterrogationLayerId, topicsById);
 
             foreach (var topic in SortTopics(topicsById.Values))
             {
@@ -36,11 +37,19 @@ namespace DetectiveGame.Gameplay.Dialogue
             return topicSet;
         }
 
-        private static GamePhase NormalizeDialoguePhase(GamePhase phase)
+        private static string GetCurrentInterrogationLayerId(
+            string npcId,
+            GamePhase phase,
+            NpcRuntimeManager npcRuntimeManager)
         {
-            return phase == GamePhase.Intro
-                ? GamePhase.Exploration
-                : phase;
+            if (phase != GamePhase.Interrogation ||
+                !npcRuntimeManager.TryGetDialogueState(npcId, out var state) ||
+                state == null)
+            {
+                return string.Empty;
+            }
+
+            return state.CurrentInterrogationLayerId ?? string.Empty;
         }
 
         private static void AddSafeRoleplayTopics(
@@ -251,6 +260,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             GamePhase phase,
             StatementDatabase statementDatabase,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             Dictionary<string, DialogueCandidateTopic> topicsById)
         {
             foreach (var topicData in statementDatabase.GetTopicsByNpc(npcId))
@@ -281,7 +291,10 @@ namespace DetectiveGame.Gameplay.Dialogue
                     }
 
                     AddUnique(candidateTopic.RelatedStatementIds, entry.statementId);
-                    candidateTopic.RelatedStatements.Add(CreateStatementContext(entry, progressManager));
+                    candidateTopic.RelatedStatements.Add(CreateStatementContext(
+                        entry,
+                        progressManager,
+                        currentInterrogationLayerId));
 
                     if (string.Equals(entry.phase, "exploration", StringComparison.OrdinalIgnoreCase))
                     {
@@ -301,6 +314,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                     AddRequirements(
                         entry.unlockRequirements,
                         progressManager,
+                        currentInterrogationLayerId,
                         candidateTopic.RequiredEvidenceIds,
                         candidateTopic.RequiredFactIds,
                         candidateTopic.RequiredStatementIds,
@@ -315,7 +329,8 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         private static DialogueStatementEntryContext CreateStatementContext(
             StatementEntryData entry,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
         {
             var context = new DialogueStatementEntryContext
             {
@@ -323,7 +338,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 Phase = entry.phase ?? string.Empty,
                 Text = entry.text ?? string.Empty,
                 IsUnlocked = progressManager.IsStatementUnlocked(entry.statementId),
-                IsUnlockable = AreRequirementsSatisfied(entry.unlockRequirements, progressManager),
+                IsUnlockable = AreRequirementsSatisfied(entry.unlockRequirements, progressManager, currentInterrogationLayerId),
             };
 
             AddRange(context.UnlockRequirements, entry.unlockRequirements);
@@ -335,6 +350,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             GamePhase phase,
             DialogueBeatDatabase beatDatabase,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             Dictionary<string, DialogueCandidateTopic> topicsById)
         {
             foreach (var beatTopic in beatDatabase.GetTopicsByNpc(npcId))
@@ -359,7 +375,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                         continue;
                     }
 
-                    candidateTopic.RelatedBeatNodes.Add(CreateBeatContext(node, progressManager));
+                    candidateTopic.RelatedBeatNodes.Add(CreateBeatContext(node, progressManager, currentInterrogationLayerId));
 
                     if (string.Equals(node.phase, "exploration", StringComparison.OrdinalIgnoreCase))
                     {
@@ -371,7 +387,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                         candidateTopic.IsInterrogationPhaseTopic = true;
                     }
 
-                    AddBeatRequirements(node, progressManager, candidateTopic);
+                    AddBeatRequirements(node, progressManager, currentInterrogationLayerId, candidateTopic);
                 }
 
                 FinalizeAvailability(candidateTopic, phase);
@@ -380,7 +396,8 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         private static DialogueBeatNodeContext CreateBeatContext(
             DialogueBeatNodeData node,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
         {
             var context = new DialogueBeatNodeContext
             {
@@ -398,7 +415,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                 CaughtLieId = node.caughtLieId ?? string.Empty,
                 IsLie = node.isLie,
                 IsVisited = progressManager.IsDialogueBeatVisited(node.nodeId),
-                IsUnlockable = AreBeatRequirementsSatisfied(node, progressManager),
+                IsUnlockable = AreBeatRequirementsSatisfied(node, progressManager, currentInterrogationLayerId),
             };
 
             AddRange(context.Behavior, node.behavior);
@@ -414,11 +431,13 @@ namespace DetectiveGame.Gameplay.Dialogue
         private static void AddBeatRequirements(
             DialogueBeatNodeData node,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             DialogueCandidateTopic candidateTopic)
         {
             AddRequirements(
                 node.requiredEvidenceIds,
                 progressManager,
+                currentInterrogationLayerId,
                 candidateTopic.RequiredEvidenceIds,
                 candidateTopic.RequiredFactIds,
                 candidateTopic.RequiredStatementIds,
@@ -428,6 +447,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddRequirements(
                 node.requiredFactIds,
                 progressManager,
+                currentInterrogationLayerId,
                 candidateTopic.RequiredEvidenceIds,
                 candidateTopic.RequiredFactIds,
                 candidateTopic.RequiredStatementIds,
@@ -437,6 +457,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddRequirements(
                 node.requiredStatementIds,
                 progressManager,
+                currentInterrogationLayerId,
                 candidateTopic.RequiredEvidenceIds,
                 candidateTopic.RequiredFactIds,
                 candidateTopic.RequiredStatementIds,
@@ -446,6 +467,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddRequirements(
                 node.requiredLayerIds,
                 progressManager,
+                currentInterrogationLayerId,
                 candidateTopic.RequiredEvidenceIds,
                 candidateTopic.RequiredFactIds,
                 candidateTopic.RequiredStatementIds,
@@ -455,6 +477,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddRequirements(
                 node.requiredTokenIds,
                 progressManager,
+                currentInterrogationLayerId,
                 candidateTopic.RequiredEvidenceIds,
                 candidateTopic.RequiredFactIds,
                 candidateTopic.RequiredStatementIds,
@@ -468,6 +491,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             GamePhase phase,
             TruthDatabase truthDatabase,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             Dictionary<string, DialogueCandidateTopic> topicsById)
         {
             if (phase != GamePhase.Interrogation)
@@ -492,7 +516,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                         sortOrder: int.MaxValue,
                         isSynthetic: true);
 
-                    ApplyLayerToTopic(syntheticTopic, layer, progressManager);
+                    ApplyLayerToTopic(syntheticTopic, layer, progressManager, currentInterrogationLayerId);
                     FinalizeAvailability(syntheticTopic, phase);
                     continue;
                 }
@@ -512,7 +536,7 @@ namespace DetectiveGame.Gameplay.Dialogue
                         sortOrder: int.MaxValue,
                         isSynthetic: false);
 
-                    ApplyLayerToTopic(layerTopic, layer, progressManager);
+                    ApplyLayerToTopic(layerTopic, layer, progressManager, currentInterrogationLayerId);
                     FinalizeAvailability(layerTopic, phase);
                 }
             }
@@ -521,7 +545,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         private static void ApplyLayerToTopic(
             DialogueCandidateTopic topic,
             TruthInterrogationLayerData layer,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
         {
             topic.IsInterrogationPhaseTopic = true;
             AddUnique(topic.RelatedInterrogationLayerIds, layer.layerId);
@@ -529,6 +554,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddRequirements(
                 layer.requiredEvidenceIds,
                 progressManager,
+                currentInterrogationLayerId,
                 topic.RequiredEvidenceIds,
                 topic.RequiredFactIds,
                 topic.RequiredStatementIds,
@@ -595,6 +621,7 @@ namespace DetectiveGame.Gameplay.Dialogue
         private static void AddRequirements(
             IReadOnlyList<string> requirementIds,
             ProgressManager progressManager,
+            string currentInterrogationLayerId,
             List<string> requiredEvidenceIds,
             List<string> requiredFactIds,
             List<string> requiredStatementIds,
@@ -634,7 +661,10 @@ namespace DetectiveGame.Gameplay.Dialogue
                          progressManager.InterrogationLayerUnlockedById.ContainsKey(requirementId))
                 {
                     AddUnique(requiredInterrogationLayerIds, requirementId);
-                    isSatisfied = progressManager.IsInterrogationLayerUnlocked(requirementId);
+                    isSatisfied = IsInterrogationLayerRequirementSatisfied(
+                        requirementId,
+                        progressManager,
+                        currentInterrogationLayerId);
                 }
                 else
                 {
@@ -650,8 +680,6 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         private static bool IsStatementEntryInPhase(string entryPhase, GamePhase phase)
         {
-            phase = NormalizeDialoguePhase(phase);
-
             if (string.IsNullOrWhiteSpace(entryPhase))
             {
                 return false;
@@ -673,11 +701,12 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         private static bool AreRequirementsSatisfied(
             IReadOnlyList<string> requirementIds,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
         {
             foreach (var requirementId in requirementIds ?? Array.Empty<string>())
             {
-                if (!IsRequirementSatisfied(requirementId, progressManager))
+                if (!IsRequirementSatisfied(requirementId, progressManager, currentInterrogationLayerId))
                 {
                     return false;
                 }
@@ -688,22 +717,35 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         private static bool AreBeatRequirementsSatisfied(
             DialogueBeatNodeData node,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
         {
-            return AreRequirementsSatisfied(node.requiredEvidenceIds, progressManager) &&
-                   AreRequirementsSatisfied(node.requiredFactIds, progressManager) &&
-                   AreRequirementsSatisfied(node.requiredStatementIds, progressManager) &&
-                   AreRequirementsSatisfied(node.requiredLayerIds, progressManager) &&
-                   AreRequirementsSatisfied(node.requiredTokenIds, progressManager);
+            return AreRequirementsSatisfied(node.requiredEvidenceIds, progressManager, currentInterrogationLayerId) &&
+                   AreRequirementsSatisfied(node.requiredFactIds, progressManager, currentInterrogationLayerId) &&
+                   AreRequirementsSatisfied(node.requiredStatementIds, progressManager, currentInterrogationLayerId) &&
+                   AreRequirementsSatisfied(node.requiredLayerIds, progressManager, currentInterrogationLayerId) &&
+                   AreRequirementsSatisfied(node.requiredTokenIds, progressManager, currentInterrogationLayerId);
         }
 
-        private static bool IsRequirementSatisfied(string requirementId, ProgressManager progressManager)
+        private static bool IsRequirementSatisfied(
+            string requirementId,
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
         {
             return progressManager.IsEvidenceCollected(requirementId) ||
                    progressManager.IsFactUnlocked(requirementId) ||
                    progressManager.IsStatementUnlocked(requirementId) ||
-                   progressManager.IsInterrogationLayerUnlocked(requirementId) ||
+                   IsInterrogationLayerRequirementSatisfied(requirementId, progressManager, currentInterrogationLayerId) ||
                    progressManager.IsProgressTokenUnlocked(requirementId);
+        }
+
+        private static bool IsInterrogationLayerRequirementSatisfied(
+            string layerId,
+            ProgressManager progressManager,
+            string currentInterrogationLayerId)
+        {
+            return progressManager.IsInterrogationLayerUnlocked(layerId) ||
+                   string.Equals(layerId, currentInterrogationLayerId, StringComparison.Ordinal);
         }
 
         private static IEnumerable<DialogueCandidateTopic> SortTopics(IEnumerable<DialogueCandidateTopic> topics)
@@ -745,7 +787,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         private static void ValidateInputs(
             string npcId,
             DatabaseManager databaseManager,
-            ProgressManager progressManager)
+            ProgressManager progressManager,
+            NpcRuntimeManager npcRuntimeManager)
         {
             if (string.IsNullOrWhiteSpace(npcId))
             {
@@ -760,6 +803,11 @@ namespace DetectiveGame.Gameplay.Dialogue
             if (progressManager == null)
             {
                 throw new ArgumentNullException(nameof(progressManager));
+            }
+
+            if (npcRuntimeManager == null)
+            {
+                throw new ArgumentNullException(nameof(npcRuntimeManager));
             }
 
             if (databaseManager.StatementDatabase == null)

@@ -61,7 +61,7 @@ namespace DetectiveGame.Gameplay.Tests
                 npcId,
                 phase,
                 appRoot.DatabaseManager,
-                appRoot.ProgressManager);
+                appRoot.ProgressManager, appRoot.NpcRuntimeManager);
 
             var report = new StringBuilder();
             report.AppendLine("=== DIALOGUE CANDIDATE TOPIC REPORT ===");

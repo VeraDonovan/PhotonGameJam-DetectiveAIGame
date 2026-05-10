@@ -106,6 +106,10 @@ namespace DetectiveGame.Gameplay.Tests
             report.AppendLine($"Resolution Type: {context.ResolutionResult.ResolutionType}");
             report.AppendLine($"Annoyance Delta: {context.ResolutionResult.AnnoyanceDelta}");
             report.AppendLine($"Annoyance After: {context.ResolutionResult.NewAnnoyance}");
+            report.AppendLine($"Pressure Delta: {context.ResolutionResult.PressureDelta}");
+            report.AppendLine($"Pressure After: {context.ResolutionResult.NewPressure}");
+            report.AppendLine($"Current Interrogation Level: {context.CurrentInterrogationLevel}");
+            report.AppendLine($"Current Interrogation Layer: {context.CurrentInterrogationLayerId}");
             AppendList(report, "Unlocked Statements", context.ResolutionResult.UnlockedStatementIds);
             AppendList(report, "Unlocked Facts", context.ResolutionResult.UnlockedFactIds);
             AppendList(report, "Unlocked Tokens", context.ResolutionResult.UnlockedTokenIds);

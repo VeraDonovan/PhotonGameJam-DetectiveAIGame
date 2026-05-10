@@ -13,16 +13,19 @@ namespace DetectiveGame.Core
             new Dictionary<string, NpcDialogueRuntimeState>();
 
         private EventManager eventManager;
+        private DatabaseManager databaseManager;
+        private GamePhase currentPhase = GamePhase.Exploration;
 
         public IReadOnlyCollection<string> DiscoveredNpcIds => discoveredNpcIds;
         public IReadOnlyCollection<string> AvailableNpcIds => availableNpcIds;
         public IReadOnlyCollection<string> InterrogationReadyNpcIds => interrogationReadyNpcIds;
         public IReadOnlyDictionary<string, NpcDialogueRuntimeState> DialogueStateByNpcId => dialogueStateByNpcId;
 
-        public void Initialize(EventManager sharedEventManager)
+        public void Initialize(EventManager sharedEventManager, DatabaseManager sharedDatabaseManager)
         {
             eventManager?.Unsubscribe<GamePhaseChangedEvent>(OnGamePhaseChanged);
             eventManager = sharedEventManager;
+            databaseManager = sharedDatabaseManager;
             ValidateDependencies();
             ResetRuntime();
             eventManager.Subscribe<GamePhaseChangedEvent>(OnGamePhaseChanged);
@@ -89,6 +92,11 @@ namespace DetectiveGame.Core
 
             state = new NpcDialogueRuntimeState(npcId);
             dialogueStateByNpcId.Add(npcId, state);
+            if (currentPhase == GamePhase.Interrogation)
+            {
+                SetInitialInterrogationLayer(state);
+            }
+
             return state;
         }
 
@@ -106,7 +114,9 @@ namespace DetectiveGame.Core
         public int AddAnnoyance(string npcId, int amount)
         {
             var state = GetOrCreateDialogueState(npcId);
+            var oldAnnoyance = state.Annoyance;
             state.AddAnnoyance(amount);
+            PublishAnnoyanceChangedIfNeeded(state.NpcId, oldAnnoyance, state.Annoyance);
             return state.Annoyance;
         }
 
@@ -123,20 +133,92 @@ namespace DetectiveGame.Core
         public int AddInterrogationPressure(string npcId, int amount)
         {
             var state = GetOrCreateDialogueState(npcId);
+            var oldPressure = state.Pressure;
             state.AddPressure(amount);
+            PublishPressureChangedIfNeeded(state.NpcId, oldPressure, state.Pressure);
             return state.Pressure;
         }
 
-        public void SetCurrentInterrogationLayer(string npcId, string layerId)
+        public void SetCurrentInterrogationLayer(string npcId, string layerId, int level)
         {
-            GetOrCreateDialogueState(npcId).SetCurrentInterrogationLayer(layerId);
+            var state = GetOrCreateDialogueState(npcId);
+            var oldLayerId = state.CurrentInterrogationLayerId;
+            var oldLevel = state.CurrentInterrogationLevel;
+
+            state.SetCurrentInterrogationLayer(layerId, level);
+
+            PublishInterrogationLevelChangedIfNeeded(
+                state.NpcId,
+                oldLevel,
+                state.CurrentInterrogationLevel,
+                oldLayerId,
+                state.CurrentInterrogationLayerId);
+        }
+
+        public void SetInterrogationLevel(string npcId, int level)
+        {
+            SetInterrogationLevel(GetOrCreateDialogueState(npcId), level);
+        }
+
+        private void SetInterrogationLevel(NpcDialogueRuntimeState state, int level)
+        {
+            var oldLayerId = state.CurrentInterrogationLayerId;
+            var oldLevel = state.CurrentInterrogationLevel;
+            state.SetCurrentInterrogationLevel(level);
+
+            PublishInterrogationLevelChangedIfNeeded(
+                state.NpcId,
+                oldLevel,
+                state.CurrentInterrogationLevel,
+                oldLayerId,
+                state.CurrentInterrogationLayerId);
+        }
+
+        private void PublishInterrogationLevelChangedIfNeeded(
+            string npcId,
+            int oldLevel,
+            int newLevel,
+            string oldLayerId,
+            string newLayerId)
+        {
+            if (newLevel > oldLevel)
+            {
+                eventManager?.Publish(new NpcInterrogationLevelChangedEvent(
+                    npcId,
+                    oldLevel,
+                    newLevel,
+                    oldLayerId,
+                    newLayerId));
+            }
+        }
+
+        private void PublishAnnoyanceChangedIfNeeded(string npcId, int oldValue, int newValue)
+        {
+            if (oldValue == newValue)
+            {
+                return;
+            }
+
+            eventManager?.Publish(new NpcAnnoyanceChangedEvent(npcId, oldValue, newValue, currentPhase));
+        }
+
+        private void PublishPressureChangedIfNeeded(string npcId, int oldValue, int newValue)
+        {
+            if (oldValue == newValue)
+            {
+                return;
+            }
+
+            eventManager?.Publish(new NpcPressureChangedEvent(npcId, oldValue, newValue, currentPhase));
         }
 
         public void ResetAllAnnoyance()
         {
             foreach (var state in dialogueStateByNpcId.Values)
             {
+                var oldAnnoyance = state.Annoyance;
                 state.ResetAnnoyance();
+                PublishAnnoyanceChangedIfNeeded(state.NpcId, oldAnnoyance, state.Annoyance);
             }
         }
 
@@ -144,7 +226,9 @@ namespace DetectiveGame.Core
         {
             foreach (var state in dialogueStateByNpcId.Values)
             {
+                var oldPressure = state.Pressure;
                 state.ResetPressure();
+                PublishPressureChangedIfNeeded(state.NpcId, oldPressure, state.Pressure);
             }
         }
 
@@ -154,6 +238,7 @@ namespace DetectiveGame.Core
             availableNpcIds.Clear();
             interrogationReadyNpcIds.Clear();
             dialogueStateByNpcId.Clear();
+            currentPhase = GamePhase.Exploration;
         }
 
         private void OnDestroy()
@@ -163,11 +248,55 @@ namespace DetectiveGame.Core
 
         private void OnGamePhaseChanged(GamePhaseChangedEvent gamePhaseChangedEvent)
         {
+            currentPhase = gamePhaseChangedEvent.Phase;
+
             if (gamePhaseChangedEvent.Phase == GamePhase.Interrogation)
             {
                 ResetAllAnnoyance();
                 ResetAllInterrogationPressure();
+                SetAllInitialInterrogationLayers();
+                return;
             }
+
+            if (gamePhaseChangedEvent.Phase == GamePhase.Exploration)
+            {
+                ResetAllInterrogationPressure();
+            }
+        }
+
+        private void SetAllInitialInterrogationLayers()
+        {
+            foreach (var state in dialogueStateByNpcId.Values)
+            {
+                SetInitialInterrogationLayer(state);
+            }
+        }
+
+        private void SetInitialInterrogationLayer(NpcDialogueRuntimeState state)
+        {
+            var initialLayerId = GetInterrogationLayerIdForState(state.NpcId, 1);
+            if (string.IsNullOrWhiteSpace(initialLayerId))
+            {
+                SetInterrogationLevel(state, 1);
+                return;
+            }
+
+            SetCurrentInterrogationLayer(state.NpcId, initialLayerId, 1);
+        }
+
+        private string GetInterrogationLayerIdForState(string npcId, int stateLevel)
+        {
+            var level = 0;
+            foreach (var layer in databaseManager.TruthDatabase.GetInterrogationLayersByNpc(npcId))
+            {
+                level++;
+                if (level == stateLevel && layer != null)
+                {
+                    return layer.layerId ?? string.Empty;
+                }
+            }
+
+            return string.Empty;
         }
 
         private void ValidateDependencies()
@@ -175,6 +304,16 @@ namespace DetectiveGame.Core
             if (eventManager == null)
             {
                 throw new InvalidOperationException("NpcRuntimeManager requires EventManager during initialization.");
+            }
+
+            if (databaseManager == null)
+            {
+                throw new InvalidOperationException("NpcRuntimeManager requires DatabaseManager during initialization.");
+            }
+
+            if (databaseManager.TruthDatabase == null)
+            {
+                throw new InvalidOperationException("NpcRuntimeManager requires DatabaseManager.TruthDatabase during initialization.");
             }
         }
     }

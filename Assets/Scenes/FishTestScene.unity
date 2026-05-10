@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 312006266}
   - component: {fileID: 312006265}
   - component: {fileID: 312006267}
+  - component: {fileID: 312006268}
   m_Layer: 0
   m_Name: living_room
   m_TagString: Untagged
@@ -313,8 +314,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211d65fa211e80a498967f00dabba4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueText: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0"
   evidenceId: A-2
+  interactDistance: 1.5
+  hintCanvas: {fileID: 0}
+  hintText: {fileID: 0}
+--- !u!114 &312006268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312006264}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211d65fa211e80a498967f00dabba4ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  evidenceId: 
   interactDistance: 1.5
   hintCanvas: {fileID: 0}
   hintText: {fileID: 0}
@@ -1408,6 +1424,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2377663665317657440, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
       propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377663665317657440, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2377663665317657440, guid: 028f129783643b64abf99facaa2c8c45, type: 3}

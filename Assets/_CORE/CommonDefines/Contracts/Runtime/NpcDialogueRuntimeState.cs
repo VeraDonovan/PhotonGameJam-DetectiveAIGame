@@ -19,6 +19,7 @@ namespace DetectiveGame.Core
         public int Pressure { get; private set; }
         public string LastMatchedTopicId { get; private set; } = string.Empty;
         public string CurrentInterrogationLayerId { get; private set; } = string.Empty;
+        public int CurrentInterrogationLevel { get; private set; }
         public HashSet<string> DiscussedTopicIds { get; } = new HashSet<string>();
         public HashSet<string> ResolvedTopicIds { get; } = new HashSet<string>();
 
@@ -51,6 +52,7 @@ namespace DetectiveGame.Core
         {
             Pressure = MinPressure;
             CurrentInterrogationLayerId = string.Empty;
+            CurrentInterrogationLevel = 0;
         }
 
         public void MarkTopicDiscussed(string topicId)
@@ -75,9 +77,15 @@ namespace DetectiveGame.Core
             ResolvedTopicIds.Add(topicId);
         }
 
-        public void SetCurrentInterrogationLayer(string layerId)
+        public void SetCurrentInterrogationLayer(string layerId, int level)
         {
             CurrentInterrogationLayerId = layerId ?? string.Empty;
+            SetCurrentInterrogationLevel(level);
+        }
+
+        public void SetCurrentInterrogationLevel(int level)
+        {
+            CurrentInterrogationLevel = level < 0 ? 0 : level;
         }
 
         public void ResetDialogueProgress()

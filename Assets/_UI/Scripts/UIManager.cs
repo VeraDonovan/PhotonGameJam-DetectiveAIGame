@@ -147,12 +147,12 @@ namespace DetectiveGame.Core
         public bool ConfirmSuspectForFinalPhase(string suspectId)
         {
             progressManager.SubmitAccusation(suspectId);
-            return gameStateManager.TryOpenAccusation();
+            return !string.IsNullOrWhiteSpace(progressManager.AccusationTargetId);
         }
         
         public bool EnterResultPhase()
         {
-            return gameStateManager.TryShowResult();
+            return !string.IsNullOrWhiteSpace(progressManager.AccusationTargetId);
         }
 
         private void HandleEvidenceAdded(EvidenceAddedEvent eventData)

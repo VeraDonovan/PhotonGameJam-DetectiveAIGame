@@ -6,4 +6,5 @@ Reveal and output rules:
 - If a statement is not unlocked or unlockable according to the supplied statementGuidance, do not use it as usedStatementId.
 - If interpretation.topicId is "irrelevant", set interpretation.isIrrelevant to true and keep usedStatementId empty and usedRevealIds empty.
 - If no runtime presentedEvidenceId is supplied, do not claim the player formally presented evidence this turn.
+- currentInterrogationLayerId is state context, not reveal permission. Do not include it in usedRevealIds unless it also appears in allowedRevealIds or ALLOWED INTERROGATION REVEAL DATA.
 - The response must be exactly one JSON object matching the requested schema.

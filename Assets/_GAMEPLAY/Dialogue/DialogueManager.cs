@@ -438,8 +438,7 @@ public class DialogueManager : MonoBehaviour {
             foreach (var node in topic.nodes ?? new List<DialogueBeatNodeData>())
             {
                 if (node == null ||
-                    !string.Equals(node.phase, phase.ToString(), System.StringComparison.OrdinalIgnoreCase) &&
-                    !(phase == GamePhase.Intro && string.Equals(node.phase, "exploration", System.StringComparison.OrdinalIgnoreCase)) ||
+                    !string.Equals(node.phase, phase.ToString(), System.StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(node.availabilityType, "auto_opening", System.StringComparison.OrdinalIgnoreCase) ||
                     appRoot.ProgressManager.IsDialogueBeatVisited(node.nodeId))
                 {

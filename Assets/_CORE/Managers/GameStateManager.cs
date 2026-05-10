@@ -5,7 +5,7 @@ namespace DetectiveGame.Core
 {
     public sealed class GameStateManager : MonoBehaviour
     {
-        [SerializeField] private GamePhase startingPhase = GamePhase.Intro;
+        [SerializeField] private GamePhase startingPhase = GamePhase.Exploration;
         [SerializeField] private int maxInterrogationSuspects = 2;
 
         private EventManager eventManager;
@@ -23,7 +23,9 @@ namespace DetectiveGame.Core
 
         public bool TryStartGame()
         {
-            return TrySetPhase(GamePhase.Exploration);
+            CurrentPhase = GamePhase.Exploration;
+            eventManager.Publish(new GamePhaseChangedEvent(CurrentPhase));
+            return true;
         }
 
         public bool TryBeginInterrogation()
@@ -31,19 +33,8 @@ namespace DetectiveGame.Core
             return TrySetPhase(GamePhase.Interrogation);
         }
 
-        public bool TryOpenAccusation()
-        {
-            return TrySetPhase(GamePhase.Accusation);
-        }
-
-        public bool TryShowResult()
-        {
-            return TrySetPhase(GamePhase.Result);
-        }
-
         public bool TrySetPhase(GamePhase nextPhase)
-        {   
-        
+        {
             if (CurrentPhase == nextPhase || !CanTransitionTo(nextPhase))
             {
                 return false;
@@ -58,19 +49,11 @@ namespace DetectiveGame.Core
         {
             switch (CurrentPhase)
             {
-                case GamePhase.Intro:
-                    return nextPhase == GamePhase.Exploration;
                 case GamePhase.Exploration:
                     return nextPhase == GamePhase.Interrogation &&
                            HasValidInterrogationSelection();
                 case GamePhase.Interrogation:
-                    return nextPhase == GamePhase.Accusation &&
-                           HasAccusationTarget();
-                case GamePhase.Accusation:
-                    return nextPhase == GamePhase.Result &&
-                           HasAccusationTarget();
-                case GamePhase.Result:
-                    return false;
+                    return nextPhase == GamePhase.Exploration;
                 default:
                     return false;
             }
@@ -80,11 +63,6 @@ namespace DetectiveGame.Core
         {
             var selectedCount = progressManager.SelectedSuspectIds.Count;
             return selectedCount > 0 && selectedCount <= maxInterrogationSuspects;
-        }
-
-        private bool HasAccusationTarget()
-        {
-            return !string.IsNullOrWhiteSpace(progressManager.AccusationTargetId);
         }
 
         private void ValidateDependencies()

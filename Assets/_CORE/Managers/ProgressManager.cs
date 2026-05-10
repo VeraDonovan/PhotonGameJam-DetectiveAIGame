@@ -25,6 +25,7 @@ namespace DetectiveGame.Core
         public IReadOnlyCollection<string> CaughtLieIds => RuntimeState.CaughtLieIds;
         public IReadOnlyCollection<string> KnownSuspectIds => RuntimeState.KnownSuspectIds;
         public IReadOnlyCollection<string> SelectedSuspectIds => RuntimeState.SelectedSuspectIds;
+        public string CurrentInterrogationTargetId => RuntimeState.CurrentInterrogationTargetId;
         public string AccusationTargetId => RuntimeState.AccusationTargetId;
 
         public void Initialize(EventManager sharedEventManager, DatabaseManager sharedDatabaseManager)
@@ -210,7 +211,35 @@ namespace DetectiveGame.Core
                 return false;
             }
 
-            return RuntimeState.SelectedSuspectIds.Add(suspectId);
+            if (!RuntimeState.SelectedSuspectIds.Add(suspectId))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(RuntimeState.CurrentInterrogationTargetId))
+            {
+                SetCurrentInterrogationTarget(suspectId);
+            }
+
+            return true;
+        }
+
+        public bool SetCurrentInterrogationTarget(string suspectId)
+        {
+            if (string.IsNullOrWhiteSpace(suspectId) || !RuntimeState.SelectedSuspectIds.Contains(suspectId))
+            {
+                return false;
+            }
+
+            if (RuntimeState.CurrentInterrogationTargetId == suspectId)
+            {
+                return false;
+            }
+
+            var oldTargetId = RuntimeState.CurrentInterrogationTargetId;
+            RuntimeState.CurrentInterrogationTargetId = suspectId;
+            eventManager?.Publish(new CurrentInterrogationTargetChangedEvent(oldTargetId, suspectId));
+            return true;
         }
 
         public void SubmitAccusation(string suspectId)

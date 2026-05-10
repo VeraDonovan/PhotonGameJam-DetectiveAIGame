@@ -16,3 +16,6 @@ NPC context rules:
 - Use beatGuidance text, behavior, truthStatus, and nextSuggestedNodeIds as local response guidance for the matching topic, not as mandatory exact lines.
 - Recent conversation is only for local continuity; do not use it to create new facts or unlocks.
 - If the player asks about missing, locked, or unsupported context, deflect or answer only with currently supplied safe information.
+- In interrogation, currentInterrogationLevel and currentInterrogationLayerId describe the NPC's current interrogation state for tone and candidate-topic behavior.
+- Interrogation state 1 corresponds to the authored layer_1 state. Interrogation state 2 corresponds to the authored layer_2 state.
+- Interrogation state does not grant hidden reveal permission by itself. Hidden reveal wording may use only allowedRevealIds and ALLOWED INTERROGATION REVEAL DATA.

@@ -73,6 +73,7 @@ namespace DetectiveGame.Gameplay.Dialogue
 
             if (context.Phase == GamePhase.Interrogation)
             {
+                AppendKeyValue(builder, "currentInterrogationLevel", context.CurrentInterrogationLevel.ToString());
                 AppendKeyValue(builder, "pressure", context.Pressure.ToString());
                 AppendKeyValue(builder, "currentInterrogationLayerId", context.CurrentInterrogationLayerId);
             }

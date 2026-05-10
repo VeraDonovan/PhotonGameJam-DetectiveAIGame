@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InteractableScript : MonoBehaviour
 {
-    public string dialogueText = "这是物品的描述";
     public string evidenceId = string.Empty;
     public float interactDistance = 1.5f;
 
