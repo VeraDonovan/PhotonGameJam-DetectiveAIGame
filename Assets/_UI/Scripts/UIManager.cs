@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DetectiveGame.UI;
 using TMPro;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace DetectiveGame.Core
         private StatementDatabase statementDatabase;
         private GameStateManager gameStateManager;
         private ProgressManager progressManager;
+        private readonly HashSet<string> externalInputBlockers = new HashSet<string>(StringComparer.Ordinal);
+        private bool lastPublishedBlockState;
 
         public bool IsMenuOpen => menuPanelRoot != null && menuPanelRoot.activeSelf;
         public bool IsInventoryOpen => inventoryRoot.activeSelf;
@@ -189,8 +192,10 @@ namespace DetectiveGame.Core
         {
             eventManager.Unsubscribe<EvidenceAddedEvent>(HandleEvidenceAdded);
             eventManager.Unsubscribe<StatementUnlockedEvent>(HandleStatementUnlocked);
+            eventManager.Unsubscribe<UiBlockRequestEvent>(HandleUiBlockRequest);
             eventManager.Subscribe<EvidenceAddedEvent>(HandleEvidenceAdded);
             eventManager.Subscribe<StatementUnlockedEvent>(HandleStatementUnlocked);
+            eventManager.Subscribe<UiBlockRequestEvent>(HandleUiBlockRequest);
         }
 
         private void UnsubscribeFromEvents()
@@ -202,6 +207,26 @@ namespace DetectiveGame.Core
 
             eventManager.Unsubscribe<EvidenceAddedEvent>(HandleEvidenceAdded);
             eventManager.Unsubscribe<StatementUnlockedEvent>(HandleStatementUnlocked);
+            eventManager.Unsubscribe<UiBlockRequestEvent>(HandleUiBlockRequest);
+        }
+
+        private void HandleUiBlockRequest(UiBlockRequestEvent eventData)
+        {
+            if (string.IsNullOrWhiteSpace(eventData.SourceId))
+            {
+                return;
+            }
+
+            if (eventData.IsBlocked)
+            {
+                externalInputBlockers.Add(eventData.SourceId);
+            }
+            else
+            {
+                externalInputBlockers.Remove(eventData.SourceId);
+            }
+
+            PublishUiBlockState();
         }
 
         private void BindPopupCloseButton()
@@ -272,7 +297,14 @@ namespace DetectiveGame.Core
                 return;
             }
 
-            eventManager.Publish(new UiBlockStateChangedEvent(IsAnyUiBlockingPlayer()));
+            var isBlocked = IsAnyUiBlockingPlayer() || externalInputBlockers.Count > 0;
+            if (isBlocked == lastPublishedBlockState)
+            {
+                return;
+            }
+
+            lastPublishedBlockState = isBlocked;
+            eventManager.Publish(new UiBlockStateChangedEvent(isBlocked));
         }
 
         private bool IsAnyUiBlockingPlayer()

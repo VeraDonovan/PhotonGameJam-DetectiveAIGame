@@ -11,9 +11,8 @@ NPC context rules:
 - Use matchHints as examples of what kind of player phrasing should map to each candidate topic.
 - Raw NPC AI profile JSON is roleplay reference, not gameplay authority.
 - Use the NPC's speech style, emotional posture, evasions, and sample phrasing when drafting response.prose.
-- Candidate topic descriptions and statementGuidance define the topic space for this turn. When no narrow authored topic fits, use an openFallbackTopic instead of forcing irrelevant.
+- Candidate topic descriptions, statementGuidance, and beatGuidance define the topic space for this turn. When no narrow authored topic fits, use an openFallbackTopic instead of forcing irrelevant.
 - When the player wording is broad and several narrow statement topics are plausible, prefer the closest broad fallback topic instead of overcommitting to one narrow topic.
-- Use dialogueSamples as style and content guidance for the matching topic, not as mandatory exact lines.
-- Respect avoidSaying for the selected topic.
+- Use beatGuidance text, behavior, truthStatus, and nextSuggestedNodeIds as local response guidance for the matching topic, not as mandatory exact lines.
 - Recent conversation is only for local continuity; do not use it to create new facts or unlocks.
 - If the player asks about missing, locked, or unsupported context, deflect or answer only with currently supplied safe information.

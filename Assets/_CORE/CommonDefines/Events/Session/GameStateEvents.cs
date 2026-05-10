@@ -19,4 +19,16 @@ namespace DetectiveGame.Core
 
         public bool IsBlocked { get; }
     }
+
+    public readonly struct UiBlockRequestEvent
+    {
+        public UiBlockRequestEvent(string sourceId, bool isBlocked)
+        {
+            SourceId = sourceId ?? string.Empty;
+            IsBlocked = isBlocked;
+        }
+
+        public string SourceId { get; }
+        public bool IsBlocked { get; }
+    }
 }

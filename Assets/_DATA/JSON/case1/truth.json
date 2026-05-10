@@ -120,6 +120,7 @@
                                                                             ],
                                                           "relatedStatementTopicIds":  [
                                                                                            "lin_discovery_time",
+                                                                                           "lin_discovery_context",
                                                                                            "lin_visitors",
                                                                                            "lin_cleanup"
                                                                                        ],
@@ -146,7 +147,8 @@
                                                           "relatedStatementTopicIds":  [
                                                                                            "lin_discovery_time",
                                                                                            "lin_abuse",
-                                                                                           "lin_cleanup"
+                                                                                           "lin_cleanup",
+                                                                                           "lin_bulb"
                                                                                        ],
                                                           "aiGuidance":  "第二轮允许完整认罪。重点是长期家暴、孩子被夺走、当晚羞辱触发反击，以及伪造发现时间的失败细节。",
                                                           "examplePhrasings":  [
@@ -209,6 +211,7 @@
                                                                             ],
                                                           "relatedStatementTopicIds":  [
                                                                                            "wei_visit",
+                                                                                           "wei_arrival_time",
                                                                                            "wei_purpose",
                                                                                            "wei_zhang_relation"
                                                                                        ],
@@ -232,7 +235,8 @@
                                                                                 "fact_15"
                                                                             ],
                                                           "relatedStatementTopicIds":  [
-                                                                                           "wei_identity"
+                                                                                           "wei_identity",
+                                                                                           "wei_lin_relation"
                                                                                        ],
                                                           "aiGuidance":  "第二轮身世真相击穿控场能力。卫国强应先否认和压制情绪，再崩溃到请求见林秀华。",
                                                           "examplePhrasings":  [
@@ -292,7 +296,11 @@
                                                                             ],
                                                           "relatedStatementTopicIds":  [
                                                                                            "zhang_house",
-                                                                                           "zhang_watch"
+                                                                                           "zhang_pocket",
+                                                                                           "zhang_watch",
+                                                                                           "zhang_money_pressure",
+                                                                                           "zhang_wei_relation",
+                                                                                           "zhang_alibi"
                                                                                        ],
                                                           "aiGuidance":  "第一轮让张铁柱承认来过、讨债和拿表。重点是他保护母亲、怕被当成凶手，不能把手表说成普通赃物。",
                                                           "examplePhrasings":  [

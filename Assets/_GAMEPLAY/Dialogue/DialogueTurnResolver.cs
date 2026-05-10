@@ -7,6 +7,7 @@ namespace DetectiveGame.Gameplay.Dialogue
     public sealed class DialogueTurnResolver
     {
         public const int DefaultAnnoyanceGain = 20;
+        public const int RepeatTopicRefusalAnnoyanceThreshold = 80;
 
         private readonly DialogueCandidateTopicResolver candidateTopicResolver;
 
@@ -290,25 +291,43 @@ namespace DetectiveGame.Gameplay.Dialogue
             {
                 result.ResolutionType = DialogueResolutionType.NoProgress;
                 ValidateNonProgressFallbackResponseUsage(interpretedAction, result);
+
+                if (!result.AcceptAiResponse)
+                {
+                    return result;
+                }
+
+                if (IsRepeatedResolvedTopic(matchedTopic, npcState))
+                {
+                    ApplyRepeatedTopicAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId);
+                    return result;
+                }
+
+                MarkTopicOutcome(npcRuntimeManager, interpretedAction.NpcId, matchedTopic);
                 return result;
             }
 
-            npcRuntimeManager.MarkTopicDiscussed(interpretedAction.NpcId, interpretedAction.MatchedTopicId);
-
-            if (interpretedAction.Phase == GamePhase.Exploration)
+            if (interpretedAction.Phase == GamePhase.Exploration ||
+                interpretedAction.Phase == GamePhase.Interrogation)
             {
-                ResolveExplorationProgress(
+                ResolveBeatProgress(
                     rawInput,
                     interpretedAction,
                     matchedTopic,
                     databaseManager,
                     progressManager,
+                    npcState,
+                    npcRuntimeManager,
                     result);
                 return result;
             }
 
             result.ResolutionType = DialogueResolutionType.NoProgress;
             ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
+            if (result.AcceptAiResponse)
+            {
+                MarkTopicOutcome(npcRuntimeManager, interpretedAction.NpcId, matchedTopic);
+            }
             return result;
         }
 
@@ -338,25 +357,40 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
         }
 
-        private static void ResolveExplorationProgress(
+        private static void ResolveBeatProgress(
             RawDialogueInput rawInput,
             InterpretedDialogueAction interpretedAction,
             DialogueCandidateTopic matchedTopic,
             DatabaseManager databaseManager,
             ProgressManager progressManager,
+            NpcDialogueRuntimeState npcState,
+            NpcRuntimeManager npcRuntimeManager,
             DialogueResolutionResult result)
         {
-            var statement = FindNextUnlockableExplorationStatement(
+            var beatNode = FindNextUnlockableBeat(
                 interpretedAction,
                 matchedTopic,
                 databaseManager.DialogueBeatDatabase,
                 progressManager,
                 rawInput.PresentedEvidenceId);
 
-            if (statement == null)
+            if (beatNode == null)
             {
                 result.ResolutionType = DialogueResolutionType.NoProgress;
                 ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
+
+                if (!result.AcceptAiResponse)
+                {
+                    return;
+                }
+
+                if (IsRepeatedResolvedTopic(matchedTopic, npcState))
+                {
+                    ApplyRepeatedTopicAnnoyance(result, npcState, npcRuntimeManager, interpretedAction.NpcId);
+                    return;
+                }
+
+                MarkTopicOutcome(npcRuntimeManager, interpretedAction.NpcId, matchedTopic);
                 return;
             }
 
@@ -364,8 +398,10 @@ namespace DetectiveGame.Gameplay.Dialogue
             var caughtLiesBefore = new HashSet<string>(progressManager.CaughtLieIds);
             var unlockedFactsBefore = new HashSet<string>(progressManager.UnlockedFactIds);
             var unlockedStatementsBefore = new HashSet<string>(progressManager.UnlockedStatementIds);
+            var unlockedLayersBefore = new HashSet<string>(progressManager.UnlockedInterrogationLayerIds);
+            var unlockedTokensBefore = new HashSet<string>(progressManager.RuntimeState.UnlockedProgressTokens);
 
-            if (!progressManager.VisitDialogueBeat(statement.nodeId))
+            if (!progressManager.VisitDialogueBeat(beatNode.nodeId))
             {
                 result.ResolutionType = DialogueResolutionType.NoProgress;
                 return;
@@ -375,16 +411,53 @@ namespace DetectiveGame.Gameplay.Dialogue
             AddNewUnlockedIds(caughtLiesBefore, progressManager.CaughtLieIds, result.CaughtLieIds);
             AddNewUnlockedIds(unlockedStatementsBefore, progressManager.UnlockedStatementIds, result.UnlockedStatementIds);
             AddNewUnlockedIds(unlockedFactsBefore, progressManager.UnlockedFactIds, result.UnlockedFactIds);
-            result.ResolutionType = result.UnlockedFactIds.Count > 0
-                ? DialogueResolutionType.CompositeProgress
-                : result.UnlockedStatementIds.Count > 0
-                    ? DialogueResolutionType.StatementUnlocked
-                    : DialogueResolutionType.NoProgress;
+            AddNewUnlockedIds(unlockedLayersBefore, progressManager.UnlockedInterrogationLayerIds, result.UnlockedLayerIds);
+            AddNewUnlockedIds(unlockedTokensBefore, progressManager.RuntimeState.UnlockedProgressTokens, result.UnlockedTokenIds);
+            result.ResolutionType = DetermineProgressResolutionType(result);
 
             ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
+            if (result.AcceptAiResponse)
+            {
+                MarkTopicOutcome(npcRuntimeManager, interpretedAction.NpcId, matchedTopic);
+            }
         }
 
-        private static DialogueBeatNodeData FindNextUnlockableExplorationStatement(
+        private static bool HasUnlockableUnusedBeat(DialogueCandidateTopic matchedTopic)
+        {
+            foreach (var beat in matchedTopic.RelatedBeatNodes)
+            {
+                if (beat != null && beat.IsUnlockable && !beat.IsVisited)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsRepeatedResolvedTopic(
+            DialogueCandidateTopic matchedTopic,
+            NpcDialogueRuntimeState npcState)
+        {
+            return npcState.DiscussedTopicIds.Contains(matchedTopic.TopicId) &&
+                   !HasUnlockableUnusedBeat(matchedTopic);
+        }
+
+        private static void MarkTopicOutcome(
+            NpcRuntimeManager npcRuntimeManager,
+            string npcId,
+            DialogueCandidateTopic matchedTopic)
+        {
+            if (HasUnlockableUnusedBeat(matchedTopic))
+            {
+                npcRuntimeManager.MarkTopicDiscussed(npcId, matchedTopic.TopicId);
+                return;
+            }
+
+            npcRuntimeManager.MarkTopicResolved(npcId, matchedTopic.TopicId);
+        }
+
+        private static DialogueBeatNodeData FindNextUnlockableBeat(
             InterpretedDialogueAction interpretedAction,
             DialogueCandidateTopic matchedTopic,
             DialogueBeatDatabase beatDatabase,
@@ -403,7 +476,11 @@ namespace DetectiveGame.Gameplay.Dialogue
                 return null;
             }
 
-            if (!string.Equals(node.phase, "exploration", StringComparison.OrdinalIgnoreCase) ||
+            var phaseMatches = string.Equals(node.phase, interpretedAction.Phase.ToString(), StringComparison.OrdinalIgnoreCase) ||
+                               (interpretedAction.Phase == GamePhase.Intro &&
+                                string.Equals(node.phase, "exploration", StringComparison.OrdinalIgnoreCase));
+
+            if (!phaseMatches ||
                 !string.Equals(matchedTopic.TopicId, FindTopicIdForBeat(beatDatabase, node.nodeId), StringComparison.Ordinal))
             {
                 return null;
@@ -612,15 +689,11 @@ namespace DetectiveGame.Gameplay.Dialogue
                 StatementId = statement.statementId ?? string.Empty,
                 Phase = statement.phase ?? string.Empty,
                 Text = statement.text ?? string.Empty,
-                AiUsage = statement.aiUsage ?? string.Empty,
-                ResponseIntent = statement.responseIntent ?? string.Empty,
                 IsUnlocked = true,
                 IsUnlockable = isUnlockable,
             };
 
             AddRange(context.UnlockRequirements, statement.unlockRequirements);
-            AddRange(context.DialogueSamples, statement.dialogueSamples);
-            AddRange(context.AvoidSaying, statement.avoidSaying);
             return context;
         }
 
@@ -636,6 +709,62 @@ namespace DetectiveGame.Gameplay.Dialogue
                     destination.Add(id);
                 }
             }
+        }
+
+        private static DialogueResolutionType DetermineProgressResolutionType(DialogueResolutionResult result)
+        {
+            var progressBucketCount = 0;
+            if (result.UnlockedFactIds.Count > 0)
+            {
+                progressBucketCount++;
+            }
+
+            if (result.UnlockedStatementIds.Count > 0)
+            {
+                progressBucketCount++;
+            }
+
+            if (result.UnlockedLayerIds.Count > 0)
+            {
+                progressBucketCount++;
+            }
+
+            if (result.UnlockedTokenIds.Count > 0)
+            {
+                progressBucketCount++;
+            }
+
+            if (result.VisitedBeatIds.Count > 0 && progressBucketCount == 0)
+            {
+                return DialogueResolutionType.NoProgress;
+            }
+
+            if (progressBucketCount > 1)
+            {
+                return DialogueResolutionType.CompositeProgress;
+            }
+
+            if (result.UnlockedLayerIds.Count > 0)
+            {
+                return DialogueResolutionType.InterrogationLayerUnlocked;
+            }
+
+            if (result.UnlockedFactIds.Count > 0)
+            {
+                return DialogueResolutionType.FactUnlocked;
+            }
+
+            if (result.UnlockedStatementIds.Count > 0)
+            {
+                return DialogueResolutionType.StatementUnlocked;
+            }
+
+            if (result.UnlockedTokenIds.Count > 0)
+            {
+                return DialogueResolutionType.TokenUnlocked;
+            }
+
+            return DialogueResolutionType.NoProgress;
         }
 
         private static DialogueCandidateTopic FindTopic(
@@ -688,6 +817,31 @@ namespace DetectiveGame.Gameplay.Dialogue
             result.NewAnnoyance = newAnnoyance;
             result.NewPressure = npcState.Pressure;
             result.PunishReason = punishReason;
+        }
+
+        private static void ApplyRepeatedTopicAnnoyance(
+            DialogueResolutionResult result,
+            NpcDialogueRuntimeState npcState,
+            NpcRuntimeManager npcRuntimeManager,
+            string npcId)
+        {
+            var oldAnnoyance = npcState.Annoyance;
+            var newAnnoyance = npcRuntimeManager.AddAnnoyance(npcId, DefaultAnnoyanceGain);
+
+            result.AnnoyanceDelta = newAnnoyance - oldAnnoyance;
+            result.NewAnnoyance = newAnnoyance;
+            result.NewPressure = npcState.Pressure;
+            result.PunishReason = "resolved_topic_repeated";
+
+            if (newAnnoyance >= RepeatTopicRefusalAnnoyanceThreshold)
+            {
+                result.ResolutionType = DialogueResolutionType.Punished;
+                result.AcceptAiResponse = false;
+                result.ResponseRejectReason = "resolved_topic_repeated";
+                return;
+            }
+
+            result.ResolutionType = DialogueResolutionType.NoProgress;
         }
 
         private static void ValidateInputs(

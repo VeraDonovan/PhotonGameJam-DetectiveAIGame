@@ -175,12 +175,8 @@ namespace DetectiveGame.Gameplay.Dialogue
                 builder.AppendLine(EscapeLine(statement.StatementId));
                 AppendKeyValue(builder, "    phase", statement.Phase);
                 AppendKeyValue(builder, "    text", statement.Text);
-                AppendKeyValue(builder, "    aiUsage", statement.AiUsage);
-                AppendKeyValue(builder, "    responseIntent", statement.ResponseIntent);
                 AppendKeyValue(builder, "    isUnlocked", statement.IsUnlocked.ToString());
                 AppendKeyValue(builder, "    isUnlockable", statement.IsUnlockable.ToString());
-                AppendStringList(builder, "    dialogueSamples", statement.DialogueSamples);
-                AppendStringList(builder, "    avoidSaying", statement.AvoidSaying);
             }
         }
 
@@ -207,10 +203,10 @@ namespace DetectiveGame.Gameplay.Dialogue
                 AppendKeyValue(builder, "    truthStatus", beat.TruthStatus);
                 AppendKeyValue(builder, "    triggerType", beat.TriggerType);
                 AppendKeyValue(builder, "    triggerId", beat.TriggerId);
+                AppendKeyValue(builder, "    triggerParentId", beat.TriggerParentId);
                 AppendKeyValue(builder, "    triggerIntent", beat.TriggerIntent);
                 AppendKeyValue(builder, "    triggerPromptLabel", beat.TriggerPromptLabel);
                 AppendKeyValue(builder, "    text", beat.Text);
-                AppendKeyValue(builder, "    watsonNote", beat.WatsonNote);
                 AppendKeyValue(builder, "    unlockStatementId", beat.UnlockStatementId);
                 AppendKeyValue(builder, "    caughtLieId", beat.CaughtLieId);
                 AppendKeyValue(builder, "    isLie", beat.IsLie.ToString());
@@ -247,7 +243,6 @@ namespace DetectiveGame.Gameplay.Dialogue
                     builder.AppendLine(EscapeLine(statement.StatementId));
                     AppendKeyValue(builder, "  phase", statement.Phase);
                     AppendKeyValue(builder, "  text", statement.Text);
-                    AppendKeyValue(builder, "  responseIntent", statement.ResponseIntent);
                 }
             }
 
@@ -336,6 +331,8 @@ namespace DetectiveGame.Gameplay.Dialogue
         {
             builder.AppendLine("OUTPUT JSON SCHEMA");
             builder.AppendLine("Return exactly one JSON object in this shape:");
+            builder.AppendLine("If topicId is a safeRoleplayTopic or openFallbackTopic, usedBeatId and usedStatementId must be empty strings and usedRevealIds must be [].");
+            builder.AppendLine("If you use an authored beat or statement, choose the authored topicId that owns it.");
             builder.AppendLine("{");
             builder.AppendLine("  \"interpretation\": {");
             builder.AppendLine("    \"topicId\": \"candidate_topic_id_or_irrelevant\",");
