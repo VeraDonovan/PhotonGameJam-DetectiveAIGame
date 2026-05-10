@@ -228,5 +228,18 @@ namespace DetectiveGame.UI
             progressText.text = progressLabel;
             progressFill.fillAmount = progressValue;
         }
+         public void CloseEvidencePanel()
+        {
+            var appRoot = AppRoot.Instance;
+            if (appRoot != null && appRoot.UIManager != null)
+            {
+                appRoot.UIManager.SetInventoryOpen(false);
+                Debug.Log("[EvidencePanelManager] CloseEvidencePanel 调用，证据面板已关闭。");
+            }
+            else
+            {
+                Debug.LogWarning("[EvidencePanelManager] 无法关闭证据面板，UIManager 不可用。");
+            }
+        }
     }
 }

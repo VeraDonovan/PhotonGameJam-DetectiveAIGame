@@ -1,44 +1,45 @@
 using UnityEngine;
-using DetectiveGame.Gameplay.Npc;  
 
-public class NPCInteraction_F : MonoBehaviour
+public class NPCInteractionPrompt : MonoBehaviour
 {
     public float interactDistance = 2.5f;   // 玩家与 NPC 的交互距离
     public Transform player;                // 玩家对象引用
-    public GameObject fPrompt;              // “按 F 互动”的提示 UI
+    public GameObject fPrompt;              // 提示 UI Canvas
+    public GameObject dialoguePanel;        // 对话面板引用
 
     void Start()
     {
-        fPrompt.SetActive(false); // 默认隐藏提示 UI
+        if (fPrompt != null)
+            fPrompt.SetActive(false); // 默认隐藏提示 UI
     }
 
     void Update()
     {
-        float distance = Vector3.Distance(player.position, transform.position);
+        if (player == null || fPrompt == null) return;
+
+        // 如果对话面板正在打开，就强制关闭提示
+        if (dialoguePanel != null && dialoguePanel.activeSelf)
+        {
+            fPrompt.SetActive(false);
+            return;
+        }
+
+        float distance = Vector2.Distance(transform.position, player.position);
 
         // 玩家靠近时显示提示
         if (distance <= interactDistance)
         {
             fPrompt.SetActive(true);
-            Debug.Log("玩家靠近 NPC，显示提示");
-            // 按下 F 键时触发交互
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, interactDistance);
-                foreach (var col in colliders)
-                {
-                    GameplayNpc npc = col.GetComponent<GameplayNpc>();
-                    if (npc != null)
-                    {
-                        npc.Interact(); // 统一调用 GameplayNpc 的交互逻辑
-                        break;
-                    }
-                }
-            }
         }
         else
         {
             fPrompt.SetActive(false); // 玩家离开时隐藏提示
         }
+    }
+
+    public void HidePrompt()
+    {
+        if (fPrompt != null)
+            fPrompt.SetActive(false);
     }
 }

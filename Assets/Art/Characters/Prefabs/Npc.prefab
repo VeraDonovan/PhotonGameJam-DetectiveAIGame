@@ -315,8 +315,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactDistance: 2.5
-  player: {fileID: 0}
-  fPrompt: {fileID: 4302663935352087168}
+  player: {fileID: 3225542297001846170, guid: 1d55f5ec0ed0c2443bb80dfa69aea684, type: 3}
+  fPrompt: {fileID: 4087350169406632230}
+  dialoguePanel: {fileID: 0}
 --- !u!114 &3637187731312893247
 MonoBehaviour:
   m_ObjectHideFlags: 0

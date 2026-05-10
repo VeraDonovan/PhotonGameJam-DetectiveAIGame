@@ -168,6 +168,8 @@ namespace DetectiveGame.Core
 
         private void HandleStatementUnlocked(StatementUnlockedEvent eventData)
         {
+
+            Debug.Log($"弹窗跳出，证言ID: {eventData.StatementId}");
             if (!statementDatabase.TryGetStatement(eventData.StatementId, out var statementData) || statementData == null)
             {
                 return;

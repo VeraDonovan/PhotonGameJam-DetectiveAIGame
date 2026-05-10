@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
-    [SerializeField] private KeyCode interactKey = KeyCode.F;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private float interactRadius = 2f;
 
     private EventManager eventManager;

@@ -22,9 +22,10 @@ namespace DetectiveGame.Gameplay.Npc
                 Debug.LogError("[GameplayNpc] Cannot interact because DialogueController.Instance is missing.", this);
                 return;
             }
-
+            
             dialogueController.SetCurrentNpcId(npcId);
             dialogueController.StartNpcOpeningDialogue();
+            
         }
     }
 }
