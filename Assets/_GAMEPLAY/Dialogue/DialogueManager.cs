@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour {
     public GameObject dialoguePanel;
     private bool isDialoguePanelActive;
     private bool hasWarnedExternalPanelToggle;
+    private const string UiBlockSourceId = "dialogue_panel";
 
     [Header("AI Prompt Sections")]
     [SerializeField] private TextAsset dialogueBasePrompt;
@@ -502,8 +503,7 @@ public class DialogueManager : MonoBehaviour {
 
         isDialoguePanelActive = isActive;
         AppRoot appRoot = AppRoot.Instance;
-        Debug.Log($"[DialogueManager] Publishing UiBlockStateChangedEvent IsBlocked={isActive}", this);
-        appRoot?.EventManager?.Publish(new UiBlockStateChangedEvent(isActive));
+        appRoot?.EventManager?.Publish(new UiBlockRequestEvent(UiBlockSourceId, isActive));
     }
 
     private void ShowNextOrderedDialogue() {

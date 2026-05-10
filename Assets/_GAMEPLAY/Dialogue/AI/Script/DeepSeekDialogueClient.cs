@@ -32,10 +32,13 @@ public class DeepSeekDialogueClient : MonoBehaviour {
             yield break;
         }
 
-        DeepSeekChatRequest requestBody = new DeepSeekChatRequest {
+        DeepSeekPlainChatRequest requestBody = new DeepSeekPlainChatRequest {
             model = model,
             max_tokens = maxTokensOverride ?? maxTokens,
             temperature = temperature,
+            thinking = new DeepSeekThinkingOptions {
+                type = "disabled"
+            },
             messages = new[] {
                 new DeepSeekMessage {
                     role = "system",
@@ -61,7 +64,7 @@ public class DeepSeekDialogueClient : MonoBehaviour {
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success) {
-                onError?.Invoke(request.error);
+                onError?.Invoke(BuildHttpErrorMessage(request));
                 yield break;
             }
 
@@ -127,7 +130,7 @@ public class DeepSeekDialogueClient : MonoBehaviour {
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success) {
-                onError?.Invoke(request.error);
+                onError?.Invoke(BuildHttpErrorMessage(request));
                 yield break;
             }
 
@@ -218,6 +221,23 @@ public class DeepSeekDialogueClient : MonoBehaviour {
         return TryExtractJsonStringValue(rawHttpResponse, "\"text\":\"");
     }
 
+    private static string BuildHttpErrorMessage(UnityWebRequest request) {
+        if (request == null) {
+            return "Unknown HTTP error.";
+        }
+
+        string errorMessage = request.error ?? "HTTP request failed.";
+        string responseBody = request.downloadHandler != null
+            ? request.downloadHandler.text ?? string.Empty
+            : string.Empty;
+
+        if (string.IsNullOrWhiteSpace(responseBody)) {
+            return errorMessage;
+        }
+
+        return errorMessage + "\nResponse body:\n" + responseBody;
+    }
+
     private static string TryExtractJsonStringValue(string source, string marker) {
         int markerIndex = source.IndexOf(marker, StringComparison.Ordinal);
         if (markerIndex < 0) {
@@ -273,6 +293,15 @@ public class DeepSeekChatRequest {
     public float temperature;
     public DeepSeekThinkingOptions thinking;
     public DeepSeekResponseFormat response_format;
+}
+
+[Serializable]
+public class DeepSeekPlainChatRequest {
+    public string model;
+    public DeepSeekMessage[] messages;
+    public int max_tokens;
+    public float temperature;
+    public DeepSeekThinkingOptions thinking;
 }
 
 [Serializable]
