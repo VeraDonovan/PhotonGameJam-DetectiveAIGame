@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     private EventManager eventManager;
     private bool isInputBlocked;
 
+    // 在 Inspector 里拖子对象的 Animator 进来
+    [SerializeField] private Animator animator;
+
     private void Start()
     {
         var appRoot = AppRoot.Instance;
@@ -36,10 +39,18 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
         Vector3 move = new Vector3(h, v, 0f);
         transform.Translate(move * speed * Time.deltaTime);
+
+        // 更新 Animator 参数
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", move.magnitude);
+            animator.SetFloat("DirectionX", h);
+            animator.SetFloat("DirectionY", v);
+        }
 
         if (Input.GetKeyDown(interactKey))
         {
