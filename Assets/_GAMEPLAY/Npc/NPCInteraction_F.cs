@@ -20,7 +20,7 @@ public class NPCInteraction_F : MonoBehaviour
         if (distance <= interactDistance)
         {
             fPrompt.SetActive(true);
-
+            Debug.Log("玩家靠近 NPC，显示提示");
             // 按下 F 键时触发交互
             if (Input.GetKeyDown(KeyCode.F))
             {
