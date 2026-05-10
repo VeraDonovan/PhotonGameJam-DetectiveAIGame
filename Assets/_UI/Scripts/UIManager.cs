@@ -51,6 +51,7 @@ namespace DetectiveGame.Core
 
             eventManager = appRoot.EventManager;
             evidenceDatabase = appRoot.DatabaseManager?.EvidenceDatabase;
+            eventManager.Subscribe<EvidenceAddedEvent>(HandleEvidenceAdded);
             statementDatabase = appRoot.DatabaseManager?.StatementDatabase;
             gameStateManager = appRoot.GameStateManager;
             progressManager = appRoot.ProgressManager;
@@ -125,14 +126,15 @@ namespace DetectiveGame.Core
             progressManager.SubmitAccusation(suspectId);
             return gameStateManager.TryOpenAccusation();
         }
-
+        
         public bool EnterResultPhase()
         {
             return gameStateManager.TryShowResult();
         }
 
         private void HandleEvidenceAdded(EvidenceAddedEvent eventData)
-        {
+        {   
+            Debug.Log($"弹窗跳出，证据ID: {eventData.EvidenceId}");
             if (!evidenceDatabase.TryGetEvidence(eventData.EvidenceId, out var evidenceData) || evidenceData == null)
             {
                 return;
