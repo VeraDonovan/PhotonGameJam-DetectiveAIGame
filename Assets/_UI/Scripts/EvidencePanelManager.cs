@@ -28,6 +28,8 @@ namespace DetectiveGame.UI
         private ProgressManager progressManager;
         private EvidenceDatabase evidenceDatabase;
         private EvidenceIconEntry selectedEntry;
+        private bool isSelectionMode;
+        private Action<string, string> selectionCallback;
 
         private void Awake()
         {
@@ -45,6 +47,7 @@ namespace DetectiveGame.UI
 
         private void OnDisable()
         {
+            EndSelectionMode();
             UnsubscribeFromEvents();
         }
 
@@ -142,7 +145,7 @@ namespace DetectiveGame.UI
                 evidenceId,
                 evidenceData.displayName,
                 evidenceData.summary,
-                defaultEvidenceIcon,
+                evidenceData.iconSprite != null ? evidenceData.iconSprite : defaultEvidenceIcon,
                 HandleEntrySelected);
 
             entriesById.Add(evidenceId, entry);
@@ -157,6 +160,19 @@ namespace DetectiveGame.UI
 
         private void HandleEntrySelected(EvidenceIconEntry entry)
         {
+            if (entry == null)
+            {
+                return;
+            }
+
+            if (isSelectionMode)
+            {
+                var callback = selectionCallback;
+                EndSelectionMode();
+                callback?.Invoke(entry.EvidenceId, entry.DisplayName);
+                return;
+            }
+
             if (selectedEntry != null)
             {
                 selectedEntry.SetSelected(false);
@@ -165,6 +181,24 @@ namespace DetectiveGame.UI
             selectedEntry = entry;
             selectedEntry.SetSelected(true);
             SetDetailText(entry.DetailText);
+        }
+
+        public void BeginSelectionMode(Action<string, string> selectedCallback)
+        {
+            selectionCallback = selectedCallback;
+            isSelectionMode = true;
+
+            if (selectedEntry != null)
+            {
+                selectedEntry.SetSelected(false);
+                selectedEntry = null;
+            }
+        }
+
+        public void EndSelectionMode()
+        {
+            isSelectionMode = false;
+            selectionCallback = null;
         }
 
         private void SetDetailText(string value)

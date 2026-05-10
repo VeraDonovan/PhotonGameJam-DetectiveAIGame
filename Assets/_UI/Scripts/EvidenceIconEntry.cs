@@ -12,10 +12,12 @@ namespace DetectiveGame.UI
         [SerializeField] private TMP_Text titleText;
 
         private string evidenceId = string.Empty;
+        private string displayName = string.Empty;
         private string detailText = string.Empty;
         private Action<EvidenceIconEntry> onSelected;
 
         public string EvidenceId => evidenceId;
+        public string DisplayName => displayName;
         public string DetailText => detailText;
 
         private void Awake()
@@ -43,12 +45,13 @@ namespace DetectiveGame.UI
             Action<EvidenceIconEntry> selectedCallback)
         {
             evidenceId = id ?? string.Empty;
+            this.displayName = displayName ?? string.Empty;
             detailText = summary ?? string.Empty;
             onSelected = selectedCallback;
 
             if (titleText != null)
             {
-                titleText.text = displayName ?? string.Empty;
+                titleText.text = this.displayName;
             }
 
             if (iconImage != null)

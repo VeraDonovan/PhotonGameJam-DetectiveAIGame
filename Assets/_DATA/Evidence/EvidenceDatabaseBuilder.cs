@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DetectiveGame.Core
 {
@@ -29,6 +30,8 @@ namespace DetectiveGame.Core
                 {
                     throw new InvalidOperationException($"Duplicate evidence id '{evidenceNode.evidenceId}'.");
                 }
+
+                evidenceNode.iconSprite = Resources.Load<Sprite>(evidenceNode.evidenceId);
 
                 evidenceRequirementsById[evidenceNode.evidenceId] =
                     new List<string>(evidenceNode.requirements ?? new List<string>());

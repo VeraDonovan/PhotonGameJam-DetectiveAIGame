@@ -13,6 +13,7 @@ namespace DetectiveGame.Core
         [SerializeField] private GameObject menuPanelRoot;
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private InventoryPanelManager inventoryPanelManager;
+        [SerializeField] private EvidencePanelManager evidencePanelManager;
         [SerializeField] private bool menuOpenOnStart = true;
         [SerializeField] private bool inventoryOpenOnStart;
         [SerializeField] private TransitionUI transitionUI;
@@ -68,6 +69,20 @@ namespace DetectiveGame.Core
             PublishUiBlockState();
         }
 
+        public void OpenEvidenceSelectionForDialogue(Action<string, string> onEvidenceSelected)
+        {
+            SetMenuOpen(false);
+            SetUnlockPopupOpen(false);
+            SetTransitionOpen(false);
+            SetInventoryOpen(true);
+            inventoryPanelManager.ShowEvidenceSelectionOnly();
+            evidencePanelManager.BeginSelectionMode((evidenceId, displayName) =>
+            {
+                onEvidenceSelected?.Invoke(evidenceId, displayName);
+                SetInventoryOpen(false);
+            });
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(inventoryToggleKey))
@@ -78,6 +93,11 @@ namespace DetectiveGame.Core
 
         public void SetInventoryOpen(bool isOpen)
         {
+            if (!isOpen)
+            {
+                inventoryPanelManager.RestoreEvidenceSelectionView();
+            }
+
             SetPanelActive(inventoryRoot, isOpen);
 
             if (isOpen)
@@ -248,6 +268,16 @@ namespace DetectiveGame.Core
             if (inventoryPanelManager == null)
             {
                 throw new InvalidOperationException("UIManager requires inventoryPanelManager to be assigned.");
+            }
+
+            if (evidencePanelManager == null && inventoryPanelManager != null)
+            {
+                evidencePanelManager = inventoryPanelManager.GetComponentInChildren<EvidencePanelManager>(true);
+            }
+
+            if (evidencePanelManager == null)
+            {
+                throw new InvalidOperationException("UIManager requires evidencePanelManager to be assigned.");
             }
 
             if (transitionUI == null)

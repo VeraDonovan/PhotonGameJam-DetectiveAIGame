@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DetectiveGame.Core
 {
@@ -21,6 +22,7 @@ namespace DetectiveGame.Core
         public string targetNpcId;
         public List<string> requirements = new List<string>();
         public string mapGroup;
+        [NonSerialized] public Sprite iconSprite;
     }
 
     [Serializable]
