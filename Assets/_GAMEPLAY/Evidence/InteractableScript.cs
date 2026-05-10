@@ -42,6 +42,7 @@ public class InteractableScript : MonoBehaviour
                 {
                     appRoot.EventManager.Publish(new EvidenceAddedEvent(evidenceId));
                 }
+                hintCanvas.gameObject.SetActive(false);
             }
         }
         else
