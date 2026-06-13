@@ -10,6 +10,7 @@ public sealed class TransitionUI : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public float fadeDuration = 1f;
     public float charDelay = 0.05f;
+     public AudioSource audioSource;
     [TextArea] public string[] texts;
 
     private Coroutine transitionCoroutine;
@@ -17,6 +18,9 @@ public sealed class TransitionUI : MonoBehaviour
 
     public void StartTransition(Action onFinished)
     {
+        if (audioSource != null)        {
+            audioSource.Play();
+        }
         onTransitionFinished = onFinished;
 
         if (transitionCoroutine != null)
@@ -59,9 +63,11 @@ public sealed class TransitionUI : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
         }
-
+        if (audioSource != null)        {
+            audioSource.Stop();
+        }
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
-
+        
         transitionCoroutine = null;
         onTransitionFinished?.Invoke();
     }
