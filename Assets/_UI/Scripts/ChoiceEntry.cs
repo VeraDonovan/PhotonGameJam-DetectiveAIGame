@@ -1,11 +1,12 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public sealed class ChoiceEntry : MonoBehaviour
 {
     [SerializeField] private Button button;
+    [SerializeField] private Image iconImage;
     [SerializeField] private TMP_Text titleText;
 
     private string choiceId;
@@ -13,10 +14,11 @@ public sealed class ChoiceEntry : MonoBehaviour
 
     public string ChoiceId => choiceId;
 
-    public void Initialize(string id, string displayName, Action<ChoiceEntry> callback)
+    public void Initialize(string id, string name, Action<ChoiceEntry> callback, Sprite icon)
     {
         choiceId = id;
-        titleText.text = displayName;
+        titleText.text = name;
+        iconImage.sprite = icon;
         onSelected = callback;
 
         button.onClick.RemoveAllListeners();
