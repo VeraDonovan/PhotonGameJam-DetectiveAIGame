@@ -59,8 +59,8 @@ public class PlayerController : MonoBehaviour
             // animator.SetFloat("Speed", move.magnitude);
             animator.SetFloat("movex", isMoving? lastX*2:lastX*1);
             animator.SetFloat("movey", isMoving? lastY*2:lastY*1);
-            animator.SetBool("is_walking", isMoving);
-            UnityEngine.Debug.Log($"h: {animator.GetFloat("movex")}, v: {animator.GetFloat("movey") }, lastX: {lastX}, lastY: {lastY}, isMoving: {isMoving}");
+            // animator.SetBool("is_walking", isMoving);
+            // UnityEngine.Debug.Log($"h: {animator.GetFloat("movex")}, v: {animator.GetFloat("movey") }, lastX: {lastX}, lastY: {lastY}, isMoving: {isMoving}");
         }
 
         if (Input.GetKeyDown(interactKey))
@@ -74,9 +74,10 @@ public class PlayerController : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, interactRadius);
         GameplayNpc closestNpc = null;
         float closestDistance = float.MaxValue;
-
+        // UnityEngine.Debug.Log($"检测到 {hits.Length} 个碰撞体在交互范围内");
         foreach (Collider2D hit in hits)
-        {
+        {   
+            UnityEngine.Debug.Log($"命中对象: {hit.gameObject.name}, Layer: {hit.gameObject.layer}");
             GameplayNpc npc = hit.GetComponentInParent<GameplayNpc>();
             if (npc == null)
             {

@@ -59,7 +59,7 @@ namespace DetectiveGame.Core
             statementDatabase = appRoot.DatabaseManager?.StatementDatabase;
             gameStateManager = appRoot.GameStateManager;
             progressManager = appRoot.ProgressManager;
-
+            Debug.Log("UIManager 初始化时 evidencePanelManager=" + evidencePanelManager?.gameObject.name);
             ValidateConfiguration();
             SubscribeToEvents();
 
@@ -68,6 +68,7 @@ namespace DetectiveGame.Core
             SetUnlockPopupOpen(false);
             SetTransitionOpen(false);
             PublishUiBlockState();
+
         }
 
         public void OpenEvidenceSelectionForDialogue(Action<string, string> onEvidenceSelected)

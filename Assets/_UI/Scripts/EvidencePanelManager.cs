@@ -32,23 +32,26 @@ namespace DetectiveGame.UI
         private Action<string, string> selectionCallback;
 
         private void Awake()
-        {
+        {  
+            Debug.Log("[EvidencePanelManager] Awake 执行");
             ResolveCoreReferences();
             ValidateConfiguration();
             SetDetailText(defaultDetailText);
             RefreshProgressView();
+            // SubscribeToEvents();
         }
 
         private void OnEnable()
         {
-            SubscribeToEvents();
+            // SubscribeToEvents();
             RefreshFromRuntimeState();
         }
 
         private void OnDisable()
-        {
+        {   
+            Debug.Log("EvidencePanelManager OnDisable");
             EndSelectionMode();
-            UnsubscribeFromEvents();
+            // UnsubscribeFromEvents();
         }
 
         private void ResolveCoreReferences()
@@ -91,17 +94,19 @@ namespace DetectiveGame.UI
         }
 
         private void SubscribeToEvents()
-        {
+        {   
+            Debug.Log("成功订阅");
             eventManager?.Subscribe<EvidenceAddedEvent>(HandleEvidenceAdded);
         }
 
         private void UnsubscribeFromEvents()
-        {
+        {   
+            Debug.Log("成功取消订阅");
             eventManager?.Unsubscribe<EvidenceAddedEvent>(HandleEvidenceAdded);
         }
 
         private void HandleEvidenceAdded(EvidenceAddedEvent eventData)
-        {
+        {   
             Debug.Log(
                 $"[EvidencePanelManager] Received EvidenceAddedEvent for '{eventData.EvidenceId}'. Updating evidence UI.");
             AddEvidenceEntry(eventData.EvidenceId);
@@ -109,7 +114,8 @@ namespace DetectiveGame.UI
         }
 
         private void RefreshFromRuntimeState()
-        {
+        {   
+            Debug.Log("有执行刷新状态的操作");
             Debug.Log(
                 $"[EvidencePanelManager] Refreshing from runtime state. CollectedEvidenceCount={progressManager.CollectedEvidenceIds.Count}.");
             foreach (var evidenceId in progressManager.CollectedEvidenceIds)
@@ -134,12 +140,13 @@ namespace DetectiveGame.UI
             }
 
             if (!evidenceDatabase.TryGetEvidence(evidenceId, out var evidenceData))
-            {
+            {  
+                
                 Debug.LogWarning(
-                    $"[EvidencePanelManager] EvidenceDatabase lookup failed for '{evidenceId}'.");
+                    $"[EvidencePanelManager] 找失败了 '{evidenceId}'.");
                 return;
             }
-
+            Debug.Log($"[EvidencePanelManager] 证据 '{evidenceId}' 展示名称={evidenceData.displayName}, iconSprite={(evidenceData.iconSprite == null ? "NULL" : evidenceData.iconSprite.name)}");
             var entry = Instantiate(iconEntryPrefab, iconContentRoot);
             entry.Initialize(
                 evidenceId,

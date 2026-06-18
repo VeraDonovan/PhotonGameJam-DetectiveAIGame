@@ -31,7 +31,7 @@ namespace DetectiveGame.Core
                     throw new InvalidOperationException($"Duplicate evidence id '{evidenceNode.evidenceId}'.");
                 }
 
-                evidenceNode.iconSprite = Resources.Load<Sprite>(evidenceNode.evidenceId);
+                evidenceNode.iconSprite = Resources.Load<Sprite>("Evidence/" + evidenceNode.evidenceId);
 
                 evidenceRequirementsById[evidenceNode.evidenceId] =
                     new List<string>(evidenceNode.requirements ?? new List<string>());

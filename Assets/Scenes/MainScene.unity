@@ -371,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (3)
+      value: diary
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -441,7 +441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (5)
+      value: cup
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -579,6 +579,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 377844041423360431, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+      propertyPath: underPanel
+      value: 
+      objectReference: {fileID: 1029012510}
     - target: {fileID: 1222239314836666057, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -879,11 +883,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5055279722263071379, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5395487233806069042, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5623040768711996442, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654413347368096410, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1266,7 +1278,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (6)
+      value: stove
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646247813488473414, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
+      propertyPath: m_Radius
+      value: 0.8199457
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646247813488473414, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.10119569
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -1286,6 +1306,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4087350169406632230, guid: cd0811f02c44c4b498427c5c7ae324f1, type: 3}
   m_PrefabInstance: {fileID: 5540044312463616890}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1029012510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6649541360787399319, guid: 028f129783643b64abf99facaa2c8c45, type: 3}
+  m_PrefabInstance: {fileID: 666184300}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1056551797
 PrefabInstance:
@@ -1341,7 +1366,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (7)
+      value: closet
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646247813488473414, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
+      propertyPath: m_Radius
+      value: 0.6419673
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646247813488473414, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.0767827
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -1411,7 +1444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (2)
+      value: lamp
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -1500,7 +1533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3406526036096569815, guid: 1d55f5ec0ed0c2443bb80dfa69aea684, type: 3}
       propertyPath: speed
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3406526036096569815, guid: 1d55f5ec0ed0c2443bb80dfa69aea684, type: 3}
       propertyPath: animator
@@ -1867,9 +1900,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0076009394, y: -0.0076008798}
+  m_Offset: {x: 0.002862525, y: -0.21609084}
   serializedVersion: 2
-  m_Radius: 0.10094863
+  m_Radius: 0.10884597
 --- !u!50 &1424327109
 Rigidbody2D:
   serializedVersion: 4
@@ -2010,7 +2043,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (1)
+      value: blood
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646247813488473414, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
+      propertyPath: m_Radius
+      value: 0.36429596
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646247813488473414, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.05474949
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -2675,7 +2716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Name
-      value: evidencepiece (4)
+      value: trashcan
       objectReference: {fileID: 0}
     - target: {fileID: 9115433584842379764, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_Sprite
@@ -2852,6 +2893,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2311593840965261418, guid: 7010b64ae06c5644eb5ed9a87d53f435, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.07
+      objectReference: {fileID: 0}
     - target: {fileID: 2563196814240754846, guid: 7010b64ae06c5644eb5ed9a87d53f435, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2874,7 +2919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6439142911187944118, guid: 7010b64ae06c5644eb5ed9a87d53f435, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7728967106226269328, guid: 7010b64ae06c5644eb5ed9a87d53f435, type: 3}
       propertyPath: m_IsActive
@@ -2889,7 +2934,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6439142911187944118, guid: 7010b64ae06c5644eb5ed9a87d53f435, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1287083523259581766, guid: 7010b64ae06c5644eb5ed9a87d53f435, type: 3}
       insertIndex: -1
@@ -2966,7 +3012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3647799230596184642, guid: f3de9f1afb846034796f89b46a4d8e9f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
