@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using DetectiveGame.Core;
+using DetectiveGame.Core;              // 👉 添加：引用 UIManager 所在命名空间
 using DetectiveGame.Gameplay.Npc;
 using UnityEngine;
 
@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     private EventManager eventManager;
     private bool isInputBlocked;
 
-    // 在 Inspector 里拖子对象的 Animator 进来
+    // 👉 修改：明确类型为 DetectiveGame.Core.UIManager
+    private DetectiveGame.Core.UIManager uiManager;
+
     [SerializeField] private Animator animator;
 
     private float lastX = 0;
@@ -27,7 +29,11 @@ public class PlayerController : MonoBehaviour
         }
 
         eventManager = appRoot.EventManager;
-        isInputBlocked = appRoot.UIManager != null && appRoot.UIManager.IsPlayerInputBlocked;
+
+        // 👉 初始化 UIManager
+        uiManager = appRoot.UIManager;
+
+        isInputBlocked = uiManager != null && uiManager.IsPlayerInputBlocked;
         eventManager?.Subscribe<UiBlockStateChangedEvent>(HandleUiBlockStateChanged);
     }
 
@@ -53,14 +59,11 @@ public class PlayerController : MonoBehaviour
             lastX = h;
             lastY = v;
         }
-        // 更新 Animator 参数
+
         if (animator != null)
         {
-            // animator.SetFloat("Speed", move.magnitude);
-            animator.SetFloat("movex", isMoving? lastX*2:lastX*1);
-            animator.SetFloat("movey", isMoving? lastY*2:lastY*1);
-            // animator.SetBool("is_walking", isMoving);
-            // UnityEngine.Debug.Log($"h: {animator.GetFloat("movex")}, v: {animator.GetFloat("movey") }, lastX: {lastX}, lastY: {lastY}, isMoving: {isMoving}");
+            animator.SetFloat("movex", isMoving ? lastX * 2 : lastX);
+            animator.SetFloat("movey", isMoving ? lastY * 2 : lastY);
         }
 
         if (Input.GetKeyDown(interactKey))
@@ -74,15 +77,11 @@ public class PlayerController : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, interactRadius);
         GameplayNpc closestNpc = null;
         float closestDistance = float.MaxValue;
-        // UnityEngine.Debug.Log($"检测到 {hits.Length} 个碰撞体在交互范围内");
+
         foreach (Collider2D hit in hits)
-        {   
-            UnityEngine.Debug.Log($"命中对象: {hit.gameObject.name}, Layer: {hit.gameObject.layer}");
+        {
             GameplayNpc npc = hit.GetComponentInParent<GameplayNpc>();
-            if (npc == null)
-            {
-                continue;
-            }
+            if (npc == null) continue;
 
             float distance = Vector2.Distance(transform.position, npc.transform.position);
             if (distance < closestDistance)
@@ -92,7 +91,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        closestNpc?.Interact();
+        if (closestNpc != null)
+        {
+            // 👉 添加：互动时关闭 underPanel
+            if (uiManager != null && uiManager.UnderPanel != null)
+            {
+                uiManager.UnderPanel.SetActive(false);
+                UnityEngine.Debug.Log("[PlayerController] 与 NPC 互动，关闭 UnderPanel");
+            }
+
+            closestNpc.Interact();
+        }
     }
 
     private void HandleUiBlockStateChanged(UiBlockStateChangedEvent eventData)

@@ -483,7 +483,14 @@ public class DialogueManager : MonoBehaviour {
     }
 
     public void OnCloseButtonClick() {
+        Debug.Log("该加载underpanel了");
         HideDialogue();
+
+        var appRoot = AppRoot.Instance;
+    if (appRoot != null && appRoot.UIManager != null && appRoot.UIManager.UnderPanel != null) {
+        appRoot.UIManager.UnderPanel.SetActive(true);
+        Debug.Log("[DialogueManager] 点击关闭按钮，重新打开 UnderPanel");
+    }
     }
 
     private void SetDialoguePanelActive(bool isActive) {

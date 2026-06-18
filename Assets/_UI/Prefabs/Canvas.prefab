@@ -1286,6 +1286,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1912266090989523889}
   fadeDuration: 1
   charDelay: 0.05
+  audioSource: {fileID: 0}
   texts:
   - "\u4F60\u597D\u4F60\u597D\u4F60\u597D\u4F60\u597D\u5E74\u540E"
 --- !u!1 &2355704114978968517
@@ -2347,6 +2348,7 @@ RectTransform:
   - {fileID: 5753983085546073741}
   - {fileID: 4911992983419783271}
   - {fileID: 2211717986620319997}
+  - {fileID: 3791184278812340595}
   - {fileID: 4669979898489750987}
   - {fileID: 6362336369483893375}
   - {fileID: 3707980460214941984}
@@ -4913,7 +4915,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3791184278812340595}
   - {fileID: 7516639201957926338}
   - {fileID: 6543203853326695694}
   - {fileID: 5972013805921026951}
@@ -5869,6 +5870,10 @@ PrefabInstance:
     - target: {fileID: 2710136263533251565, guid: 4583f9f5c82582344af1ff0fbcf8a82e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -45.989975
+      objectReference: {fileID: 0}
+    - target: {fileID: 3105507202134733393, guid: 4583f9f5c82582344af1ff0fbcf8a82e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3193183190845018515, guid: 4583f9f5c82582344af1ff0fbcf8a82e, type: 3}
       propertyPath: m_SizeDelta.x
@@ -8987,7 +8992,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4669979898489750987}
+    m_TransformParent: {fileID: 4734097923997939179}
     m_Modifications:
     - target: {fileID: 1501419889970299085, guid: 00c3f3f0f5c79ab4db9aa4e509426598, type: 3}
       propertyPath: m_Color.a
@@ -9151,11 +9156,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6540968834008426279, guid: 00c3f3f0f5c79ab4db9aa4e509426598, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6540968834008426279, guid: 00c3f3f0f5c79ab4db9aa4e509426598, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -122
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6540968834008426279, guid: 00c3f3f0f5c79ab4db9aa4e509426598, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

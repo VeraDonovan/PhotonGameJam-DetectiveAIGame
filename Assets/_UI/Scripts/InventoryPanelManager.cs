@@ -1,6 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
+using DetectiveGame.Core;
 
 namespace DetectiveGame.UI
 {
@@ -20,7 +21,7 @@ namespace DetectiveGame.UI
         [SerializeField] private GameObject casePanel;
         [SerializeField] private GameObject evidencePanel;
         [SerializeField] private GameObject suspectPanel;
-        [SerializeField] private GameObject underPanel;
+        // [SerializeField] private GameObject underPanel;
 
         private readonly Dictionary<GameObject, bool> preEvidenceSelectionStates = new Dictionary<GameObject, bool>();
         private bool isEvidenceSelectionViewActive;
@@ -29,7 +30,7 @@ namespace DetectiveGame.UI
 
         private void Awake()
         {
-            ResolveOptionalPanelReferences();
+            // ResolveOptionalPanelReferences();
             BindButtonEvents();
             ActiveTab = defaultTab;
             RefreshActiveTab();
@@ -68,7 +69,7 @@ namespace DetectiveGame.UI
             SetPanelState(casePanel, ActiveTab == InventoryTab.Case);
             SetPanelState(evidencePanel, ActiveTab == InventoryTab.Evidence);
             SetPanelState(suspectPanel, ActiveTab == InventoryTab.Suspect);
-            SetPanelState(underPanel, true);
+            // SetPanelState(underPanel, true);
         }
 
         public void ShowEvidenceSelectionOnly()
@@ -85,7 +86,7 @@ namespace DetectiveGame.UI
             SetPanelState(casePanel, false);
             SetPanelState(evidencePanel, true);
             SetPanelState(suspectPanel, false);
-            SetPanelState(underPanel, false);
+            // SetPanelState(underPanel, false);
         }
 
         public void RestoreEvidenceSelectionView()
@@ -121,19 +122,19 @@ namespace DetectiveGame.UI
             isEvidenceSelectionViewActive = true;
         }
 
-        private void ResolveOptionalPanelReferences()
-        {
-            if (underPanel != null)
-            {
-                return;
-            }
+        // private void ResolveOptionalPanelReferences()
+        // {
+        //     if (underPanel != null)
+        //     {
+        //         return;
+        //     }
 
-            var underPanelTransform = transform.Find("underPanel");
-            if (underPanelTransform != null)
-            {
-                underPanel = underPanelTransform.gameObject;
-            }
-        }
+        //     var underPanelTransform = transform.Find("underPanel");
+        //     if (underPanelTransform != null)
+        //     {
+        //         underPanel = underPanelTransform.gameObject;
+        //     }
+        // }
 
         private static void SetPanelState(GameObject targetPanel, bool isActive)
         {
@@ -179,5 +180,31 @@ namespace DetectiveGame.UI
 
             button.onClick.RemoveListener(action);
         }
-    }
+
+        public void OnCloseCasePanel()
+        {
+            SetPanelState(casePanel, false);
+        }
+
+        public void OnCloseEvidencePanel()
+        {
+            SetPanelState(evidencePanel, false);
+        }
+
+        public void OnCloseSuspectPanel()
+        {
+            SetPanelState(suspectPanel, false);
+        }
+        
+
+        public void OnCloseInventory()
+        {
+            var appRoot = AppRoot.Instance;
+            if (appRoot != null && appRoot.UIManager != null)
+            {
+                appRoot.UIManager.SetInventoryOpen(false);
+            }
+        }
+ 
+}
 }

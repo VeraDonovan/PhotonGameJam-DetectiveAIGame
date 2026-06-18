@@ -22,6 +22,7 @@ namespace DetectiveGame.UI
         [SerializeField] private TMP_Text progressText;
         [SerializeField] private Image progressFill;
 
+        [SerializeField] private  GameObject evidencePanel;
         private readonly Dictionary<string, EvidenceIconEntry> entriesById = new Dictionary<string, EvidenceIconEntry>();
 
         private EventManager eventManager;
@@ -240,7 +241,8 @@ namespace DetectiveGame.UI
             var appRoot = AppRoot.Instance;
             if (appRoot != null && appRoot.UIManager != null)
             {
-                appRoot.UIManager.SetInventoryOpen(false);
+                // appRoot.UIManager.SetInventoryOpen(false);
+                evidencePanel.SetActive(false);
                 Debug.Log("[EvidencePanelManager] CloseEvidencePanel 调用，证据面板已关闭。");
             }
             else

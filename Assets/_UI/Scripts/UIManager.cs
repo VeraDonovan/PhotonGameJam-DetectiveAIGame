@@ -14,6 +14,8 @@ namespace DetectiveGame.Core
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private InventoryPanelManager inventoryPanelManager;
         [SerializeField] private EvidencePanelManager evidencePanelManager;
+
+        [SerializeField] public GameObject UnderPanel;
         [SerializeField] private bool menuOpenOnStart = true;
         [SerializeField] private bool inventoryOpenOnStart;
         [SerializeField] private TransitionUI transitionUI;
@@ -59,7 +61,7 @@ namespace DetectiveGame.Core
             statementDatabase = appRoot.DatabaseManager?.StatementDatabase;
             gameStateManager = appRoot.GameStateManager;
             progressManager = appRoot.ProgressManager;
-            Debug.Log("UIManager 初始化时 evidencePanelManager=" + evidencePanelManager?.gameObject.name);
+            // Debug.Log("UIManager 初始化时 evidencePanelManager=" + evidencePanelManager?.gameObject.name);
             ValidateConfiguration();
             SubscribeToEvents();
 
@@ -73,6 +75,8 @@ namespace DetectiveGame.Core
 
         public void OpenEvidenceSelectionForDialogue(Action<string, string> onEvidenceSelected)
         {
+
+            
             SetMenuOpen(false);
             SetUnlockPopupOpen(false);
             SetTransitionOpen(false);
@@ -209,6 +213,8 @@ namespace DetectiveGame.Core
         {
             CloseAllGameplayBlockingPanels();
             SetTransitionOpen(false);
+            SetPanelActive(UnderPanel, true);
+            SetInventoryOpen(true);
         }
 
         private void SubscribeToEvents()
