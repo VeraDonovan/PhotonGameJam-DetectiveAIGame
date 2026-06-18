@@ -27,6 +27,8 @@ namespace DetectiveGame.UI
                 button.onClick.RemoveListener(HandleClicked);
                 button.onClick.AddListener(HandleClicked);
             }
+            Debug.Log($"[EvidenceIconEntry]按钮激活 Awake: button={(button == null ? "NULL" : button.name)}");
+
         }
 
         private void OnDestroy()
@@ -72,7 +74,7 @@ namespace DetectiveGame.UI
         }
 
         private void HandleClicked()
-        {
+        {   
             Debug.Log($"[EvidenceIconEntry] Clicked evidence entry '{evidenceId}'.");
             onSelected?.Invoke(this);
         }
