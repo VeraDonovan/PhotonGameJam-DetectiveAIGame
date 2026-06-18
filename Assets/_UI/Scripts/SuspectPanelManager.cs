@@ -118,40 +118,50 @@ namespace DetectiveGame.UI
         }
 
         private void EnsureSuspectEntries(IEnumerable<string> npcIds)
+    {
+        foreach (var npcId in npcIds)
         {
-            foreach (var npcId in npcIds)
-            {
-                if (string.IsNullOrWhiteSpace(npcId) || !npcDatabase.TryGetNpc(npcId, out var npc))
-                {
-                    continue;
-                }
-
-                if (npc == null || !string.Equals(npc.roleType, "suspect", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (entriesByNpcId.ContainsKey(npcId))
-                {
-                    continue;
-                }
-
-                var entry = Instantiate(iconEntryPrefab, iconContentRoot);
-                entry.Initialize(
-                    npc.npcId,
-                    npc.displayName,
-                    BuildDetailText(npc.npcId),
-                    defaultSuspectIcon,
-                    HandleEntrySelected);
-
-                entriesByNpcId.Add(npcId, entry);
-
-                if (selectedEntry == null)
-                {
-                    HandleEntrySelected(entry);
-                }
-            }
+        if (string.IsNullOrWhiteSpace(npcId) || !npcDatabase.TryGetNpc(npcId, out var npc))
+        {
+            continue;
         }
+
+        if (npc == null || !string.Equals(npc.roleType, "suspect", StringComparison.OrdinalIgnoreCase))
+        {
+            continue;
+        }
+
+        if (entriesByNpcId.ContainsKey(npcId))
+        {
+            continue;
+        }
+
+        var entry = Instantiate(iconEntryPrefab, iconContentRoot);
+
+        // 👉 新增：根据 npcId 去 Resources 文件夹加载图片
+        Debug.Log($"尝试加载 NPC 图标: {npcId}");
+        Sprite npcIcon = Resources.Load<Sprite>("NpcIcons/" + npcId);
+        if (npcIcon == null)
+        {
+            npcIcon = defaultSuspectIcon; // 如果找不到，就用默认图
+        }
+
+        entry.Initialize(
+            npc.npcId,
+            npc.displayName,
+            BuildDetailText(npc.npcId),
+            npcIcon,
+            HandleEntrySelected);
+
+        entriesByNpcId.Add(npcId, entry);
+
+        if (selectedEntry == null)
+        {
+            HandleEntrySelected(entry);
+        }
+    }
+}
+
 
         private void HandleStatementUnlocked(StatementUnlockedEvent eventData)
         {
