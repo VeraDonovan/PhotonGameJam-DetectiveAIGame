@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using DetectiveGame.Core;
 using DetectiveGame.Gameplay.Dialogue;
 using TMPro;
@@ -28,6 +27,7 @@ public class DialogueManager : MonoBehaviour {
     private readonly SortedDictionary<int, string> orderedDialogueQueue = new SortedDictionary<int, string>();
     private readonly Dictionary<string, DialogueConversationSession> conversationSessionByNpcId =
         new Dictionary<string, DialogueConversationSession>();
+    private readonly DialogueApiContextAssembler contextAssembler = new DialogueApiContextAssembler();
     private readonly DialogueTurnResolver turnResolver = new DialogueTurnResolver();
     private readonly DialoguePromptBuilder promptBuilder = new DialoguePromptBuilder();
     private int nextOrderedDialogueId;
@@ -137,12 +137,13 @@ public class DialogueManager : MonoBehaviour {
             yield break;
         }
 
-        DialogueTurnContext promptContext = turnResolver.BuildPromptContext(
+        DialogueApiPromptContext promptContext = contextAssembler.Assemble(
             rawInput,
             appRoot.DatabaseManager,
             appRoot.ProgressManager,
             appRoot.NpcRuntimeManager,
-            conversationSession);
+            conversationSession,
+            DialoguePromptMode.Turn);
 
         DialoguePromptMessages promptMessages = promptBuilder.Build(promptContext, promptSections);
         DeepSeekDialogueTurnResponse aiResponse = null;
@@ -163,17 +164,16 @@ public class DialogueManager : MonoBehaviour {
         }
 
         InterpretedDialogueAction interpretedAction = CreateInterpretedAction(rawInput, aiResponse);
-        DialogueTurnContext resolvedContext = turnResolver.Resolve(
+        DialogueTurnResolution resolution = turnResolver.Resolve(
             rawInput,
             interpretedAction,
             appRoot.DatabaseManager,
             appRoot.ProgressManager,
-            appRoot.NpcRuntimeManager,
-            conversationSession);
+            appRoot.NpcRuntimeManager);
 
-        string npcText = resolvedContext.ResolutionResult.AcceptAiResponse
+        string npcText = resolution.ResolutionResult.AcceptAiResponse
             ? aiResponse.response.prose
-            : CreateRejectedResponse(resolvedContext.ResolutionResult.ResponseRejectReason);
+            : CreateRejectedResponse(resolution.ResolutionResult.ResponseRejectReason);
 
         conversationSession.AddExchange(playerText, npcText);
         ShowDialogue(npcText);
@@ -207,22 +207,22 @@ public class DialogueManager : MonoBehaviour {
         };
 
         DialogueConversationSession conversationSession = GetOrCreateConversationSession(npcId);
-        DialogueTurnContext promptContext = turnResolver.BuildPromptContext(
+        DialogueApiPromptContext promptContext = contextAssembler.Assemble(
             rawInput,
             appRoot.DatabaseManager,
             appRoot.ProgressManager,
             appRoot.NpcRuntimeManager,
-            conversationSession);
+            conversationSession,
+            DialoguePromptMode.Opening);
 
-        string openingSystemPrompt = BuildOpeningSystemPrompt();
-        string openingUserPrompt = BuildOpeningUserPrompt(promptContext);
+        DialoguePromptMessages openingPromptMessages = promptBuilder.BuildOpening(promptContext);
 
         string aiOpeningText = string.Empty;
         string aiError = string.Empty;
 
         yield return dialogueClient.SendDialogueRequest(
-            openingSystemPrompt,
-            openingUserPrompt,
+            openingPromptMessages.SystemMessage,
+            openingPromptMessages.UserMessage,
             response => aiOpeningText = response,
             error => aiError = error,
             maxTokensOverride: 300);
@@ -266,60 +266,6 @@ public class DialogueManager : MonoBehaviour {
         return (character >= '\u3400' && character <= '\u4DBF') ||
                (character >= '\u4E00' && character <= '\u9FFF') ||
                (character >= '\uF900' && character <= '\uFAFF');
-    }
-
-    private static string BuildOpeningSystemPrompt() {
-        return
-            "你在生成一款中文侦探游戏里的NPC开场白。\n" +
-            "玩家是来调查案件的警察，你是在对警察开口说第一句话。\n" +
-            "只返回一句简短的中文台词。\n" +
-            "不要输出JSON。\n" +
-            "不要解释规则。\n" +
-            "不要复述提示词。\n" +
-            "不要输出旁白、括号说明、系统信息或分析。\n" +
-            "只根据给定的公开资料、当前阶段和最近对话，用符合角色的方式先开口。";
-    }
-
-    private static string BuildOpeningUserPrompt(DialogueTurnContext context) {
-        var builder = new StringBuilder();
-        builder.AppendLine("当前是NPC主动开口的开场。");
-        builder.Append("阶段: ");
-        builder.AppendLine(context.Phase.ToString());
-        builder.AppendLine("玩家身份: 警察");
-        builder.AppendLine("场景: 你正在接受警方关于案件的问话。");
-
-        if (context.NpcPublicProfile != null) {
-            builder.Append("姓名: ");
-            builder.AppendLine(context.NpcPublicProfile.displayName ?? string.Empty);
-            builder.Append("身份: ");
-            builder.AppendLine(context.NpcPublicProfile.occupation ?? string.Empty);
-            builder.Append("与死者关系: ");
-            builder.AppendLine(context.NpcPublicProfile.relationshipToVictim ?? string.Empty);
-            builder.Append("公开简介: ");
-            builder.AppendLine(context.NpcPublicProfile.profileText ?? string.Empty);
-        }
-
-        builder.AppendLine("最近对话:");
-        if (context.RecentConversation == null || context.RecentConversation.Count == 0) {
-            builder.AppendLine("无");
-        } else {
-            int startIndex = context.RecentConversation.Count > 2
-                ? context.RecentConversation.Count - 2
-                : 0;
-            for (int i = startIndex; i < context.RecentConversation.Count; i++) {
-                var exchange = context.RecentConversation[i];
-                builder.Append("玩家: ");
-                builder.AppendLine(exchange.PlayerText ?? string.Empty);
-                builder.Append("NPC: ");
-                builder.AppendLine(exchange.NpcText ?? string.Empty);
-            }
-        }
-
-        builder.AppendLine("要求:");
-        builder.AppendLine("玩家刚刚开始接触你，这一回合还没有输入具体问题。");
-        builder.AppendLine("你要意识到对方是警察，因此开场语气要符合被警方询问时的反应。");
-        builder.AppendLine("请直接说一句自然的中文开场白。");
-        return builder.ToString();
     }
 
     private static string NormalizeOpeningResponseText(string rawText) {

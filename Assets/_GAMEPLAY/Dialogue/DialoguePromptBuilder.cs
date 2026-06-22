@@ -5,9 +5,9 @@ using DetectiveGame.Core;
 
 namespace DetectiveGame.Gameplay.Dialogue
 {
-    public sealed class DialoguePromptBuilder
+    public sealed class DialoguePromptBuilder : IDialoguePromptBuilder
     {
-        public DialoguePromptMessages Build(DialogueTurnContext context, DialoguePromptSections promptSections)
+        public DialoguePromptMessages Build(DialogueApiPromptContext context, DialoguePromptSections promptSections)
         {
             if (context == null)
             {
@@ -24,6 +24,78 @@ namespace DetectiveGame.Gameplay.Dialogue
                 SystemMessage = BuildSystemMessage(promptSections),
                 UserMessage = BuildUserMessage(context),
             };
+        }
+
+        public DialoguePromptMessages BuildOpening(DialogueApiPromptContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            return new DialoguePromptMessages
+            {
+                SystemMessage = BuildOpeningSystemMessage(),
+                UserMessage = BuildOpeningUserMessage(context),
+            };
+        }
+
+        private static string BuildOpeningSystemMessage()
+        {
+            return
+                "你在生成一款中文侦探游戏里的NPC开场白。\n" +
+                "玩家是来调查案件的警察，你是在对警察开口说第一句话。\n" +
+                "只返回一句简短的中文台词。\n" +
+                "不要输出JSON。\n" +
+                "不要解释规则。\n" +
+                "不要复述提示词。\n" +
+                "不要输出旁白、括号说明、系统信息或分析。\n" +
+                "只根据给定的公开资料、当前阶段和最近对话，用符合角色的方式先开口。";
+        }
+
+        private static string BuildOpeningUserMessage(DialogueApiPromptContext context)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("当前是NPC主动开口的开场。");
+            builder.Append("阶段: ");
+            builder.AppendLine(context.Phase.ToString());
+            builder.AppendLine("玩家身份: 警察");
+            builder.AppendLine("场景: 你正在接受警方关于案件的问话。");
+
+            if (context.NpcPublicProfile != null)
+            {
+                builder.Append("姓名: ");
+                builder.AppendLine(context.NpcPublicProfile.displayName ?? string.Empty);
+                builder.Append("身份: ");
+                builder.AppendLine(context.NpcPublicProfile.occupation ?? string.Empty);
+                builder.Append("与死者关系: ");
+                builder.AppendLine(context.NpcPublicProfile.relationshipToVictim ?? string.Empty);
+                builder.Append("公开简介: ");
+                builder.AppendLine(context.NpcPublicProfile.profileText ?? string.Empty);
+            }
+
+            builder.AppendLine("最近对话:");
+            if (context.RecentConversation == null || context.RecentConversation.Count == 0)
+            {
+                builder.AppendLine("无");
+            }
+            else
+            {
+                for (int i = 0; i < context.RecentConversation.Count; i++)
+                {
+                    var exchange = context.RecentConversation[i];
+                    builder.Append("玩家: ");
+                    builder.AppendLine(exchange.PlayerText ?? string.Empty);
+                    builder.Append("NPC: ");
+                    builder.AppendLine(exchange.NpcText ?? string.Empty);
+                }
+            }
+
+            builder.AppendLine("要求:");
+            builder.AppendLine("玩家刚刚开始接触你，这一回合还没有输入具体问题。");
+            builder.AppendLine("你要意识到对方是警察，因此开场语气要符合被警方询问时的反应。");
+            builder.AppendLine("请直接说一句自然的中文开场白。");
+            return builder.ToString();
         }
 
         private static string BuildSystemMessage(DialoguePromptSections promptSections)
@@ -47,7 +119,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             builder.AppendLine(sectionText);
         }
 
-        private static string BuildUserMessage(DialogueTurnContext context)
+        private static string BuildUserMessage(DialogueApiPromptContext context)
         {
             var builder = new StringBuilder();
 
@@ -64,7 +136,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             return builder.ToString();
         }
 
-        private static void AppendTurnState(StringBuilder builder, DialogueTurnContext context)
+        private static void AppendTurnState(StringBuilder builder, DialogueApiPromptContext context)
         {
             builder.AppendLine("TURN STATE");
             AppendKeyValue(builder, "npcId", context.NpcId);
@@ -219,7 +291,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
         }
 
-        private static void AppendUnlockedState(StringBuilder builder, DialogueTurnContext context)
+        private static void AppendUnlockedState(StringBuilder builder, DialogueApiPromptContext context)
         {
             builder.AppendLine("RUNTIME UNLOCKED STATE");
             AppendStringList(builder, "unlockedFactIds", context.RelevantUnlockedFactIds);
