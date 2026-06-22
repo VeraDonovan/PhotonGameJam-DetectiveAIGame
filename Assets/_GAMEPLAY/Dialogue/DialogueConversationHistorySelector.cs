@@ -5,8 +5,6 @@ namespace DetectiveGame.Gameplay.Dialogue
 {
     public sealed class DialogueConversationHistorySelector : IDialogueConversationHistorySelector
     {
-        public const int OpeningExchangeCount = 2;
-
         public IReadOnlyList<DialogueConversationExchange> SelectForApi(
             DialogueConversationSession session,
             DialoguePromptMode mode)
@@ -24,10 +22,15 @@ namespace DetectiveGame.Gameplay.Dialogue
 
             int maxCount = mode switch
             {
-                DialoguePromptMode.Opening => OpeningExchangeCount,
-                DialoguePromptMode.Turn => DialogueConversationSession.MaxExchangeCount,
-                _ => DialogueConversationSession.MaxExchangeCount,
+                DialoguePromptMode.Opening => DialogueConversationConfig.OpeningVerbatimExchangeCount,
+                DialoguePromptMode.Turn => DialogueConversationConfig.RecentVerbatimExchangeCount,
+                _ => DialogueConversationConfig.RecentVerbatimExchangeCount,
             };
+
+            if (maxCount <= 0)
+            {
+                return Array.Empty<DialogueConversationExchange>();
+            }
 
             int startIndex = exchanges.Count > maxCount
                 ? exchanges.Count - maxCount

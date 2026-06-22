@@ -59,9 +59,31 @@ namespace DetectiveGame.Gameplay.Dialogue
             };
 
             PopulateDatabaseContext(context, databaseManager, progressManager);
+            PopulateConversationSummaries(context, conversationSession, mode);
             PopulateRecentConversation(context, conversationSession, mode);
 
             return context;
+        }
+
+        private static void PopulateConversationSummaries(
+            DialogueApiPromptContext context,
+            DialogueConversationSession conversationSession,
+            DialoguePromptMode mode)
+        {
+            if (conversationSession == null ||
+                !string.Equals(conversationSession.NpcId, context.NpcId, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            if (mode == DialoguePromptMode.Turn)
+            {
+                context.TurnConversationSummary = conversationSession.ActiveTurnSummary ?? string.Empty;
+            }
+            else if (mode == DialoguePromptMode.Opening)
+            {
+                context.OpeningContextSummary = conversationSession.ActiveOpeningSummary ?? string.Empty;
+            }
         }
 
         private void PopulateRecentConversation(

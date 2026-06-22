@@ -50,7 +50,8 @@ namespace DetectiveGame.Gameplay.Dialogue
                 "不要解释规则。\n" +
                 "不要复述提示词。\n" +
                 "不要输出旁白、括号说明、系统信息或分析。\n" +
-                "只根据给定的公开资料、当前阶段和最近对话，用符合角色的方式先开口。";
+                "优先根据 OPENING CONTEXT SUMMARY 延续此前对话的语气与关系；若无摘要则根据公开资料自然开场。\n" +
+                "只根据给定的公开资料、当前阶段和开场上下文，用符合角色的方式先开口。";
         }
 
         private static string BuildOpeningUserMessage(DialogueApiPromptContext context)
@@ -74,20 +75,25 @@ namespace DetectiveGame.Gameplay.Dialogue
                 builder.AppendLine(context.NpcPublicProfile.profileText ?? string.Empty);
             }
 
-            builder.AppendLine("最近对话:");
-            if (context.RecentConversation == null || context.RecentConversation.Count == 0)
+            AppendOpeningContextSummary(builder, context.OpeningContextSummary);
+
+            if (DialogueConversationConfig.OpeningVerbatimExchangeCount > 0)
             {
-                builder.AppendLine("无");
-            }
-            else
-            {
-                for (int i = 0; i < context.RecentConversation.Count; i++)
+                builder.AppendLine("最近对话:");
+                if (context.RecentConversation == null || context.RecentConversation.Count == 0)
                 {
-                    var exchange = context.RecentConversation[i];
-                    builder.Append("玩家: ");
-                    builder.AppendLine(exchange.PlayerText ?? string.Empty);
-                    builder.Append("NPC: ");
-                    builder.AppendLine(exchange.NpcText ?? string.Empty);
+                    builder.AppendLine("无");
+                }
+                else
+                {
+                    for (int i = 0; i < context.RecentConversation.Count; i++)
+                    {
+                        var exchange = context.RecentConversation[i];
+                        builder.Append("玩家: ");
+                        builder.AppendLine(exchange.PlayerText ?? string.Empty);
+                        builder.Append("NPC: ");
+                        builder.AppendLine(exchange.NpcText ?? string.Empty);
+                    }
                 }
             }
 
@@ -129,6 +135,7 @@ namespace DetectiveGame.Gameplay.Dialogue
             AppendCandidateTopics(builder, context.CandidateTopics.Topics);
             AppendUnlockedState(builder, context);
             AppendAllowedInterrogationLayers(builder, context.AllowedInterrogationLayers);
+            AppendConversationSummary(builder, context.TurnConversationSummary);
             AppendRecentConversation(builder, context.RecentConversation);
             AppendPlayerInput(builder, context.RawInput);
             AppendOutputSchema(builder);
@@ -354,6 +361,20 @@ namespace DetectiveGame.Gameplay.Dialogue
                 AppendStringList(builder, "  examplePhrasings", layer.examplePhrasings);
             }
 
+            builder.AppendLine();
+        }
+
+        private static void AppendConversationSummary(StringBuilder builder, string summary)
+        {
+            builder.AppendLine("CONVERSATION SUMMARY");
+            builder.AppendLine(string.IsNullOrWhiteSpace(summary) ? "none" : summary);
+            builder.AppendLine();
+        }
+
+        private static void AppendOpeningContextSummary(StringBuilder builder, string summary)
+        {
+            builder.AppendLine("OPENING CONTEXT SUMMARY");
+            builder.AppendLine(string.IsNullOrWhiteSpace(summary) ? "无" : summary);
             builder.AppendLine();
         }
 

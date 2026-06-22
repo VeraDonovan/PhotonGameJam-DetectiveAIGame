@@ -15,6 +15,7 @@ NPC context rules:
 - When the player wording is broad and several narrow statement topics are plausible, prefer the closest broad fallback topic instead of overcommitting to one narrow topic.
 - Use beatGuidance text, behavior, truthStatus, and nextSuggestedNodeIds as local response guidance for the matching topic, not as mandatory exact lines.
 - Recent conversation is only for local continuity; do not use it to create new facts or unlocks.
+- CONVERSATION SUMMARY is a compressed record of older exchanges outside the verbatim window. Do not treat it as gameplay authority or invent facts from it.
 - If the player asks about missing, locked, or unsupported context, deflect or answer only with currently supplied safe information.
 - In interrogation, currentInterrogationLevel and currentInterrogationLayerId describe the NPC's current interrogation state for tone and candidate-topic behavior.
 - Interrogation state 1 corresponds to the authored layer_1 state. Interrogation state 2 corresponds to the authored layer_2 state.

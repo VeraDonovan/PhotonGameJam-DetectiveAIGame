@@ -33,5 +33,8 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         public List<DialogueConversationExchange> RecentConversation { get; } =
             new List<DialogueConversationExchange>();
+
+        public string TurnConversationSummary { get; set; } = string.Empty;
+        public string OpeningContextSummary { get; set; } = string.Empty;
     }
 }

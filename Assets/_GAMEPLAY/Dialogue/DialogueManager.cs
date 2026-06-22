@@ -19,6 +19,12 @@ public class DialogueManager : MonoBehaviour {
     [SerializeField] private TextAsset npcContextRulesPrompt;
     [SerializeField] private TextAsset revealLogicRulesPrompt;
 
+    [Header("Conversation History")]
+    [SerializeField] private int recentVerbatimExchangeCount = 6;
+    [SerializeField] private int turnSummaryBatchSize = 1;
+    [SerializeField] private int openingVerbatimExchangeCount = 0;
+    [SerializeField] private bool logConversationHistoryCompression = false;
+
     [SerializeField] private float typingSpeed = 0.03f;
     [SerializeField] private float punctuationDelay = 0.2f;
     [SerializeField] private bool enablePunctuationDelay = true;
@@ -30,6 +36,7 @@ public class DialogueManager : MonoBehaviour {
     private readonly DialogueApiContextAssembler contextAssembler = new DialogueApiContextAssembler();
     private readonly DialogueTurnResolver turnResolver = new DialogueTurnResolver();
     private readonly DialoguePromptBuilder promptBuilder = new DialoguePromptBuilder();
+    private readonly IDialogueConversationSummarizer conversationSummarizer = new DialogueConversationSummarizer();
     private int nextOrderedDialogueId;
     private bool hasOrderedDialogue;
 
@@ -50,6 +57,38 @@ public class DialogueManager : MonoBehaviour {
             typeWriter = new TMPTypeWriter(dialogueText, typingSpeed, punctuationDelay, enablePunctuationDelay);
             typeWriter.SetCompleteFunc(ShowNextOrderedDialogue);
         }
+
+        ApplyConversationConfig();
+    }
+
+    private void ApplyConversationConfig() {
+        DialogueConversationConfig.RecentVerbatimExchangeCount = Mathf.Max(1, recentVerbatimExchangeCount);
+        DialogueConversationConfig.TurnSummaryBatchSize = Mathf.Max(1, turnSummaryBatchSize);
+        DialogueConversationConfig.OpeningVerbatimExchangeCount = Mathf.Max(0, openingVerbatimExchangeCount);
+        DialogueHistoryCompressionLogger.SetEnabled(logConversationHistoryCompression);
+        if (logConversationHistoryCompression) {
+            DialogueHistoryCompressionLogger.LogConfig();
+        }
+    }
+
+    private static void PromoteTurnSummaryWithLog(DialogueConversationSession session) {
+        if (session == null) {
+            return;
+        }
+
+        bool hadPending = !string.IsNullOrWhiteSpace(session.PendingTurnSummary);
+        session.PromotePendingTurnSummaryIfAny();
+        DialogueHistoryCompressionLogger.LogPromoteTurn(session, hadPending);
+    }
+
+    private static void PromoteOpeningSummaryWithLog(DialogueConversationSession session) {
+        if (session == null) {
+            return;
+        }
+
+        bool hadPending = !string.IsNullOrWhiteSpace(session.PendingOpeningSummary);
+        session.PromotePendingOpeningSummaryIfAny();
+        DialogueHistoryCompressionLogger.LogPromoteOpening(session, hadPending);
     }
 
     public void ShowDialogue(string text) {
@@ -133,9 +172,12 @@ public class DialogueManager : MonoBehaviour {
         if (ShouldRefuseNonChineseInput(playerText)) {
             const string refusalText = "我听不懂你在说什么。";
             conversationSession.AddExchange(playerText, refusalText);
+            SchedulePostTurnSummarization(conversationSession, playerText, refusalText, phase, appRoot);
             ShowDialogue(refusalText);
             yield break;
         }
+
+        PromoteTurnSummaryWithLog(conversationSession);
 
         DialogueApiPromptContext promptContext = contextAssembler.Assemble(
             rawInput,
@@ -146,6 +188,7 @@ public class DialogueManager : MonoBehaviour {
             DialoguePromptMode.Turn);
 
         DialoguePromptMessages promptMessages = promptBuilder.Build(promptContext, promptSections);
+        DialogueHistoryCompressionLogger.LogTurnPromptBuilt(conversationSession, promptContext);
         DeepSeekDialogueTurnResponse aiResponse = null;
         string aiError = string.Empty;
 
@@ -159,6 +202,7 @@ public class DialogueManager : MonoBehaviour {
             Debug.LogError($"[DialogueManager] AI dialogue request failed: {aiError}", this);
             string fallbackText = CreateAiFailureResponse();
             conversationSession.AddExchange(playerText, fallbackText);
+            SchedulePostTurnSummarization(conversationSession, playerText, fallbackText, phase, appRoot);
             ShowDialogue(fallbackText);
             yield break;
         }
@@ -176,6 +220,7 @@ public class DialogueManager : MonoBehaviour {
             : CreateRejectedResponse(resolution.ResolutionResult.ResponseRejectReason);
 
         conversationSession.AddExchange(playerText, npcText);
+        SchedulePostTurnSummarization(conversationSession, playerText, npcText, phase, appRoot);
         ShowDialogue(npcText);
     }
 
@@ -207,6 +252,8 @@ public class DialogueManager : MonoBehaviour {
         };
 
         DialogueConversationSession conversationSession = GetOrCreateConversationSession(npcId);
+        PromoteOpeningSummaryWithLog(conversationSession);
+
         DialogueApiPromptContext promptContext = contextAssembler.Assemble(
             rawInput,
             appRoot.DatabaseManager,
@@ -216,6 +263,7 @@ public class DialogueManager : MonoBehaviour {
             DialoguePromptMode.Opening);
 
         DialoguePromptMessages openingPromptMessages = promptBuilder.BuildOpening(promptContext);
+        DialogueHistoryCompressionLogger.LogOpeningPromptBuilt(conversationSession, promptContext);
 
         string aiOpeningText = string.Empty;
         string aiError = string.Empty;
@@ -339,6 +387,36 @@ public class DialogueManager : MonoBehaviour {
         };
 
         return true;
+    }
+
+    private void SchedulePostTurnSummarization(
+        DialogueConversationSession session,
+        string playerText,
+        string npcText,
+        GamePhase phase,
+        AppRoot appRoot) {
+        if (session == null) {
+            return;
+        }
+
+        int annoyance = 0;
+        if (appRoot?.NpcRuntimeManager != null) {
+            var npcState = appRoot.NpcRuntimeManager.GetOrCreateDialogueState(session.NpcId);
+            annoyance = phase == GamePhase.Exploration ? npcState.Annoyance : 0;
+        }
+
+        var latestExchange = new DialogueConversationExchange {
+            PlayerText = playerText ?? string.Empty,
+            NpcText = npcText ?? string.Empty,
+        };
+
+        StartCoroutine(conversationSummarizer.MaybeSummarizeTurnOverflow(session));
+        StartCoroutine(conversationSummarizer.MaybeUpdateOpeningSummary(
+            session,
+            latestExchange,
+            phase,
+            annoyance));
+        DialogueHistoryCompressionLogger.LogTurnEndScheduled(session);
     }
 
     private DialogueConversationSession GetOrCreateConversationSession(string npcId) {
