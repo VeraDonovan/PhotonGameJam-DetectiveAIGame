@@ -3,15 +3,13 @@ using DetectiveGame.Core;
 
 namespace DetectiveGame.Gameplay.Dialogue
 {
-    public sealed class DialogueTurnContext
+    public sealed class DialogueApiPromptContext
     {
         public string NpcId { get; set; } = string.Empty;
         public GamePhase Phase { get; set; } = GamePhase.Exploration;
 
         public RawDialogueInput RawInput { get; set; } = new RawDialogueInput();
         public DialogueCandidateTopicSet CandidateTopics { get; set; } = new DialogueCandidateTopicSet();
-        public InterpretedDialogueAction InterpretedAction { get; set; } = new InterpretedDialogueAction();
-        public DialogueResolutionResult ResolutionResult { get; set; } = new DialogueResolutionResult();
         public NpcData NpcPublicProfile { get; set; }
         public string NpcAiProfileRawJson { get; set; } = string.Empty;
 
@@ -35,5 +33,8 @@ namespace DetectiveGame.Gameplay.Dialogue
 
         public List<DialogueConversationExchange> RecentConversation { get; } =
             new List<DialogueConversationExchange>();
+
+        public string TurnConversationSummary { get; set; } = string.Empty;
+        public string OpeningContextSummary { get; set; } = string.Empty;
     }
 }

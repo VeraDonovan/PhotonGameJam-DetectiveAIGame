@@ -75,14 +75,14 @@ namespace DetectiveGame.Gameplay.Tests
                 IsIrrelevant = false,
             };
 
-            var context = resolver.Resolve(
+            var resolution = resolver.Resolve(
                 rawInput,
                 interpretedAction,
                 appRoot.DatabaseManager,
                 appRoot.ProgressManager,
                 appRoot.NpcRuntimeManager);
 
-            Debug.Log(BuildReport(context), this);
+            Debug.Log(BuildReport(resolution), this);
         }
 
         private void UnlockSetupTokens()
@@ -96,25 +96,23 @@ namespace DetectiveGame.Gameplay.Tests
             }
         }
 
-        private static string BuildReport(DialogueTurnContext context)
+        private static string BuildReport(DialogueTurnResolution resolution)
         {
             var report = new StringBuilder();
             report.AppendLine("=== DIALOGUE TURN RESOLVER REPORT ===");
-            report.AppendLine($"NPC: {context.NpcId}");
-            report.AppendLine($"Phase: {context.Phase}");
-            report.AppendLine($"Matched Topic: {context.InterpretedAction.MatchedTopicId}");
-            report.AppendLine($"Resolution Type: {context.ResolutionResult.ResolutionType}");
-            report.AppendLine($"Annoyance Delta: {context.ResolutionResult.AnnoyanceDelta}");
-            report.AppendLine($"Annoyance After: {context.ResolutionResult.NewAnnoyance}");
-            report.AppendLine($"Pressure Delta: {context.ResolutionResult.PressureDelta}");
-            report.AppendLine($"Pressure After: {context.ResolutionResult.NewPressure}");
-            report.AppendLine($"Current Interrogation Level: {context.CurrentInterrogationLevel}");
-            report.AppendLine($"Current Interrogation Layer: {context.CurrentInterrogationLayerId}");
-            AppendList(report, "Unlocked Statements", context.ResolutionResult.UnlockedStatementIds);
-            AppendList(report, "Unlocked Facts", context.ResolutionResult.UnlockedFactIds);
-            AppendList(report, "Unlocked Tokens", context.ResolutionResult.UnlockedTokenIds);
-            AppendList(report, "Unlocked Layers", context.ResolutionResult.UnlockedLayerIds);
-            report.AppendLine($"Punish Reason: {context.ResolutionResult.PunishReason}");
+            report.AppendLine($"NPC: {resolution.NpcId}");
+            report.AppendLine($"Phase: {resolution.Phase}");
+            report.AppendLine($"Matched Topic: {resolution.InterpretedAction.MatchedTopicId}");
+            report.AppendLine($"Resolution Type: {resolution.ResolutionResult.ResolutionType}");
+            report.AppendLine($"Annoyance Delta: {resolution.ResolutionResult.AnnoyanceDelta}");
+            report.AppendLine($"Annoyance After: {resolution.ResolutionResult.NewAnnoyance}");
+            report.AppendLine($"Pressure Delta: {resolution.ResolutionResult.PressureDelta}");
+            report.AppendLine($"Pressure After: {resolution.ResolutionResult.NewPressure}");
+            report.AppendLine($"Punish Reason: {resolution.ResolutionResult.PunishReason}");
+            AppendList(report, "Unlocked Statements", resolution.ResolutionResult.UnlockedStatementIds);
+            AppendList(report, "Unlocked Facts", resolution.ResolutionResult.UnlockedFactIds);
+            AppendList(report, "Unlocked Tokens", resolution.ResolutionResult.UnlockedTokenIds);
+            AppendList(report, "Unlocked Layers", resolution.ResolutionResult.UnlockedLayerIds);
             return report.ToString();
         }
 

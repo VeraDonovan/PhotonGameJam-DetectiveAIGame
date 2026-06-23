@@ -23,52 +23,12 @@ namespace DetectiveGame.Gameplay.Dialogue
                                           throw new ArgumentNullException(nameof(candidateTopicResolver));
         }
 
-        public DialogueTurnContext BuildPromptContext(
-            RawDialogueInput rawInput,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager,
-            NpcRuntimeManager npcRuntimeManager,
-            DialogueConversationSession conversationSession = null)
-        {
-            ValidatePromptInputs(rawInput, databaseManager, progressManager, npcRuntimeManager);
-
-            var npcState = npcRuntimeManager.GetOrCreateDialogueState(rawInput.NpcId);
-            var candidateTopics = candidateTopicResolver.Resolve(
-                rawInput.NpcId,
-                rawInput.Phase,
-                databaseManager,
-                progressManager,
-                npcRuntimeManager);
-
-            var context = CreateContext(
-                rawInput,
-                new InterpretedDialogueAction
-                {
-                    NpcId = rawInput.NpcId,
-                    Phase = rawInput.Phase,
-                    PresentedEvidenceId = rawInput.PresentedEvidenceId,
-                },
-                candidateTopics,
-                new DialogueResolutionResult
-                {
-                    NewAnnoyance = rawInput.Phase == GamePhase.Exploration ? npcState.Annoyance : 0,
-                    NewPressure = rawInput.Phase == GamePhase.Interrogation ? npcState.Pressure : 0,
-                },
-                npcState,
-                databaseManager,
-                progressManager,
-                conversationSession);
-
-            return context;
-        }
-
-        public DialogueTurnContext Resolve(
+        public DialogueTurnResolution Resolve(
             RawDialogueInput rawInput,
             InterpretedDialogueAction interpretedAction,
             DatabaseManager databaseManager,
             ProgressManager progressManager,
-            NpcRuntimeManager npcRuntimeManager,
-            DialogueConversationSession conversationSession = null)
+            NpcRuntimeManager npcRuntimeManager)
         {
             ValidateInputs(rawInput, interpretedAction, databaseManager, progressManager, npcRuntimeManager);
 
@@ -89,174 +49,13 @@ namespace DetectiveGame.Gameplay.Dialogue
                 npcState,
                 npcRuntimeManager);
 
-            return CreateContext(
-                rawInput,
-                interpretedAction,
-                candidateTopics,
-                result,
-                npcState,
-                databaseManager,
-                progressManager,
-                conversationSession);
-        }
-
-        private static DialogueTurnContext CreateContext(
-            RawDialogueInput rawInput,
-            InterpretedDialogueAction interpretedAction,
-            DialogueCandidateTopicSet candidateTopics,
-            DialogueResolutionResult result,
-            NpcDialogueRuntimeState npcState,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager,
-            DialogueConversationSession conversationSession)
-        {
-            var context = new DialogueTurnContext
+            return new DialogueTurnResolution
             {
                 NpcId = rawInput.NpcId,
                 Phase = rawInput.Phase,
-                RawInput = rawInput,
-                CandidateTopics = candidateTopics,
                 InterpretedAction = interpretedAction,
                 ResolutionResult = result,
-                Annoyance = rawInput.Phase == GamePhase.Exploration ? npcState.Annoyance : 0,
-                Pressure = rawInput.Phase == GamePhase.Interrogation ? npcState.Pressure : 0,
-                CurrentInterrogationLevel = rawInput.Phase == GamePhase.Interrogation
-                    ? npcState.CurrentInterrogationLevel
-                    : 0,
-                CurrentInterrogationLayerId = rawInput.Phase == GamePhase.Interrogation
-                    ? npcState.CurrentInterrogationLayerId
-                    : string.Empty,
             };
-
-            PopulateDatabaseContext(context, databaseManager, progressManager);
-
-            if (conversationSession != null && string.Equals(conversationSession.NpcId, rawInput.NpcId, StringComparison.Ordinal))
-            {
-                foreach (var exchange in conversationSession.Exchanges)
-                {
-                    context.RecentConversation.Add(new DialogueConversationExchange
-                    {
-                        PlayerText = exchange.PlayerText,
-                        NpcText = exchange.NpcText,
-                    });
-                }
-            }
-
-            return context;
-        }
-
-        private static void PopulateDatabaseContext(
-            DialogueTurnContext context,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager)
-        {
-            if (databaseManager.NpcDatabase.TryGetNpc(context.NpcId, out var npcProfile))
-            {
-                context.NpcPublicProfile = npcProfile;
-            }
-
-            if (databaseManager.NpcAiProfileDatabase.TryGetProfile(context.NpcId, out var aiProfile) &&
-                aiProfile != null)
-            {
-                context.NpcAiProfileRawJson = aiProfile.rawJson ?? string.Empty;
-            }
-
-            PopulateRelevantFacts(context, databaseManager, progressManager);
-            PopulateRelevantStatements(context, databaseManager, progressManager);
-            PopulateRelevantBeats(context, databaseManager, progressManager);
-            PopulateAllowedInterrogationLayers(context, databaseManager, progressManager);
-            PopulateMatchedTopicWithholdContext(context);
-        }
-
-        private static void PopulateRelevantFacts(
-            DialogueTurnContext context,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager)
-        {
-            foreach (var factId in databaseManager.FactDatabase.GetFactIdsByNpc(context.NpcId))
-            {
-                if (progressManager.IsFactUnlocked(factId))
-                {
-                    AddUnique(context.RelevantUnlockedFactIds, factId);
-                }
-            }
-        }
-
-        private static void PopulateRelevantStatements(
-            DialogueTurnContext context,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager)
-        {
-            foreach (var statementId in databaseManager.StatementDatabase.GetStatementIdsByNpc(context.NpcId))
-            {
-                if (!progressManager.IsStatementUnlocked(statementId))
-                {
-                    continue;
-                }
-
-                AddUnique(context.RelevantUnlockedStatementIds, statementId);
-                if (databaseManager.StatementDatabase.TryGetStatement(statementId, out var statement) &&
-                    statement != null)
-                {
-                    context.RelevantUnlockedStatements.Add(CreateStatementContext(statement, isUnlockable: true));
-                }
-            }
-        }
-
-        private static void PopulateRelevantBeats(
-            DialogueTurnContext context,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager)
-        {
-            foreach (var node in databaseManager.DialogueBeatDatabase.GetNodesByNpc(context.NpcId))
-            {
-                if (node == null)
-                {
-                    continue;
-                }
-
-                if (progressManager.IsDialogueBeatVisited(node.nodeId))
-                {
-                    AddUnique(context.RelevantVisitedBeatIds, node.nodeId);
-                }
-
-                if (!string.IsNullOrWhiteSpace(node.caughtLieId) && progressManager.IsCaughtLie(node.caughtLieId))
-                {
-                    AddUnique(context.RelevantCaughtLieIds, node.caughtLieId);
-                }
-            }
-        }
-
-        private static void PopulateAllowedInterrogationLayers(
-            DialogueTurnContext context,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager)
-        {
-            foreach (var layer in databaseManager.TruthDatabase.GetInterrogationLayersByNpc(context.NpcId))
-            {
-                if (layer == null || !progressManager.IsInterrogationLayerUnlocked(layer.layerId))
-                {
-                    continue;
-                }
-
-                AddUnique(context.RelevantUnlockedLayerIds, layer.layerId);
-                AddUnique(context.AllowedRevealIds, layer.layerId);
-                context.AllowedInterrogationLayers.Add(layer);
-            }
-        }
-
-        private static void PopulateMatchedTopicWithholdContext(DialogueTurnContext context)
-        {
-            var matchedTopic = FindTopic(context.CandidateTopics, context.InterpretedAction.MatchedTopicId);
-            if (matchedTopic == null)
-            {
-                return;
-            }
-
-            foreach (var missingRequirementId in matchedTopic.MissingRequirementIds)
-            {
-                AddUnique(context.MustWithholdIds, missingRequirementId);
-            }
         }
 
         private static DialogueResolutionResult ResolveGameplayShell(
@@ -738,23 +537,6 @@ namespace DetectiveGame.Gameplay.Dialogue
             return string.Empty;
         }
 
-        private static DialogueStatementEntryContext CreateStatementContext(
-            StatementEntryData statement,
-            bool isUnlockable)
-        {
-            var context = new DialogueStatementEntryContext
-            {
-                StatementId = statement.statementId ?? string.Empty,
-                Phase = statement.phase ?? string.Empty,
-                Text = statement.text ?? string.Empty,
-                IsUnlocked = true,
-                IsUnlockable = isUnlockable,
-            };
-
-            AddRange(context.UnlockRequirements, statement.unlockRequirements);
-            return context;
-        }
-
         private static void AddNewUnlockedIds(
             HashSet<string> before,
             IEnumerable<string> after,
@@ -858,14 +640,6 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
 
             values.Add(value);
-        }
-
-        private static void AddRange(List<string> destination, IReadOnlyList<string> source)
-        {
-            foreach (var value in source ?? Array.Empty<string>())
-            {
-                AddUnique(destination, value);
-            }
         }
 
         private static void ApplyInvalidInputPenalty(
@@ -1040,36 +814,5 @@ namespace DetectiveGame.Gameplay.Dialogue
             }
         }
 
-        private static void ValidatePromptInputs(
-            RawDialogueInput rawInput,
-            DatabaseManager databaseManager,
-            ProgressManager progressManager,
-            NpcRuntimeManager npcRuntimeManager)
-        {
-            if (rawInput == null)
-            {
-                throw new ArgumentNullException(nameof(rawInput));
-            }
-
-            if (databaseManager == null)
-            {
-                throw new ArgumentNullException(nameof(databaseManager));
-            }
-
-            if (progressManager == null)
-            {
-                throw new ArgumentNullException(nameof(progressManager));
-            }
-
-            if (npcRuntimeManager == null)
-            {
-                throw new ArgumentNullException(nameof(npcRuntimeManager));
-            }
-
-            if (string.IsNullOrWhiteSpace(rawInput.NpcId))
-            {
-                throw new ArgumentException("DialogueTurnResolver requires RawDialogueInput.NpcId.", nameof(rawInput));
-            }
-        }
     }
 }
