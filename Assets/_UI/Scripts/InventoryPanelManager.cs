@@ -12,16 +12,19 @@ namespace DetectiveGame.UI
             Case = 0,
             Evidence = 1,
             Suspect = 2,
+            Arrest = 3   // 👉 新增：Arrest 选项
         }
 
         [SerializeField] private InventoryTab defaultTab = InventoryTab.Case;
         [SerializeField] private Button caseButton;
         [SerializeField] private Button evidenceButton;
         [SerializeField] private Button suspectButton;
+        [SerializeField] private Button arrestButton;   // 👉 新增：Arrest 按钮
+
         [SerializeField] private GameObject casePanel;
         [SerializeField] private GameObject evidencePanel;
         [SerializeField] private GameObject suspectPanel;
-        // [SerializeField] private GameObject underPanel;
+        [SerializeField] private GameObject arrestPanel;   // 👉 新增：Arrest 面板
 
         private readonly Dictionary<GameObject, bool> preEvidenceSelectionStates = new Dictionary<GameObject, bool>();
         private bool isEvidenceSelectionViewActive;
@@ -30,7 +33,6 @@ namespace DetectiveGame.UI
 
         private void Awake()
         {
-            // ResolveOptionalPanelReferences();
             BindButtonEvents();
             ActiveTab = defaultTab;
             RefreshActiveTab();
@@ -56,6 +58,11 @@ namespace DetectiveGame.UI
             SetActiveTab(InventoryTab.Suspect);
         }
 
+        public void ShowArrestTab()   // 👉 新增：打开 Arrest 面板的方法
+        {
+            SetActiveTab(InventoryTab.Arrest);
+        }
+
         public void SetActiveTab(InventoryTab tab)
         {
             RestoreEvidenceSelectionView();
@@ -69,7 +76,7 @@ namespace DetectiveGame.UI
             SetPanelState(casePanel, ActiveTab == InventoryTab.Case);
             SetPanelState(evidencePanel, ActiveTab == InventoryTab.Evidence);
             SetPanelState(suspectPanel, ActiveTab == InventoryTab.Suspect);
-            // SetPanelState(underPanel, true);
+            SetPanelState(arrestPanel, ActiveTab == InventoryTab.Arrest);   // 👉 新增：刷新 Arrest 面板
         }
 
         public void ShowEvidenceSelectionOnly()
@@ -86,7 +93,7 @@ namespace DetectiveGame.UI
             SetPanelState(casePanel, false);
             SetPanelState(evidencePanel, true);
             SetPanelState(suspectPanel, false);
-            // SetPanelState(underPanel, false);
+            SetPanelState(arrestPanel, false);   // 👉 新增：关闭 Arrest 面板
         }
 
         public void RestoreEvidenceSelectionView()
@@ -122,20 +129,6 @@ namespace DetectiveGame.UI
             isEvidenceSelectionViewActive = true;
         }
 
-        // private void ResolveOptionalPanelReferences()
-        // {
-        //     if (underPanel != null)
-        //     {
-        //         return;
-        //     }
-
-        //     var underPanelTransform = transform.Find("underPanel");
-        //     if (underPanelTransform != null)
-        //     {
-        //         underPanel = underPanelTransform.gameObject;
-        //     }
-        // }
-
         private static void SetPanelState(GameObject targetPanel, bool isActive)
         {
             if (targetPanel == null)
@@ -151,6 +144,7 @@ namespace DetectiveGame.UI
             RegisterButton(caseButton, ShowCaseTab);
             RegisterButton(evidenceButton, ShowEvidenceTab);
             RegisterButton(suspectButton, ShowSuspectTab);
+            RegisterButton(arrestButton, ShowArrestTab);   // 👉 新增：绑定 Arrest 按钮
         }
 
         private void UnbindButtonEvents()
@@ -158,6 +152,7 @@ namespace DetectiveGame.UI
             UnregisterButton(caseButton, ShowCaseTab);
             UnregisterButton(evidenceButton, ShowEvidenceTab);
             UnregisterButton(suspectButton, ShowSuspectTab);
+            UnregisterButton(arrestButton, ShowArrestTab);   // 👉 新增：解绑 Arrest 按钮
         }
 
         private static void RegisterButton(Button button, UnityEngine.Events.UnityAction action)
@@ -195,7 +190,11 @@ namespace DetectiveGame.UI
         {
             SetPanelState(suspectPanel, false);
         }
-        
+
+        public void OnCloseArrestPanel()   // 👉 新增：关闭 Arrest 面板的方法
+        {
+            SetPanelState(arrestPanel, false);
+        }
 
         public void OnCloseInventory()
         {
@@ -205,6 +204,5 @@ namespace DetectiveGame.UI
                 appRoot.UIManager.SetInventoryOpen(false);
             }
         }
- 
-}
+    }
 }
