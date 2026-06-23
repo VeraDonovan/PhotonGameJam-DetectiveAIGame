@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour {
     public static DialogueManager Instance;
+    public static System.Action<DialogueTurnDebugInfo> OnTurnDebug; // 测试沙盒用：每轮结算后触发，不影响玩家游戏
     public TMP_Text dialogueText;
     [SerializeField] private TMP_Text speakerNameText;
     public GameObject dialoguePanel;
@@ -134,6 +135,7 @@ public class DialogueManager : MonoBehaviour {
             const string refusalText = "我听不懂你在说什么。";
             conversationSession.AddExchange(playerText, refusalText);
             ShowDialogue(refusalText);
+            OnTurnDebug?.Invoke(new DialogueTurnDebugInfo { NpcId = npcId, PlayerText = playerText, NpcText = refusalText, Accepted = false, RejectReason = "non_chinese_input" });
             yield break;
         }
 
@@ -159,6 +161,7 @@ public class DialogueManager : MonoBehaviour {
             string fallbackText = CreateAiFailureResponse();
             conversationSession.AddExchange(playerText, fallbackText);
             ShowDialogue(fallbackText);
+            OnTurnDebug?.Invoke(new DialogueTurnDebugInfo { NpcId = npcId, PlayerText = playerText, NpcText = fallbackText, Accepted = false, RejectReason = "ai_request_failed: " + aiError });
             yield break;
         }
 
@@ -177,6 +180,21 @@ public class DialogueManager : MonoBehaviour {
 
         conversationSession.AddExchange(playerText, npcText);
         ShowDialogue(npcText);
+
+        OnTurnDebug?.Invoke(new DialogueTurnDebugInfo {
+            NpcId = npcId,
+            PlayerText = playerText,
+            NpcText = npcText,
+            MatchedTopicId = resolvedContext.InterpretedAction != null ? resolvedContext.InterpretedAction.MatchedTopicId : string.Empty,
+            Accepted = resolvedContext.ResolutionResult.AcceptAiResponse,
+            RejectReason = resolvedContext.ResolutionResult.ResponseRejectReason,
+            ResolutionType = resolvedContext.ResolutionResult.ResolutionType.ToString(),
+            Pressure = resolvedContext.ResolutionResult.NewPressure,
+            Annoyance = resolvedContext.ResolutionResult.NewAnnoyance,
+            UnlockedFactIds = new List<string>(resolvedContext.ResolutionResult.UnlockedFactIds),
+            UnlockedLayerIds = new List<string>(resolvedContext.ResolutionResult.UnlockedLayerIds),
+            UnlockedStatementIds = new List<string>(resolvedContext.ResolutionResult.UnlockedStatementIds),
+        });
     }
 
     private IEnumerator RunAiOpeningDialogue(string npcId, GamePhase phase) {
@@ -190,6 +208,7 @@ public class DialogueManager : MonoBehaviour {
         {
             GetOrCreateConversationSession(npcId).AddExchange(string.Empty, openingBeatText);
             ShowDialogue(openingBeatText);
+            OnTurnDebug?.Invoke(new DialogueTurnDebugInfo { NpcId = npcId, PlayerText = "(开场白)", NpcText = openingBeatText, MatchedTopicId = "opening_beat", ResolutionType = "Opening" });
             yield break;
         }
 
@@ -229,7 +248,9 @@ public class DialogueManager : MonoBehaviour {
 
         if (!string.IsNullOrWhiteSpace(aiError)) {
             Debug.LogError($"[DialogueManager] AI opening dialogue request failed: {aiError}", this);
-            ShowDialogue(CreateOpeningFallbackText(appRoot, npcId));
+            string openingFallback = CreateOpeningFallbackText(appRoot, npcId);
+            ShowDialogue(openingFallback);
+            OnTurnDebug?.Invoke(new DialogueTurnDebugInfo { NpcId = npcId, PlayerText = "(开场白)", NpcText = openingFallback, Accepted = false, RejectReason = "ai_request_failed: " + aiError });
             yield break;
         }
 
@@ -239,6 +260,7 @@ public class DialogueManager : MonoBehaviour {
 
         conversationSession.AddExchange(string.Empty, npcText);
         ShowDialogue(npcText);
+        OnTurnDebug?.Invoke(new DialogueTurnDebugInfo { NpcId = npcId, PlayerText = "(开场白)", NpcText = npcText, MatchedTopicId = "opening", ResolutionType = "Opening" });
     }
 
     private static bool ShouldRefuseNonChineseInput(string playerText) {
