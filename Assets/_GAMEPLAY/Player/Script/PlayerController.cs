@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using DetectiveGame.Core;              // 👉 添加：引用 UIManager 所在命名空间
 using DetectiveGame.Gameplay.Npc;
 using UnityEngine;
@@ -18,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator animator;
 
     private float lastX = 0;
-    private float lastY = -1;
+    private float lastY = 1;
 
     private void Start()
     {
@@ -56,14 +55,25 @@ public class PlayerController : MonoBehaviour
         bool isMoving = move.magnitude > 0.01f;
         if (isMoving)
         {
-            lastX = h;
-            lastY = v;
+            float absH = Mathf.Abs(h);
+            float absV = Mathf.Abs(v);
+            if (absH > absV)
+            {
+                lastX = Mathf.Sign(h);
+                lastY = 0f;
+            }
+            else if (absV > absH)
+            {
+                lastX = 0f;
+                lastY = Mathf.Sign(v);
+            }
         }
 
         if (animator != null)
         {
-            animator.SetFloat("movex", isMoving ? lastX * 2 : lastX);
-            animator.SetFloat("movey", isMoving ? lastY * 2 : lastY);
+            float animY = -lastY;
+            animator.SetFloat("movex", isMoving ? lastX * 2f : lastX);
+            animator.SetFloat("movey", isMoving ? animY * 2f : animY);
         }
 
         if (Input.GetKeyDown(interactKey))
