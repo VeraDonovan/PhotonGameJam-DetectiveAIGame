@@ -264,6 +264,20 @@ namespace DetectiveGame.Gameplay.Dialogue
             result.ResolutionType = DetermineProgressResolutionType(result);
 
             ValidateAiResponseUsage(interpretedAction, matchedTopic, progressManager, result);
+            if (!result.AcceptAiResponse)
+            {
+                RollBackRejectedProgress(
+                    unlockedBeatsBefore,
+                    caughtLiesBefore,
+                    unlockedStatementsBefore,
+                    unlockedFactsBefore,
+                    unlockedLayersBefore,
+                    unlockedTokensBefore,
+                    progressManager,
+                    result);
+                return;
+            }
+
             if (result.AcceptAiResponse)
             {
                 MarkTopicOutcome(npcRuntimeManager, interpretedAction.NpcId, matchedTopic);
@@ -439,6 +453,65 @@ namespace DetectiveGame.Gameplay.Dialogue
         {
             result.AcceptAiResponse = false;
             result.ResponseRejectReason = reason;
+        }
+
+        private static void RollBackRejectedProgress(
+            HashSet<string> unlockedBeatsBefore,
+            HashSet<string> caughtLiesBefore,
+            HashSet<string> unlockedStatementsBefore,
+            HashSet<string> unlockedFactsBefore,
+            HashSet<string> unlockedLayersBefore,
+            HashSet<string> unlockedTokensBefore,
+            ProgressManager progressManager,
+            DialogueResolutionResult result)
+        {
+            var state = progressManager.RuntimeState;
+            RemoveNewIds(state.VisitedDialogueBeatIds, state.DialogueBeatVisitedById, result.VisitedBeatIds, unlockedBeatsBefore);
+            RemoveNewIds(state.CaughtLieIds, state.CaughtLieById, result.CaughtLieIds, caughtLiesBefore);
+            RemoveNewIds(state.UnlockedStatementIds, state.StatementUnlockedById, result.UnlockedStatementIds, unlockedStatementsBefore);
+            RemoveNewIds(state.UnlockedFactIds, state.FactUnlockedById, result.UnlockedFactIds, unlockedFactsBefore);
+            RemoveNewIds(state.UnlockedInterrogationLayerIds, state.InterrogationLayerUnlockedById, result.UnlockedLayerIds, unlockedLayersBefore);
+            RemoveNewIds(state.UnlockedProgressTokens, state.ProgressTokenById, result.UnlockedTokenIds, unlockedTokensBefore);
+
+            RemoveRolledBackLatestStatements(state);
+            result.ResolutionType = DialogueResolutionType.NoProgress;
+        }
+
+        private static void RemoveNewIds(
+            HashSet<string> currentIds,
+            Dictionary<string, bool> flagsById,
+            List<string> resultIds,
+            HashSet<string> idsBefore)
+        {
+            foreach (var id in resultIds)
+            {
+                if (string.IsNullOrWhiteSpace(id) || idsBefore.Contains(id))
+                {
+                    continue;
+                }
+
+                currentIds.Remove(id);
+                flagsById[id] = false;
+            }
+
+            resultIds.Clear();
+        }
+
+        private static void RemoveRolledBackLatestStatements(ProgressState state)
+        {
+            var topicsToRemove = new List<string>();
+            foreach (var kv in state.LatestStatementIdByTopic)
+            {
+                if (!state.UnlockedStatementIds.Contains(kv.Value))
+                {
+                    topicsToRemove.Add(kv.Key);
+                }
+            }
+
+            foreach (var topicId in topicsToRemove)
+            {
+                state.LatestStatementIdByTopic.Remove(topicId);
+            }
         }
 
         private static bool IsRequirementSatisfied(string requirementId, ProgressManager progressManager)

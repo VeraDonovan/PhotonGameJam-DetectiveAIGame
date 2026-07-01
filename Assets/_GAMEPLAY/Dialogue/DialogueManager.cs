@@ -441,6 +441,25 @@ public class DialogueManager : MonoBehaviour {
         DialogueHistoryCompressionLogger.LogTurnEndScheduled(session);
     }
 
+    public bool TryGetDebugConversationSession(string npcId, out DialogueConversationSession session) {
+        session = null;
+        if (string.IsNullOrWhiteSpace(npcId)) {
+            return false;
+        }
+
+        return conversationSessionByNpcId.TryGetValue(npcId, out session);
+    }
+
+    public void DebugClearConversationSession(string npcId) {
+        if (string.IsNullOrWhiteSpace(npcId)) {
+            return;
+        }
+
+        if (conversationSessionByNpcId.TryGetValue(npcId, out DialogueConversationSession session)) {
+            session.Clear();
+        }
+    }
+
     private DialogueConversationSession GetOrCreateConversationSession(string npcId) {
         if (!conversationSessionByNpcId.TryGetValue(npcId, out DialogueConversationSession session)) {
             session = new DialogueConversationSession(npcId);
